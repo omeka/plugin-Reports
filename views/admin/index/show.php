@@ -11,40 +11,35 @@
  */
 
 $head = array('body_class' => 'reports primary',
-              'title'      => 'Reports');
+              'title'      => "Report #$reportsreport->id");
 head($head);
 ?>
 
 <h1><?php echo $head['title'];?></h1>
 
-<p id="add-report" class="add-button"><a href="<?php echo uri('reports/index/add'); ?>" class="add">Add a Report</a></p>
-
 <div id="primary">
 
 <?php echo flash(); ?>
-
-<?php if (count($reports) == 0) : ?>
-<p>You haven&apos;t created any reports yet.  <a href="<?php echo uri('reports/index/add'); ?>">Create one.</a></p>
-<?php else : ?>
+<h2>Report Metadata</h2>
 <table>
-<thead>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Creator</th>
-    <th>Date Added</th>
-    <th>Items</th>
-</thead>
-<?php foreach($reports as $report) : ?>
 <tr>
-<td><?php echo $report['reportObject']->id; ?></td>
-<td><?php echo $report['reportObject']->name; ?></td>
-<td><?php echo $report['userName']; ?></td>
-<td><?php echo $report['reportObject']->modified; ?></td>
-<td><?php echo 'hrm.' ?></td>
+<th>Name</th>
+<td><?php echo $reportsreport->name; ?></td>
 </tr>
-<?php endforeach; ?>
+<tr>
+<th>Description</th>
+<td><?php echo $reportsreport->description; ?></td>
+</tr>
+<th>Creator</th>
+<td><?php echo $reportsreport->creator; ?></td>
+</tr>
+<th>Date Added</th>
+<td><?php echo $reportsreport->modified; ?></td>
+</tr>
 </table>
-<?php endif; ?>
+
+<h2>Generated Reports</h2>
+
 </div>
 
 <?php foot(); ?>

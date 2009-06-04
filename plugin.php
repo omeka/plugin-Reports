@@ -154,12 +154,12 @@ function reports_define_routes($router)
 {
     $router->addRoute('reports', 
                       new Zend_Controller_Router_Route(
-                          'reports/:action/:id',
+                          'reports/:action',
                           array( 'module'     => 'reports',
                                  'controller' => 'index')));
     $router->addRoute('reports', 
                       new Zend_Controller_Router_Route(
-                          'reports/:action',
+                          'reports/:action/:id',
                           array( 'module'     => 'reports',
                                  'controller' => 'index')));
 }
