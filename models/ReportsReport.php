@@ -19,4 +19,15 @@ class ReportsReport extends Omeka_Record
     public $description;
     public $creator;
     public $modified;
+    
+    protected function _validate()
+    {
+        if (empty($this->name)) {
+            $this->addError('name', 'Report must be given a valid name.');
+        }
+        
+        if (strlen($this->name) > 255) {
+            $this->addError('name', 'Report name must be less than 255 characters.');
+        }
+    }
 }

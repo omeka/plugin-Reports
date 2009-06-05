@@ -19,7 +19,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->_modelClass = 'ReportsReport';
     }
     
-    public function indexAction()
+    public function browseAction()
     {
         if(!is_writable(REPORTS_SAVE_DIRECTORY)) {
             $this->flash('Warning: The directory '.REPORTS_SAVE_DIRECTORY.
@@ -43,10 +43,10 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reports = $reportsDisplay;
     }
     
-    public function addAction()
+    /*public function addAction()
     {
         
-    }
+    }*/
     
     public function submitAction()
     {

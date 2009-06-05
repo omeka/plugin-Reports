@@ -21,25 +21,26 @@ head($head);
 
 <?php echo flash(); ?>
 
-<h2>Report Metadata</h2>
+<h2>Report Details</h2>
 <div>
-    <form method="post" action="<?php echo uri('reports/submit'); ?>">
-        <div class="field">
-            <?php echo $this->formLabel('name', 'Name'); ?>
-            <div class="inputs">
-            <?php echo $this->formText('name', null, array('size' => 60)); ?>
-            <p class="explanation">Name of the report to add.</p>
-            </div>
+    <form method="post">
+    <div class="field">
+        <?php echo label(array('for' => 'name'),'Report Name'); ?>
+        <div class="inputs">
+            <?php echo text(array('name'=>'name', 'class'=>'textinput', 'id'=>'name', 'size'=>'40'), $reportsreport->name); ?>
         </div>
-        <div class="field">
-            <?php echo $this->formLabel('description', 'Description'); ?>
-            <div class="inputs">
-            <?php echo $this->formTextArea('description', null, array('rows'=>'10','cols'=>'60')); ?>
-            <p class="explanation">Description of the report to add.</p>
-            </div>
+    <?php echo form_error('name'); ?>
+    </div>
+
+    <div class="field">
+    	<?php echo label(array('for' => 'description'),'Description'); ?>
+        <?php echo form_error('description'); ?>
+        <div class="inputs">
+            <?php echo textarea(array('name'=>'description', 'class'=>'textinput', 'id'=>'description','rows'=>'10','cols'=>'60'), $reportsreport->description); ?>
         </div>
-        
-        <?php echo $this->formSubmit('submit_add_report', 'Add Report', array('class' => 'submit submit-medium')); ?>
+    </div>
+    <?php echo $this->formHidden('creator', Omeka_Context::getInstance()->getCurrentUser()->id); ?>
+    <?php echo $this->formSubmit('submit_add_report', 'Add Report', array('class' => 'submit submit-medium')); ?>
     </form>
 </div>
 

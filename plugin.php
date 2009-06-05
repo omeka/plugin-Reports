@@ -47,7 +47,7 @@ function reports_install()
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_reports` (
         `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `name` TINYTEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+        `name` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `description` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `creator` INT(10) UNSIGNED NOT NULL,
         `modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -152,14 +152,15 @@ function reports_admin_navigation_main($tabs)
 
 function reports_define_routes($router)
 {
-    $router->addRoute('reports', 
+    $router->addRoute('reports-action', 
                       new Zend_Controller_Router_Route(
                           'reports/:action',
                           array( 'module'     => 'reports',
                                  'controller' => 'index')));
-    $router->addRoute('reports', 
+    $router->addRoute('reports-id-action', 
                       new Zend_Controller_Router_Route(
                           'reports/:action/:id',
                           array( 'module'     => 'reports',
-                                 'controller' => 'index')));
+                                 'controller' => 'index'),
+                          array( 'id'         => '\d+')));
 }
