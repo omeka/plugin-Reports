@@ -43,12 +43,12 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reports = $reportsDisplay;
     }
     
-    /*public function addAction()
+    public function queryAction()
     {
-        
-    }*/
+        $report = $this->findById();
+    }
     
-    public function submitAction()
+    /*public function submitAction()
     {
         $report = new ReportsReport();
         
@@ -58,5 +58,5 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         $report->save();
         $this->redirect->goto('index');
-    }
+    }*/
 }
