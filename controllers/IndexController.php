@@ -48,9 +48,6 @@ class Reports_IndexController extends Omeka_Controller_Action
                 
                 $itemTable = $this->getTable('Item');
                 
-                //$select = $itemTable->getSelect();
-                //$select = $itemTable->applySearchFilters($select, $query);
-                
                 $count += $itemTable->count($params);
             }
             
