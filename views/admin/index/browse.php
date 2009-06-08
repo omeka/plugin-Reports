@@ -41,7 +41,7 @@ head($head);
 <td><a href="<?php echo uri('reports/show').'/'.$report['reportObject']->id ?>"><?php echo $report['reportObject']->name; ?></a></td>
 <td><?php echo $report['userName']; ?></td>
 <td><?php echo $report['reportObject']->modified; ?></td>
-<td><?php echo 'hrm.' ?></td>
+<td><?php echo $report['count']; ?></td>
 <td><a href="<?php echo uri('reports/query').'/'.$report['reportObject']->id ?>">Add a query</a></td>
 </tr>
 <?php endforeach; ?>

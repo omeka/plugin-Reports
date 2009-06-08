@@ -23,7 +23,7 @@ head($head);
 
 <h2>Report Query</h2>
 
-<?php echo items_search_form(); ?>
+<?php echo items_search_form(array(), current_uri()); ?>
 
 </div>
 
