@@ -151,6 +151,16 @@ class Reports_IndexController extends Omeka_Controller_Action
         return array_merge($perms, $filter, $order);
     }
     
+    public function showAction()
+    {
+        $report = $this->findById();
+        
+        $reportFiles = $this->getTable('ReportsFile')->findByReportId($report->id);
+        
+        $this->view->reportsreport = $report;
+        $this->view->reportFiles = $reportFiles;
+    }
+    
     /*public function submitAction()
     {
         $report = new ReportsReport();

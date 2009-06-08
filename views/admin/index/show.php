@@ -38,8 +38,11 @@ head($head);
 </tr>
 </table>
 
-<h2>Generated Reports</h2>
-
+<h2>Generated Files</h2>
+<p><a href="<?php echo uri('reports/generate/').$reportsreport->id?>">Generate a file.</a></p>
+<?php if (count($reportFiles) == 0) : ?>
+<p>You have not generated any files of this report.</p>
+<?php endif; ?>
 </div>
 
 <?php foot(); ?>
