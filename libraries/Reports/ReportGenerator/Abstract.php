@@ -1,17 +1,38 @@
 <?php
-class Reports_ReportGenerator_Abstract
+abstract class Reports_ReportGenerator_Abstract
 {
     /**
      * Search parameters
-     * @var array
+     * @var ReportsFile
      */
-    protected $reportFile;
+    protected $_reportFile;
     
-    public __construct($reportFile) {
-        $reportFile->status = 'in progress';
-        $reportFile->save();
-        $this->reportFile = $reportFile;
+    protected $_report;
+    
+    protected $_item;
+    
+    //protected $filename;
+    
+    public function __construct($reportFile) {
+        if($reportFile)
+        {
+            $reportFile->status = ReportsFile::STATUS_IN_PROGRESS;
+            $reportFile->save();
+            $this->_reportFile = $reportFile;
+        
+            $this->_report = $this->_reportFile->getReport();
+            
+            $filename = tempnam(REPORTS_SAVE_DIRECTORY, 'report');
+            
+            $this->generateReport($filename);
+        
+            $this->_reportFile->status = ReportsFile::STATUS_COMPLETED;
+            $this->_reportFile->path = $filename;
+            $this->_reportFile->save();
+        }
     }
     
-    public abstract function generateReport();
+    public abstract function generateReport($filename);
+    
+    public abstract function getContentType();
 }

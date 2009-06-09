@@ -152,6 +152,11 @@ function reports_admin_navigation_main($tabs)
 
 function reports_define_routes($router)
 {
+    $router->addRoute('reports-sub-controllers',
+                      new Zend_Controller_Router_Route(
+                          'reports/:controller/:action/:id',
+                          array( 'module'     => 'reports'),
+                          array( 'id'         => '\d+')));
     $router->addRoute('reports-action', 
                       new Zend_Controller_Router_Route(
                           'reports/:action',

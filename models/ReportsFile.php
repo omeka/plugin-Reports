@@ -14,10 +14,20 @@
  */
 class ReportsFile extends Omeka_Record
 {
+    const STATUS_STARTING    = 'starting';
+    const STATUS_IN_PROGRESS = 'in progess';
+    const STATUS_COMPLETED   = 'completed';
+    const STATUS_ERROR       = 'error';
+    
     public $id;
     public $report_id;
     public $type;
     public $path;
     public $status;
     public $created;
+    
+    public function getReport()
+    {
+        return get_db()->getTable('ReportsReport')->find($this->report_id);
+    }
 }
