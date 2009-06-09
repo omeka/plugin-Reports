@@ -42,6 +42,25 @@ head($head);
 <p><a href="<?php echo uri('reports/generate/').$reportsreport->id?>">Generate a file.</a></p>
 <?php if (count($reportFiles) == 0) : ?>
 <p>You have not generated any files of this report.</p>
+<?php else: ?>
+<table>
+<thead>
+    <th>ID</th>
+    <th>Date</th>
+    <th>Type</th>
+    <th>Status</th>
+    <th>View</th>
+</thead>
+<?php foreach($reportFiles as $file) : ?>
+<tr>
+    <td><?php echo $file->id ?></td>
+    <td><?php echo $file->created ?></td>
+    <td><?php echo $file->type ?></td>
+    <td><?php echo $file->status ?></td>
+    <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
+</tr>
+<?php endforeach; ?>
+</table>
 <?php endif; ?>
 </div>
 

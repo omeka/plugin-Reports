@@ -160,16 +160,4 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reportsreport = $report;
         $this->view->reportFiles = $reportFiles;
     }
-    
-    /*public function submitAction()
-    {
-        $report = new ReportsReport();
-        
-        $report->name = $_POST['name'];
-        $report->description = $_POST['description'];
-        $report->creator = Omeka_Context::getInstance()->getCurrentUser()->entity_id;
-        
-        $report->save();
-        $this->redirect->goto('index');
-    }*/
 }
