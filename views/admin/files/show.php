@@ -11,6 +11,6 @@
  */
 
 header("Content-Type: $reportsfile->getContentType()");
-header('Content-Disposition: inline; filename=report.html');
+header("Content-Disposition: inline; filename=report.html");
 
 readfile($reportsfile->path);

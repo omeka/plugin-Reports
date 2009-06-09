@@ -160,4 +160,18 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reportsreport = $report;
         $this->view->reportFiles = $reportFiles;
     }
+    
+    public function generateAction()
+    {
+        $report = $this->findById();
+        
+        $reportFile = new ReportsFile();
+        $reportFile->report_id = $report->id;
+        $reportFile->type = "html";
+        $reportFile->status = ReportsFile::STATUS_STARTING;
+        $reportFile->save();
+        $this->redirect->gotoRoute(array('id' => "$report->id",
+                                         'action' => 'show'),
+                                   'reports-id-action');
+    }
 }
