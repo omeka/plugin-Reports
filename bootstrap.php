@@ -14,8 +14,6 @@ ini_set('display_errors', '1');
 $baseDir = str_replace('plugins/Reports', '', dirname(__FILE__));
 require "{$baseDir}paths.php";
 require "{$baseDir}application/libraries/Omeka/Core.php";
-//require "plugin.php";
-
 
 // Load only the required core phases.
 $core = new Omeka_Core;

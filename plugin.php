@@ -90,42 +90,10 @@ function reports_install()
 }
 
 /**
- * config_form callback
- */
-function reports_config_form()
-{
-  /*  $repoName = get_option('oaipmh_repository_name');
-    $namespaceID = get_option('oaipmh_repository_namespace_id');
-    $listLimit = get_option('oaipmh_repository_list_limit');
-    $expirationTime = get_option('oaipmh_repository_expiration_time');
-    $exposeFiles = get_option('oaipmh_repository_expose_files');
-    include('config_form.php');*/
-}
-
-/**
- * config callback
- */ 
-function reports_config()
-{
-  /*set_option('oaipmh_repository_name', $_POST['oaipmh_repository_name']);
-    set_option('oaipmh_repository_namespace_id', $_POST['oaipmh_repository_namespace_id']);
-    set_option('oaipmh_repository_list_limit', $_POST['oaipmh_repository_list_limit']);
-    set_option('oaipmh_repository_expiration_time', $_POST['oaipmh_repository_expiration_time']);
-    set_option('oaipmh_repository_expose_files', $_POST['oaipmh_repository_expose_files']);*/
-}
-
-/**
  * uninstall callback
  */
 function reports_uninstall()
 {
-  /*  delete_option('oaipmh_repository_plugin_version');
-    delete_option('oaipmh_repository_name');
-    delete_option('oaipmh_repository_namespace_id');
-    delete_option('oaipmh_repository_record_limit');
-    delete_option('oaipmh_repository_expiration_time');
-    delete_option('oaipmh_repository_expose_files');
-    */
     delete_option('reports_plugin_version');
     
     $db = get_db();
