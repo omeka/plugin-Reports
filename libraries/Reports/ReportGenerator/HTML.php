@@ -1,5 +1,5 @@
 <?php
-class Reports_ReportGenerator_HTML extends Reports_ReportGenerator_Abstract
+class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 {
     private $_file;
     private $_items;
@@ -133,7 +133,13 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator_Abstract
         return array_merge($perms, $filter, $order);
     }
     
+    public function getReadableName() {
+        return 'HTML';
+    }
     public function getContentType() {
         return 'text/html';
+    }
+    public function getExtension() {
+        return 'html';
     }
 }

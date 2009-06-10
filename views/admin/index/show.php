@@ -39,9 +39,12 @@ head($head);
 </table>
 
 <h2>Generated Files</h2>
-<p><a href="<?php echo uri("reports/generate/$reportsreport->id") ?>">Generate a new file.</a></p>
+<p><a href="<?php echo uri("reports/generate/$reportsreport->id"); ?>">Generate a new file.</a></p>
+<form action="<?php echo uri("reports/generate/$reportsreport->id"); ?>">
+<?php echo $this->formSelect('format', null, null, $this->formats); ?>
+</form>
 <?php if (count($reportFiles) == 0) : ?>
-<p>You have not generated any files of this report.</p>
+<p>You have not generated any files.</p>
 <?php else: ?>
 <table>
 <thead>

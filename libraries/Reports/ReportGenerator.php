@@ -1,5 +1,5 @@
 <?php
-abstract class Reports_ReportGenerator_Abstract
+abstract class Reports_ReportGenerator
 {
     /**
      * Search parameters
@@ -34,5 +34,9 @@ abstract class Reports_ReportGenerator_Abstract
     
     public abstract function generateReport($filename);
     
+    public abstract function getReadableName();
+    
     public abstract function getContentType();
+    
+    public abstract function getExtension();
 }

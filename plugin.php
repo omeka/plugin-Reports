@@ -142,3 +142,23 @@ function reports_getNameForEntityId($entityId)
 {
     return get_db()->getTable('Entity')->find($entityId)->getName();
 }
+
+function reports_getOutputFormats()
+{
+    $dir = new DirectoryIterator(REPORTS_PLUGIN_DIRECTORY.'/libraries/Reports/ReportGenerator');
+    $formats = array();
+    foreach ($dir as $entry) {
+        if ($entry->isFile() && !$entry->isDot()) {
+            $filename = $entry->getFilename();
+            if(preg_match('/^(.+)\.php$/', $filename, $match) && $match[1] != 'Abstract') {
+                // Get and set only the name of the file minus the extension.
+                //require_once($pathname);
+                $class = "Reports_ReportGenerator_${match[1]}";
+                $object = new $class(null);
+                $name = $object->getReadableName();
+                $formats[$match[1]] = $name;
+            }
+        }
+    }
+    return $formats;
+}
