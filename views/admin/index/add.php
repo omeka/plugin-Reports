@@ -39,7 +39,7 @@ head($head);
             <?php echo textarea(array('name'=>'description', 'class'=>'textinput', 'id'=>'description','rows'=>'10','cols'=>'60'), $reportsreport->description); ?>
         </div>
     </div>
-    <?php echo $this->formHidden('creator', Omeka_Context::getInstance()->getCurrentUser()->id); ?>
+    <?php echo $this->formHidden('creator', Omeka_Context::getInstance()->getCurrentUser()->entity_id); ?>
     <?php echo $this->formSubmit('submit_add_report', 'Add Report', array('class' => 'submit submit-medium')); ?>
     </form>
 </div>

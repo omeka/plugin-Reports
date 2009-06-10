@@ -16,11 +16,11 @@ define('REPORTS_PLUGIN_VERSION', get_plugin_ini('Reports', 'version'));
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
 define('REPORTS_SAVE_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.
-                                 '/generated_reports/');
+                                 '/generated_reports');
+
+define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.'/libraries/Reports/ReportGenerator');
 
 add_plugin_hook('install', 'reports_install');
-add_plugin_hook('config_form', 'reports_config_form');
-add_plugin_hook('config', 'reports_config');
 add_plugin_hook('uninstall', 'reports_uninstall');
 add_plugin_hook('define_routes', 'reports_define_routes');
 add_filter('admin_navigation_main', 'reports_admin_navigation_main');
@@ -136,4 +136,9 @@ function reports_define_routes($router)
                           array( 'module'     => 'reports',
                                  'controller' => 'index'),
                           array( 'id'         => '\d+')));
+}
+
+function reports_getNameForEntityId($entityId)
+{
+    return get_db()->getTable('Entity')->find($entityId)->getName();
 }

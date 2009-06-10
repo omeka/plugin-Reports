@@ -20,7 +20,7 @@ head($head);
 <div id="primary">
 
 <?php echo flash(); ?>
-<h2>Report Metadata</h2>
+<h2>Report Details</h2>
 <table>
 <tr>
 <th>Name</th>
@@ -31,7 +31,7 @@ head($head);
 <td><?php echo $reportsreport->description; ?></td>
 </tr>
 <th>Creator</th>
-<td><?php echo $reportsreport->creator; ?></td>
+<td><?php echo reports_getNameForEntityId($reportsreport->creator); ?></td>
 </tr>
 <th>Date Added</th>
 <td><?php echo $reportsreport->modified; ?></td>
