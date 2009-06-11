@@ -12,8 +12,7 @@
 
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
-define('REPORTS_SAVE_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.
-                                 '/generated_reports');
+define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
 
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.'/libraries/Reports/ReportGenerator');
 
@@ -21,6 +20,8 @@ define('REPORTS_GENERATOR_PREFIX', 'Reports_ReportGenerator_');
 
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
+add_plugin_hook('config_form', 'reports_config_form');
+add_plugin_hook('config', 'reports_config');
 add_plugin_hook('define_routes', 'reports_define_routes');
 add_filter('admin_navigation_main', 'reports_admin_navigation_main');
 
@@ -30,6 +31,14 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
 function reports_install()
 {
     set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
+    
+    $command = 'which php 2>&0';
+    $lastLineOutput = exec($command, $output, $returnVar);
+    $phpPath = $returnVar == 0 ? trim($lastLineOutput) : '';
+    set_option('reports_php_path', $phpPath);
+    
+    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
+                                     '/generated_reports');
     
     $db = get_db();
     
@@ -95,6 +104,8 @@ function reports_install()
 function reports_uninstall()
 {
     delete_option('reports_plugin_version');
+    delete_option('reports_php_path');
+    delete_option('reports_save_directory');
     
     $db = get_db();
     
@@ -106,6 +117,20 @@ function reports_uninstall()
     $db->query($sql);
     $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_files`;";
     $db->query($sql);
+}
+
+function reports_config_form()
+{
+    $phpPath = get_option('reports_php_path');
+    $saveDirectory = get_option('reports_save_directory');
+    
+    include 'config_form.php';
+}
+
+function reports_config()
+{
+    set_option('reports_php_path', $_POST['reports_php_path']);
+    set_option('reports_save_directory', $_POST['reports_save_directory']);
 }
 
 /**
