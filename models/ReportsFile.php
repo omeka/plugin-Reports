@@ -22,18 +22,32 @@ class ReportsFile extends Omeka_Record
     public $id;
     public $report_id;
     public $type;
-    public $path;
+    public $filename;
     public $status;
     public $created;
+    public $pid;
     
+    /**
+     * Gets the report associated with this object.
+     *
+     * @return ReportsReport The report associated with the file.
+     */
     public function getReport()
     {
-        return get_db()->getTable('ReportsReport')->find($this->report_id);
+        if($report_id = $this->report_id) {
+            return get_db()->getTable('ReportsReport')->find($report_id);
+        }
     }
     
+    /**
+     * Gets the report generator used for this file.
+     *
+     * @return string Name of the report generator class.
+     */
     public function getGenerator()
     {
         $formats = reports_getOutputFormats();
-        return 'Reports_ReportGenerator_'.$this->type;
+        $class = REPORTS_GENERATOR_PREFIX.$this->type;
+        return new $class(null);
     }
 }

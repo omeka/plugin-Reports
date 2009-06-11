@@ -11,6 +11,8 @@ abstract class Reports_ReportGenerator
     
     protected $_item;
     
+    //protected $_path;
+    
     //protected $filename;
     
     public function __construct($reportFile) {
@@ -22,12 +24,15 @@ abstract class Reports_ReportGenerator
         
             $this->_report = $this->_reportFile->getReport();
             
-            $filename = tempnam(REPORTS_SAVE_DIRECTORY, 'report');
+            $filter = new Omeka_Filter_Filename();
+            $filename = $filter->renameFileForArchive('report'.$this->getExtension());
+            $path = REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $filename;
+            //$filename = tempnam(REPORTS_SAVE_DIRECTORY, 'report_');
             
-            $this->generateReport($filename);
+            $this->generateReport($path);
         
             $this->_reportFile->status = ReportsFile::STATUS_COMPLETED;
-            $this->_reportFile->path = $filename;
+            $this->_reportFile->filename = $filename;
             $this->_reportFile->save();
         }
     }

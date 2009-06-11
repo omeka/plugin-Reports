@@ -174,12 +174,14 @@ class Reports_IndexController extends Omeka_Controller_Action
         $reportFile->type = $_GET['format'];
         $reportFile->status = ReportsFile::STATUS_STARTING;
         $reportFile->save();
+        
+        $command = '/Applications/MAMP/bin/php5/bin/php '.$this->_getBootstrapFilePath()." -r $reportFile->id";
+        $reportFile->pid = $this->_fork($command);
+        $reportFile->save();
+        
         $this->redirect->gotoRoute(array('id' => "$report->id",
                                          'action' => 'show'),
                                    'reports-id-action');
-        
-        $command = "$this->_getBootstrapFilePath() -r $reportFile->id";
-        $this->fork($command);
     }
     
     private function _getBootstrapFilePath()

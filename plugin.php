@@ -10,15 +10,14 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-/** Plugin version: will be stored as an option */
-define('REPORTS_PLUGIN_VERSION', get_plugin_ini('Reports', 'version'));
-
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
 define('REPORTS_SAVE_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.
                                  '/generated_reports');
 
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.'/libraries/Reports/ReportGenerator');
+
+define('REPORTS_GENERATOR_PREFIX', 'Reports_ReportGenerator_');
 
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
@@ -30,7 +29,7 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
  */
 function reports_install()
 {
-    set_option('reports_plugin_version', REPORTS_PLUGIN_VERSION);
+    set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
     
     $db = get_db();
     
@@ -46,10 +45,10 @@ function reports_install()
     */
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_reports` (
-        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `name` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `description` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
-        `creator` INT(10) UNSIGNED NOT NULL,
+        `creator` INT UNSIGNED NOT NULL,
         `modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY  (`id`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -57,8 +56,8 @@ function reports_install()
     
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_queries` (
-        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `report_id` INT(10) UNSIGNED NOT NULL,
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `report_id` INT UNSIGNED NOT NULL,
         `query` TEXT COLLATE utf8_unicode_ci NOT NULL,
         PRIMARY KEY  (`id`),
         INDEX (`report_id`)
@@ -67,9 +66,9 @@ function reports_install()
     
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_items` (
-        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `report_id` INT(10) UNSIGNED NOT NULL,
-        `item_id` INT(10) UNSIGNED NOT NULL,
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `report_id` INT UNSIGNED NOT NULL,
+        `item_id` INT UNSIGNED NOT NULL,
         PRIMARY KEY  (`id`),
         INDEX (`report_id`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -77,12 +76,13 @@ function reports_install()
     
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_files` (
-        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `report_id` INT(10) UNSIGNED NOT NULL,
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `report_id` INT UNSIGNED NOT NULL,
         `type` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
-        `path` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+        `filename` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `status` ENUM('starting', 'in progress', 'completed', 'error') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'starting',
         `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `pid` INT UNSIGNED DEFAULT NULL,
         PRIMARY KEY  (`id`),
         INDEX(`report_id`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -145,7 +145,7 @@ function reports_getNameForEntityId($entityId)
 
 function reports_getOutputFormats()
 {
-    $dir = new DirectoryIterator(REPORTS_PLUGIN_DIRECTORY.'/libraries/Reports/ReportGenerator');
+    $dir = new DirectoryIterator(REPORTS_GENERATOR_DIRECTORY);
     $formats = array();
     foreach ($dir as $entry) {
         if ($entry->isFile() && !$entry->isDot()) {
@@ -153,7 +153,7 @@ function reports_getOutputFormats()
             if(preg_match('/^(.+)\.php$/', $filename, $match) && $match[1] != 'Abstract') {
                 // Get and set only the name of the file minus the extension.
                 //require_once($pathname);
-                $class = "Reports_ReportGenerator_${match[1]}";
+                $class = REPORTS_GENERATOR_PREFIX."${match[1]}";
                 $object = new $class(null);
                 $name = $object->getReadableName();
                 $formats[$match[1]] = $name;

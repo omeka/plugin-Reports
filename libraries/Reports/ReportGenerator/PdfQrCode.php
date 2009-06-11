@@ -20,7 +20,7 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $pdf->pages[0]->setFont($helvetica, 12);
         $pdf->pages[0]->drawText('Sweet!', 72, 720);
 
-        $imagefile = file_put_contents(REPORTS_SAVE_DIRECTORY.'temp.png', file_get_contents($chartUrl.'?cht=qr&chl=http://omeka.org/codex&chs=300x300'));
+        $imagefile = file_put_contents(REPORTS_SAVE_DIRECTORY.'/temp.png', file_get_contents($chartUrl.'?cht=qr&chl=http://omeka.org/codex&chs=300x300'));
 
         $image = Zend_Pdf_Image::imageWithPath(REPORTS_SAVE_DIRECTORY.'temp.png');
 

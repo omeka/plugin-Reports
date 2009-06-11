@@ -10,10 +10,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-$generatorClass = $reportsfile->getGenerator();
-$generator = new $generatorClass(null);
+$generator = $reportsfile->getGenerator();
 
-header("Content-Type: $generator->getContentType()");
-header("Content-Disposition: inline; filename=report.$generator->getExtension");
+header("Content-Type: {$generator->getContentType()}");
+header("Content-Disposition: attachment; filename=report.{$generator->getExtension()}");
 
-readfile($reportsfile->path);
+readfile(REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $reportsfile->filename);

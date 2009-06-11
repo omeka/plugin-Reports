@@ -60,7 +60,7 @@ head($head);
 <tr>
     <td><?php echo $file->id ?></td>
     <td><?php echo $file->created ?></td>
-    <td><?php echo $file->type ?></td>
+    <td><?php echo $file->getGenerator()->getReadableName(); ?></td>
     <td><?php echo $file->status ?></td>
     <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
 </tr>
