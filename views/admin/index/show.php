@@ -39,7 +39,6 @@ head($head);
 </table>
 
 <h2>Generated Files</h2>
-<p><a href="<?php echo uri("reports/generate/$reportsreport->id"); ?>">Generate a new file.</a></p>
 <form action="<?php echo uri("reports/generate/$reportsreport->id"); ?>">
 <label for="format">Output Format</label>
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
@@ -61,8 +60,10 @@ head($head);
     <td><?php echo $file->id ?></td>
     <td><?php echo $file->created ?></td>
     <td><?php echo $file->getGenerator()->getReadableName(); ?></td>
-    <td><?php echo $file->status ?></td>
+    <td><?php echo ucwords($status = $file->status); ?></td>
+    <?php if ($status == ReportsFile::STATUS_COMPLETED) : ?>
     <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
+    <?php endif; ?>
 </tr>
 <?php endforeach; ?>
 </table>

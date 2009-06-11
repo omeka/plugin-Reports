@@ -15,7 +15,7 @@
 class ReportsFile extends Omeka_Record
 {
     const STATUS_STARTING    = 'starting';
-    const STATUS_IN_PROGRESS = 'in progess';
+    const STATUS_IN_PROGRESS = 'in progress';
     const STATUS_COMPLETED   = 'completed';
     const STATUS_ERROR       = 'error';
     

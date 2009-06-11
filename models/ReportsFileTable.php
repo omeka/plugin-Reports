@@ -19,7 +19,7 @@ class ReportsFileTable extends Omeka_Db_Table
      * @return array Array of ReportsReport objects.
      */
     public function findByReportId($reportId) {
-        $select = $this->getSelect()->where('report_id = ?', $reportId);
+        $select = $this->getSelect()->where('report_id = ?', $reportId)->order('created DESC');
         return $this->fetchObjects($select);
     }
 }
