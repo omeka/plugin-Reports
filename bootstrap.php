@@ -32,13 +32,7 @@ $report = $db->getTable('ReportsFile')->find($reportId);
 // Get the report type (corresponds to the name of the class)
 $reportType = $report->type;
 
-// Set the metadata prefix class.
-$metadataClass = 'Reports_ReportGenerator_'.$reportType;
+// Set the report generator class.
+$generatorClass = 'Reports_ReportGenerator_'.$reportType;
 
-require_once 'Reports/ReportGenerator/Abstract.php';
-require_once 'Reports/ReportGenerator/HTML.php';
-//require_once OAIPMH_HARVESTER_MAPS_DIRECTORY . "/$reportType.php";
-
-// Set the harvest object.
-//new $metadataClass($report);
-new Reports_ReportGenerator_HTML($report);
+new $generatorClass($report);

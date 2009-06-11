@@ -171,11 +171,31 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         $reportFile = new ReportsFile();
         $reportFile->report_id = $report->id;
-        $reportFile->type = "html";
+        $reportFile->type = $_GET['format'];
         $reportFile->status = ReportsFile::STATUS_STARTING;
         $reportFile->save();
         $this->redirect->gotoRoute(array('id' => "$report->id",
                                          'action' => 'show'),
                                    'reports-id-action');
+        
+        $command = "$this->_getBootstrapFilePath() -r $reportFile->id";
+        $this->fork($command);
+    }
+    
+    private function _getBootstrapFilePath()
+    {
+        return REPORTS_PLUGIN_DIRECTORY
+             . DIRECTORY_SEPARATOR 
+             . 'bootstrap.php';
+    }
+    
+    /**
+     * Launch a background process, returning control to the foreground.
+     * 
+     * @link http://www.php.net/manual/en/ref.exec.php#70135
+     * @return int The background process' PID
+     */
+    private function _fork($command) {
+        return exec("$command > /dev/null 2>&1 & echo $!");
     }
 }

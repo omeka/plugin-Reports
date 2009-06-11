@@ -10,7 +10,10 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-header("Content-Type: $reportsfile->getContentType()");
-header("Content-Disposition: inline; filename=report.html");
+$generatorClass = $reportsfile->getGenerator();
+$generator = new $generatorClass(null);
+
+header("Content-Type: $generator->getContentType()");
+header("Content-Disposition: inline; filename=report.$generator->getExtension");
 
 readfile($reportsfile->path);

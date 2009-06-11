@@ -30,4 +30,10 @@ class ReportsFile extends Omeka_Record
     {
         return get_db()->getTable('ReportsReport')->find($this->report_id);
     }
+    
+    public function getGenerator()
+    {
+        $formats = reports_getOutputFormats();
+        return 'Reports_ReportGenerator_'.$this->type;
+    }
 }
