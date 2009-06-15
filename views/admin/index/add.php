@@ -44,8 +44,6 @@ head($head);
     </form>
 </div>
 
-<?php echo items_search_form(); ?>
-
 </div>
 
 <?php foot(); ?>

@@ -11,7 +11,7 @@
  */
 
 $head = array('body_class' => 'reports primary',
-              'title'      => 'Reports | Add Query');
+              'title'      => 'Reports | Edit Filter');
 head($head);
 ?>
 
@@ -21,7 +21,7 @@ head($head);
 
 <?php echo flash(); ?>
 
-<h2>Report Query</h2>
+<h2>Report Filter</h2>
 
 <?php echo items_search_form(array(), current_uri()); ?>
 

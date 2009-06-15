@@ -33,7 +33,7 @@ head($head);
     <th>Creator</th>
     <th>Date Added</th>
     <th>Items</th>
-    <th>Query</th>
+    <th>Filter</th>
 </thead>
 <?php foreach($reports as $report) : ?>
 <tr>
@@ -42,7 +42,7 @@ head($head);
 <td><?php echo $report['userName']; ?></td>
 <td><?php echo $report['reportObject']->modified; ?></td>
 <td><?php echo $report['count']; ?></td>
-<td><a href="<?php echo uri('reports/query').'/'.$report['reportObject']->id ?>">Add a query</a></td>
+<td><a href="<?php echo uri('reports/query').'/'.$report['reportObject']->id ?>">Edit filter</a></td>
 </tr>
 <?php endforeach; ?>
 </table>
