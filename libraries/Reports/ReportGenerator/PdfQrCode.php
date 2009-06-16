@@ -60,6 +60,7 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     
     private function addPage($pdf)
     {
+        $helvetica = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
         $newPage = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
         $newPage->setFont($helvetica, 8);
         $pdf->pages[] = $this->_page = $newPage;
