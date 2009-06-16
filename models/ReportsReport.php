@@ -30,4 +30,9 @@ class ReportsReport extends Omeka_Record
             $this->addError('name', 'Report name must be less than 255 characters.');
         }
     }
+    
+    public function getFiles()
+    {
+        return $this->_db->getTable('ReportsFile')->findByReportId($this->id);
+    }
 }

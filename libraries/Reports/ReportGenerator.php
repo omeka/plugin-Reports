@@ -9,12 +9,6 @@ abstract class Reports_ReportGenerator
     
     protected $_report;
     
-    protected $_item;
-    
-    //protected $_path;
-    
-    //protected $filename;
-    
     public function __construct($reportFile) {
         if($reportFile)
         {
@@ -27,7 +21,6 @@ abstract class Reports_ReportGenerator
             $filter = new Omeka_Filter_Filename();
             $filename = $filter->renameFileForArchive('report'.$this->getExtension());
             $path = REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $filename;
-            //$filename = tempnam(REPORTS_SAVE_DIRECTORY, 'report_');
             
             $this->generateReport($path);
         

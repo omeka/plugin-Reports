@@ -35,7 +35,7 @@ class ReportsFile extends Omeka_Record
     public function getReport()
     {
         if($report_id = $this->report_id) {
-            return get_db()->getTable('ReportsReport')->find($report_id);
+            return $this->_db->getTable('ReportsReport')->find($report_id);
         }
     }
     

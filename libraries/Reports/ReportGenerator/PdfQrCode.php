@@ -8,7 +8,10 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     
     const CHART_API_URI = 'http://chart.apis.google.com/chart';
     
-    /* Spacing constants for 5160 labels, in inches. */
+    // Spacing constants for 5160 labels, in points.
+    
+    const PAGE_HEIGHT = 792;
+    const PAGE_WIDTH = 612;
     
     const MARGIN_LEFT = 13.5;
     const MARGIN_RIGHT = 36;

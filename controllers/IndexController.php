@@ -155,7 +155,7 @@ class Reports_IndexController extends Omeka_Controller_Action
     {
         $report = $this->findById();
         
-        $reportFiles = $this->getTable('ReportsFile')->findByReportId($report->id);
+        $reportFiles = $report->getFiles();
         
         $formats = reports_getOutputFormats();
         
