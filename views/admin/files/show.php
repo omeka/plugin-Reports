@@ -13,6 +13,6 @@
 $generator = $reportsfile->getGenerator();
 
 header("Content-Type: {$generator->getContentType()}");
-header("Content-Disposition: attachment; filename=report.{$generator->getExtension()}");
+header("Content-Disposition: inline; filename=report.{$generator->getExtension()}");
 
 readfile(REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $reportsfile->filename);
