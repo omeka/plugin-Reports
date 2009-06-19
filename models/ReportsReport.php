@@ -17,6 +17,7 @@ class ReportsReport extends Omeka_Record
     public $id;
     public $name;
     public $description;
+    public $query;
     public $creator;
     public $modified;
     

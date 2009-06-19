@@ -57,19 +57,10 @@ function reports_install()
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `name` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `description` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+        `query` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `creator` INT UNSIGNED NOT NULL,
         `modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY  (`id`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-    $db->query($sql);
-    
-    $sql = "
-    CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_queries` (
-        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        `report_id` INT UNSIGNED NOT NULL,
-        `query` TEXT COLLATE utf8_unicode_ci NOT NULL,
-        PRIMARY KEY  (`id`),
-        INDEX (`report_id`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     $db->query($sql);
     
@@ -110,8 +101,6 @@ function reports_uninstall()
     $db = get_db();
     
     $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_reports`;";
-    $db->query($sql);
-    $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_queries`;";
     $db->query($sql);
     $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_items`;";
     $db->query($sql);

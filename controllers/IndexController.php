@@ -39,17 +39,9 @@ class Reports_IndexController extends Omeka_Controller_Action
             $creator = $report->creator;
             
             $userName = $this->getTable('Entity')->find($creator)->getName();
-            $queries = $this->getTable('ReportsQuery')->findByReportId($id);
-            
-            $count = 0;
-            foreach($queries as $query) {
-                $query = unserialize($query->query);
-                $params = $this->_convertSearchFilters($query);
-                
-                $itemTable = $this->getTable('Item');
-                
-                $count += $itemTable->count($params);
-            }
+            $query = unserialize($report->query);
+            $params = $this->_convertSearchFilters($query);
+            $count = $this->getTable('Item')->count($params);
             
             $reportsDisplay[] = array(
                 'reportObject' => $report,
@@ -64,12 +56,14 @@ class Reports_IndexController extends Omeka_Controller_Action
         $report = $this->findById();
         
         if(isset($_GET['advanced'])) {
-            $query = new ReportsQuery;
-            $query->report_id = $report->id;
-            $query->query = serialize($_GET);
-            $query->save();
+            $report->query = serialize($_GET);
+            $report->save();
             $this->redirect->goto('index');
+        } 
+        else {
+            $_GET = (unserialize($report->query));
         }
+        
     }
     
     private function _convertSearchFilters($query) {
@@ -116,17 +110,6 @@ class Reports_IndexController extends Omeka_Controller_Action
             
             if ($excludeTags = $query['excludeTags']) {
                 $filter['excludeTags'] = $excludeTags;
-            }
-            
-            $recent = $query['recent'];
-            if ($recent !== 'false') {
-                $order['recent'] = true;
-            }
-            
-            if ($search = $query['search']) {
-                $filter['search'] = $search;
-                //Don't order by recent-ness if we're doing a search
-                unset($order['recent']);
             }
             
             //The advanced or 'itunes' search

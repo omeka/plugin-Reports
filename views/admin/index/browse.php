@@ -31,18 +31,19 @@ head($head);
     <th>ID</th>
     <th>Name</th>
     <th>Creator</th>
-    <th>Date Added</th>
+    <th>Date Modified</th>
     <th>Items</th>
     <th>Filter</th>
 </thead>
-<?php foreach($reports as $report) : ?>
+<?php foreach($reports as $report) : 
+      $reportObject = $report['reportObject']; ?>
 <tr>
-<td><?php echo $report['reportObject']->id; ?></td>
-<td><a href="<?php echo uri('reports/show').'/'.$report['reportObject']->id ?>"><?php echo $report['reportObject']->name; ?></a></td>
+<td><?php echo $reportObject->id; ?></td>
+<td><a href="<?php echo uri("reports/show/$reportObject->id"); ?>"><?php echo $reportObject->name; ?></a></td>
 <td><?php echo $report['userName']; ?></td>
-<td><?php echo $report['reportObject']->modified; ?></td>
+<td><?php echo $reportObject->modified; ?></td>
 <td><?php echo $report['count']; ?></td>
-<td><a href="<?php echo uri('reports/query').'/'.$report['reportObject']->id ?>">Edit filter</a></td>
+<td><a href="<?php echo uri("reports/query/$reportObject->id"); ?>">Edit filter</a></td>
 </tr>
 <?php endforeach; ?>
 </table>
