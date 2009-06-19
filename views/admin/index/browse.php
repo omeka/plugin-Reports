@@ -36,13 +36,14 @@ head($head);
     <th>Filter</th>
 </thead>
 <?php foreach($reports as $report) : 
-      $reportObject = $report['reportObject']; ?>
+      $reportObject = $report['reportObject']; 
+      $query = http_build_query(unserialize($reportObject->query)); ?>
 <tr>
 <td><?php echo $reportObject->id; ?></td>
 <td><a href="<?php echo uri("reports/show/$reportObject->id"); ?>"><?php echo $reportObject->name; ?></a></td>
 <td><?php echo $report['userName']; ?></td>
 <td><?php echo $reportObject->modified; ?></td>
-<td><?php echo $report['count']; ?></td>
+<td><a href="<?php echo uri("items/browse")."?$query"; ?>"><?php echo $report['count']; ?></a></td>
 <td><a href="<?php echo uri("reports/query/$reportObject->id"); ?>">Edit filter</a></td>
 </tr>
 <?php endforeach; ?>

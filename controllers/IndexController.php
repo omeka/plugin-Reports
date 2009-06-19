@@ -40,7 +40,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             
             $userName = $this->getTable('Entity')->find($creator)->getName();
             $query = unserialize($report->query);
-            $params = $this->_convertSearchFilters($query);
+            $params = reports_convertSearchFilters($query);
             $count = $this->getTable('Item')->count($params);
             
             $reportsDisplay[] = array(
@@ -55,83 +55,19 @@ class Reports_IndexController extends Omeka_Controller_Action
     {
         $report = $this->findById();
         
-        if(isset($_GET['advanced'])) {
+        if(isset($_GET['search'])) {
             $report->query = serialize($_GET);
             $report->save();
             $this->redirect->goto('index');
         } 
         else {
-            $_GET = (unserialize($report->query));
+            $queryArray = unserialize($report->query);
+            // Some parts of the advanced search check $_GET, others check
+            // $_REQUEST, so we set both to be able to edit a previous query.
+            $_GET = $queryArray;
+            $_REQUEST = $queryArray;
         }
         
-    }
-    
-    private function _convertSearchFilters($query) {
-        $perms  = array();
-        $filter = array();
-        $order  = array();
-        
-        //Show only public items
-        if ($query['public']) {
-            $perms['public'] = true;
-        }
-        
-        //Here we add some filtering for the request    
-        try {
-            
-            // User-specific item browsing
-            if ($userToView = $query['user']) {
-                        
-                // Must be logged in to view items specific to certain users
-                if (!$controller->isAllowed('browse', 'Users')) {
-                    throw new Exception( 'May not browse by specific users.' );
-                }
-                
-                if (is_numeric($userToView)) {
-                    $filter['user'] = $userToView;
-                }
-            }
-
-            if ($query['featured']) {
-                $filter['featured'] = true;
-            }
-            
-            if ($collection = $query['collection']) {
-                $filter['collection'] = $collection;
-            }
-            
-            if ($type = $query['type']) {
-                $filter['type'] = $type;
-            }
-            
-            if (($tag = $query['tag']) || ($tag = $query['tags'])) {
-                $filter['tags'] = $tag;
-            }
-            
-            if ($excludeTags = $query['excludeTags']) {
-                $filter['excludeTags'] = $excludeTags;
-            }
-            
-            //The advanced or 'itunes' search
-            if ($advanced = $query['advanced']) {
-                
-                //We need to filter out the empty entries if any were provided
-                foreach ($advanced as $k => $entry) {                    
-                    if (empty($entry['element_id']) || empty($entry['type'])) {
-                        unset($advanced[$k]);
-                    }
-                }
-                $filter['advanced_search'] = $advanced;
-            };
-            
-            if ($range = $query['range']) {
-                $filter['range'] = $range;
-            }
-            
-        } catch (Exception $e) {
-            $controller->flash($e->getMessage());
-        }
-        return array_merge($perms, $filter, $order);
     }
     
     public function showAction()
