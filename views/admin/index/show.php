@@ -53,7 +53,8 @@ head($head);
     <th>Date</th>
     <th>Type</th>
     <th>Status</th>
-    <th>View</th>
+    <th></th>
+    <th></th>
 </thead>
 <?php foreach($reportFiles as $file) : ?>
 <tr>
@@ -63,6 +64,7 @@ head($head);
     <td><?php echo ucwords($status = $file->status); ?></td>
     <?php if ($status == ReportsFile::STATUS_COMPLETED) : ?>
     <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
+    <td><a href="<?php echo uri("reports/files/delete/$file->id"); ?>" class="delete">Delete file</a></td>
     <?php endif; ?>
 </tr>
 <?php endforeach; ?>
