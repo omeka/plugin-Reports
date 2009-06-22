@@ -4,7 +4,12 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
 {
     private $_file;
     private $_items;
+    
+    private $_pdf;
     private $_page;
+    private $_font;
+    
+    private $_baseUrl;
     
     const CHART_API_URI = 'http://chart.apis.google.com/chart';
     
@@ -27,10 +32,43 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     const LABEL_HEIGHT = 72;
     const LABEL_WIDTH = 189;
     
+    const FONT_SIZE = 10;
+    
+    public function generateReport($filename) {
+        error_reporting(E_ALL);
+        $this->_items = get_db()->getTable('Item')->findBy($this->_params);
+        
+        $options = unserialize($this->_reportFile->options);
+        $this->_baseUrl = $options['baseUrl'];
+        
+        $this->_pdf = new Zend_Pdf();
+        $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
+        $this->_addPage();
+        
+        // Iterate through the rows and columns and draw one label per item.
+        $column = 0;
+        $row = 0;
+        foreach ($this->_items as $item) {
+            $this->_drawItemLabel($column, $row, $item);
+            $row++;
+            
+            if($row >= self::ROWS) {
+                $column++;
+                $row = 0;
+            }
+            if($column >= self::COLUMNS) {
+                $this->_addPage();
+                $column = 0;
+            }
+        }
+        
+        $this->_pdf->save($filename);
+    }
+    
     private function _qrCodeUri($item)
     {
         $args = array('cht' => 'qr',
-                      'chl' => BASE_URL.'/items/show/'.$item->id,
+                      'chl' => $this->_baseUrl.'/items/show/'.$item->id,
                       'chs' => '300x300');
         return self::CHART_API_URI.'?'.http_build_query($args);
     }
@@ -56,51 +94,66 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $page->drawImage($image, $originX, $originY, $originX + 72, $originY + 72);
         $titles = $item->getElementTextsByElementNameAndSetName('Title', 'Dublin Core');
         if(count($titles) > 0)
-        $page->drawText($titles[0]->text, $originX + 72, $originY + 50);
+        //$page->drawText($titles[0]->text, $originX + 72, $originY + 50);
+        $textOriginX = $originX + 72;
+        $textOriginY = $originY + 55;
+        $this->_drawWrappedText($titles[0]->text, $textOriginX, $textOriginY, 127);
         
         $page->restoreGS();
     }
     
-    private function addPage($pdf)
+    /**
+     * Adds a new page to the PDF document, and switches the current page to
+     * the new page.
+     * 
+     * @param $pdf Zend_Pdf PDF document.
+     */
+    private function _addPage()
     {
-        $helvetica = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
-        $newPage = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
-        $newPage->setFont($helvetica, 8);
-        $pdf->pages[] = $this->_page = $newPage;
+        $newPage = $this->_pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
+        $newPage->setFont($this->_font, self::FONT_SIZE);
+        $this->_pdf->pages[] = $this->_page = $newPage;
     }
-        
     
-    public function generateReport($filename) {
-        $chartUrl = 'http://chart.apis.google.com/chart';
-        
-        $this->_items = get_db()->getTable('Item')->findBy($this->_params);
-        
-        $pdf = new Zend_Pdf();
-        $this->addPage($pdf);
-        
-        $this->_page = $pdf->pages[0];
-        
-        $column = 0;
-        $row = 0;
-        foreach ($this->_items as $item) {
-            $this->_drawItemLabel($column, $row, $item);
-            $row++;
-            
-            if($row >= self::ROWS) {
-                $column++;
-                $row = 0;
-            }
-            if($column >= self::COLUMNS) {
-                $this->addPage($pdf);
-                $column = 0;
+    private function _drawWrappedText($text, $x, $y, $wrapWidth) 
+    {
+        $wrappedText = $this->_wrapText($text, $wrapWidth);
+        $lines = explode("\n", $wrappedText);
+        foreach($lines as $line)
+        {
+            $this->_page->drawText($line, $x, $y);
+            $y -= self::FONT_SIZE + 5;
+        }
+    }
+    
+    private function _wrapText($text, $wrapWidth)
+    {
+        $wrappedText = '';
+        $words = explode(' ', $text);
+        $wrappedLine = '';
+        foreach ($words as $word)
+        {
+            // if adding a new word isn't wider than $wrapWidth, add the
+            // word to the line
+            $wrappedWord = empty($wrappedLine) ? $word : " $word";
+            if ($this->_widthForStringUsingFontSize($wrappedLine.$wrappedWord, $this->_font, self::FONT_SIZE) < $wrapWidth) {
+                $wrappedLine .= $wrappedWord;
+            } else {
+                if (empty($wrappedLine)) {
+                    $wrappedText .= "$word\n";
+                    $wrappedLine = ''; 
+                } else {
+                    $wrappedText .= "$wrappedLine\n";
+                    $wrappedLine = $word;
+                }
             }
         }
-        
-        $pdf->save($filename);
+        $wrappedText .= $wrappedLine;
+        return $wrappedText;
     }
     
     /**
-    * Returns the total width in points of the string using the specified font         
+    * Returns the total width in points of the string using the specified font
     * and size.
     *
     * This is not the most efficient way to perform this calculation. I'm
@@ -113,21 +166,20 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     * @param float $fontSize Font size in points
     * @return float
     */
-    private function widthForStringUsingFontSize($string, $font, $fontSize)
+    private function _widthForStringUsingFontSize($string, $font, $fontSize)
     {
         $drawingString = iconv('UTF-8', 'UTF-16BE//IGNORE', $string);
         $characters = array();
         for ($i = 0; $i < strlen($drawingString); $i++) {
-            $characters[] = (ord($drawingString[$i++]) << 8) | 
+            $characters[] = (ord($drawingString[$i++]) << 8) |
                              ord($drawingString[$i]);
         }
-        $glyphs = $font->cmap->glyphNumbersForCharacters($characters);
+        $glyphs = $font->glyphNumbersForCharacters($characters);
         $widths = $font->widthsForGlyphs($glyphs);
         $stringWidth = (array_sum($widths) / $font->getUnitsPerEm()) * $fontSize;
         return $stringWidth;
     }
-    
-    
+
     public function getReadableName() {
         return 'QR Code (PDF)';
     }

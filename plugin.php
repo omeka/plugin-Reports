@@ -83,6 +83,7 @@ function reports_install()
         `status` ENUM('starting', 'in progress', 'completed', 'error') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'starting',
         `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `pid` INT UNSIGNED DEFAULT NULL,
+        `options` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         PRIMARY KEY  (`id`),
         INDEX(`report_id`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";

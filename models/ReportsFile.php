@@ -26,6 +26,7 @@ class ReportsFile extends Omeka_Record
     public $status;
     public $created;
     public $pid;
+    public $options;
     
     /**
      * Gets the report associated with this object.

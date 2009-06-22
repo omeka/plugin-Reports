@@ -92,6 +92,11 @@ class Reports_IndexController extends Omeka_Controller_Action
         $reportFile->report_id = $report->id;
         $reportFile->type = $_GET['format'];
         $reportFile->status = ReportsFile::STATUS_STARTING;
+        
+        if($reportFile->type == 'PdfQrCode') {
+            $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
+        }
+        
         $reportFile->save();
         
         $command = get_option('reports_php_path').' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
