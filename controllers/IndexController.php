@@ -55,6 +55,7 @@ class Reports_IndexController extends Omeka_Controller_Action
                 'count' => $count);
         }
         $this->view->reports = $reportsDisplay;
+        $this->view->formats = reports_getOutputFormats();
     }
     
     /**

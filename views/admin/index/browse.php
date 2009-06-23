@@ -34,6 +34,7 @@ head($head);
     <th>Date Modified</th>
     <th>Items</th>
     <th>Filter</th>
+    <th>Generate</th>
 </thead>
 <?php foreach($reports as $report) : 
       $reportObject = $report['reportObject'];
@@ -47,6 +48,11 @@ head($head);
 <td><?php echo $reportObject->modified; ?></td>
 <td><a href="<?php echo uri("items/browse")."?$query"; ?>"><?php echo $report['count']; ?></a></td>
 <td><a href="<?php echo uri("reports/query/$reportObject->id"); ?>">Edit filter</a></td>
+<td><form action="<?php echo uri("reports/generate/$reportObject->id"); ?>">
+<?php echo $this->formSelect('format', null, null, $this->formats); ?>
+<?php echo $this->formSubmit('submit-generate', 'Go'); ?>
+</form>
+</td>
 </tr>
 <?php endforeach; ?>
 </table>
