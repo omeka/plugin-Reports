@@ -101,27 +101,36 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function generateAction()
     {
-        $report = $this->findById();
+        if (!is_writable(REPORTS_SAVE_DIRECTORY)) {
+            // Disallow generation if the save directory is not writable
+            $this->flash('The directory '.REPORTS_SAVE_DIRECTORY.
+                         ' must be writable by the server for reports to be'.
+                         ' generated.',
+                         Omeka_Controller_Flash::GENERAL_ERROR);
+                         
+        } else {
+            $report = $this->findById();
         
-        $reportFile = new ReportsFile();
-        $reportFile->report_id = $report->id;
-        $reportFile->type = $_GET['format'];
-        $reportFile->status = ReportsFile::STATUS_STARTING;
+            $reportFile = new ReportsFile();
+            $reportFile->report_id = $report->id;
+            $reportFile->type = $_GET['format'];
+            $reportFile->status = ReportsFile::STATUS_STARTING;
         
-        // Send the base URL to the background process for QR Code
-        if($reportFile->type == 'PdfQrCode') {
-            $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
+            // Send the base URL to the background process for QR Code
+            if($reportFile->type == 'PdfQrCode') {
+                $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
+            }
+        
+            $reportFile->save();
+        
+            $command = get_option('reports_php_path').' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
+            $reportFile->pid = $this->_fork($command);
+            $reportFile->save();
+        
+            $this->redirect->gotoRoute(array('id' => "$report->id",
+                                             'action' => 'show'),
+                                             'reports-id-action');
         }
-        
-        $reportFile->save();
-        
-        $command = get_option('reports_php_path').' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
-        $reportFile->pid = $this->_fork($command);
-        $reportFile->save();
-        
-        $this->redirect->gotoRoute(array('id' => "$report->id",
-                                         'action' => 'show'),
-                                   'reports-id-action');
     }
     
     /**
