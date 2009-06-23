@@ -21,6 +21,9 @@ class ReportsReport extends Omeka_Record
     public $creator;
     public $modified;
     
+    /**
+     * Throw validation errors for report form.
+     */
     protected function _validate()
     {
         if (empty($this->name)) {
@@ -32,6 +35,11 @@ class ReportsReport extends Omeka_Record
         }
     }
     
+    /**
+     * Gets all the generated files for this report.
+     *
+     * @return array Array of ReportsFile objects.
+     */
     public function getFiles()
     {
         return $this->_db->getTable('ReportsFile')->findByReportId($this->id);

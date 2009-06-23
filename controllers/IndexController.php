@@ -14,11 +14,17 @@
  */
 class Reports_IndexController extends Omeka_Controller_Action
 {
+    /**
+     * Sets the model class for the Reports controller.
+     */
     public function init()
     {
         $this->_modelClass = 'ReportsReport';
     }
     
+    /**
+     * Displays the browse page for all reports.
+     */
     public function browseAction()
     {
         if(!is_writable(REPORTS_SAVE_DIRECTORY)) {
@@ -51,6 +57,9 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reports = $reportsDisplay;
     }
     
+    /**
+     * Edits the filter for a report.
+     */
     public function queryAction()
     {
         $report = $this->findById();
@@ -70,6 +79,9 @@ class Reports_IndexController extends Omeka_Controller_Action
         
     }
     
+    /**
+     * Shows details and generated files for a report.
+     */
     public function showAction()
     {
         $report = $this->findById();
@@ -84,6 +96,9 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->reportFiles = $reportFiles;
     }
     
+    /**
+     * Spawns a background process to generate a new report file.
+     */
     public function generateAction()
     {
         $report = $this->findById();
@@ -93,6 +108,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         $reportFile->type = $_GET['format'];
         $reportFile->status = ReportsFile::STATUS_STARTING;
         
+        // Send the base URL to the background process for QR Code
         if($reportFile->type == 'PdfQrCode') {
             $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
@@ -108,6 +124,11 @@ class Reports_IndexController extends Omeka_Controller_Action
                                    'reports-id-action');
     }
     
+    /**
+     * Returns the path to the background bootstrap script.
+     *
+     * @return string Path to bootstrap
+     */
     private function _getBootstrapFilePath()
     {
         return REPORTS_PLUGIN_DIRECTORY

@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin page index view
+ * Reports show view
  *
- * Provides the main landing page of the administrative interface.
+ * Provides details and shows previously-generated files for a report.
  *
  * @package Reports
  * @subpackage Views

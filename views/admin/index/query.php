@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin page add report view
+ * Admin page edit filter view
  *
- * Provides the page for creating new reports.
+ * Provides the page for editing the filter for a report.
  *
  * @package Reports
  * @subpackage Views

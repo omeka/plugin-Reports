@@ -16,6 +16,7 @@ class ReportsFileTable extends Omeka_Db_Table
 {
     /**
      * Finds all report files and sorts by creation date, descending.
+     *
      * @return array Array of ReportsReport objects.
      */
     public function findByReportId($reportId) {

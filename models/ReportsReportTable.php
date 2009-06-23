@@ -16,6 +16,7 @@ class ReportsReportTable extends Omeka_Db_Table
 {
     /**
      * Finds all report records and sorts by ID, descending.
+     *
      * @return array Array of ReportsReport objects.
      */
     public function findAllReports()
