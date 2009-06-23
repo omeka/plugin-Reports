@@ -76,7 +76,7 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 <body>
     <div id="report">
         <h1><?php echo $reportName; ?></h1>
-        <p>Generated on <?php echo date('r') ?></p>
+        <p>Generated on <?php echo date('Y-m-d H:i:s O') ?></p>
         <?php echo $reportDescription; ?>
         <?php foreach($this->_items as $item) : ?>
             <div class="item" id="item-<?php echo $item->id; ?>">
