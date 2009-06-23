@@ -65,6 +65,9 @@ head($head);
     <?php if ($status == ReportsFile::STATUS_COMPLETED) : ?>
     <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
     <td><a href="<?php echo uri("reports/files/delete/$file->id"); ?>" class="delete">Delete file</a></td>
+    <?php else: ?>
+    <td></td>
+    <td></td>
     <?php endif; ?>
 </tr>
 <?php endforeach; ?>

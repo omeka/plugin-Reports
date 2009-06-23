@@ -58,6 +58,7 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
                 </table>
                 <?php endforeach; ?>
                 </div>
+                <?php release_object($item); ?>
         <?php endforeach; ?>
     </div>
 </body>

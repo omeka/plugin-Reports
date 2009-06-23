@@ -81,6 +81,7 @@ function reports_install()
         `type` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `filename` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `status` ENUM('starting', 'in progress', 'completed', 'error') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'starting',
+        `messages` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `pid` INT UNSIGNED DEFAULT NULL,
         `options` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,

@@ -100,6 +100,7 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $this->_drawWrappedText($titles[0]->text, $textOriginX, $textOriginY, 127);
         
         $page->restoreGS();
+        release_object($item);
     }
     
     /**
@@ -153,19 +154,14 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     }
     
     /**
-    * Returns the total width in points of the string using the specified font
-    * and size.
-    *
-    * This is not the most efficient way to perform this calculation. I'm
-    * concentrating optimization efforts on the upcoming layout manager class.
-    * Similar calculations exist inside the layout manager class, but widths
-    * are generally calculated only after determining line fragments.
-    *
-    * @param string $string
-    * @param Zend_Pdf_Resource_Font $font
-    * @param float $fontSize Font size in points
-    * @return float
-    */
+     * Returns the total width in points of the string using the specified
+     * font and size.
+     *
+     * @param string $string
+     * @param Zend_Pdf_Resource_Font $font
+     * @param float $fontSize Font size in points
+     * @return float
+     */
     private function _widthForStringUsingFontSize($string, $font, $fontSize)
     {
         $drawingString = iconv('UTF-8', 'UTF-16BE//IGNORE', $string);
