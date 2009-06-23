@@ -1,16 +1,60 @@
 <?php
-
+/**
+ * @package Reports
+ * @subpackage Generators
+ * @copyright Copyright (c) 2009 Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ */
+ 
+/**
+ * Report generator for PDF output with QR Codes included.
+ *
+ * Note that the PDF coordinate system starts from the bottom-left corner
+ * of the page, and all measurements are in points (1/72 of an inch).
+ *
+ * @package Reports
+ * @subpackage Generators
+ */
 class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
 {
-    private $_file;
+    /**
+     * The Item objects for the items being reported on
+     *
+     * @var array
+     */
     private $_items;
     
+    /**
+     * The PDF document object
+     *
+     * @var Zend_Pdf
+     */
     private $_pdf;
+    
+    /**
+     * The current page in the PDF document
+     *
+     * @var Zend_Pdf_Page
+     */
     private $_page;
+    
+    /**
+     * The current font being used by the PDF document
+     *
+     * @var Zend_Pdf_Resource_Font
+     */
     private $_font;
     
+    /**
+     * The base URL of the Omeka installation that spawned the report
+     *
+     * @var string
+     */
     private $_baseUrl;
     
+    /**
+     * The URL of the Google chart API, used to generate the QR codes
+     */
     const CHART_API_URI = 'http://chart.apis.google.com/chart';
     
     // Spacing constants for 5160 labels, in points.
@@ -34,8 +78,12 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     
     const FONT_SIZE = 10;
     
+    /**
+     * Creates and generates the PDF report for the items in the report.
+     *
+     * @param string $filename The filename of the file to be generated
+     */
     public function generateReport($filename) {
-        error_reporting(E_ALL);
         $this->_items = get_db()->getTable('Item')->findBy($this->_params);
         
         $options = unserialize($this->_reportFile->options);
@@ -65,6 +113,13 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $this->_pdf->save($filename);
     }
     
+    /**
+     * Generate a URI to a QR code for the specified item using the Google
+     * Chart API.
+     *
+     * @param Item $item The Item object to generate a code for
+     * @return string The QR Code's URI
+     */
     private function _qrCodeUri($item)
     {
         $args = array('cht' => 'qr',
@@ -73,6 +128,13 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         return self::CHART_API_URI.'?'.http_build_query($args);
     }
     
+    /**
+     * Draw one label section for one item on the PDF document.
+     *
+     * @param int $column Horizontal index on the current page
+     * @param int $row Vertical index on the current page
+     * @param Item $item The item to report on
+     */
     private function _drawItemLabel($column, $row, $item)
     {
         $page = $this->_page;
@@ -93,21 +155,22 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         
         $page->drawImage($image, $originX, $originY, $originX + 72, $originY + 72);
         $titles = $item->getElementTextsByElementNameAndSetName('Title', 'Dublin Core');
-        if(count($titles) > 0)
-        //$page->drawText($titles[0]->text, $originX + 72, $originY + 50);
-        $textOriginX = $originX + 72;
-        $textOriginY = $originY + 55;
-        $this->_drawWrappedText($titles[0]->text, $textOriginX, $textOriginY, 127);
+        if(count($titles) > 0) {
+                $textOriginX = $originX + 72;
+                $textOriginY = $originY + 55;
+            $this->_drawWrappedText($titles[0]->text, $textOriginX, $textOriginY, self::LABEL_WIDTH - 75);   
+        }
         
+        // Remove clipping rectangle
         $page->restoreGS();
+        
+        // Release objects after use to keep memory usage down
         release_object($item);
     }
     
     /**
      * Adds a new page to the PDF document, and switches the current page to
      * the new page.
-     * 
-     * @param $pdf Zend_Pdf PDF document.
      */
     private function _addPage()
     {
@@ -116,6 +179,15 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $this->_pdf->pages[] = $this->_page = $newPage;
     }
     
+    /**
+     * Wraps text on word boundaries and draws resulting text in consecutive
+     * lines down from the origin point.
+     *
+     * @param string $text Text to draw
+     * @param int $x X coordinate of origin on page
+     * @param int $y Y coordinate of origin on page
+     * @param int $wrapWidth Maximum width of a line
+     */
     private function _drawWrappedText($text, $x, $y, $wrapWidth) 
     {
         $wrappedText = $this->_wrapText($text, $wrapWidth);
@@ -127,6 +199,13 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         }
     }
     
+    /**
+     * Returns text with newlines given a maximum width in points.
+     *
+     * @param string $text Text to wrap
+     * @param int $wrapWidth Maximum width of a line
+     * @return string Original text with newline characters inserted
+     */
     private function _wrapText($text, $wrapWidth)
     {
         $wrappedText = '';
@@ -157,6 +236,7 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
      * Returns the total width in points of the string using the specified
      * font and size.
      *
+     * @link http://devzone.zend.com/article/2525
      * @param string $string
      * @param Zend_Pdf_Resource_Font $font
      * @param float $fontSize Font size in points
@@ -176,12 +256,29 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         return $stringWidth;
     }
 
+    /**
+     * Returns the readable name of this output format.
+     *
+     * @return string Human-readable name for output format
+     */
     public function getReadableName() {
         return 'QR Code (PDF)';
     }
+    
+    /**
+     * Returns the HTTP content type to declare for the output format.
+     *
+     * @return string HTTP Content-type
+     */
     public function getContentType() {
         return 'applicaton/pdf';
     }
+    
+    /**
+     * Returns the file extension to append to the generated report.
+     *
+     * @return string File extension
+     */
     public function getExtension() {
         return 'pdf';
     }

@@ -1,9 +1,38 @@
 <?php
+/**
+ * @package Reports
+ * @subpackage Generators
+ * @copyright Copyright (c) 2009 Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ */
+ 
+/**
+ * Report generator for tabular HTML output.
+ *
+ * @package Reports
+ * @subpackage Generators
+ */
 class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 {
+    /**
+     * The file handle to output to
+     *
+     * @var resource
+     */
     private $_file;
+    
+    /**
+     * The items to be reported on
+     *
+     * @var array
+     */
     private $_items;
     
+    /**
+     * Creates and generates the HTML report for the items in the report.
+     *
+     * @param string $filename The filename of the file to be generated
+     */
     public function generateReport($filename) {
         $this->_items = get_db()->getTable('Item')->findBy($this->_params);
         
@@ -14,10 +43,18 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
         fclose($this->_file);
     }
     
+    /**
+     * Callback to redirect PHP output to a file, using output buffering.
+     *
+     * @param string $buffer The data to be output
+     */
     private function _fileOutputCallback($buffer) {
         fwrite($this->_file, $buffer);
     }
     
+    /**
+     * Generates the HTML document for the report.
+     */
     private function outputHTML() { 
         $reportName = $this->_report->name;
         $reportDescription = $this->_report->description;
@@ -66,12 +103,29 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 <?php
     }
     
+    /**
+     * Returns the readable name of this output format.
+     *
+     * @return string Human-readable name for output format
+     */
     public function getReadableName() {
         return 'HTML';
     }
+    
+    /**
+     * Returns the HTTP content type to declare for the output format.
+     *
+     * @return string HTTP Content-type
+     */
     public function getContentType() {
         return 'text/html';
     }
+    
+    /**
+     * Returns the file extension to append to the generated report.
+     *
+     * @return string File extension
+     */
     public function getExtension() {
         return 'html';
     }
