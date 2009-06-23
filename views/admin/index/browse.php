@@ -36,8 +36,10 @@ head($head);
     <th>Filter</th>
 </thead>
 <?php foreach($reports as $report) : 
-      $reportObject = $report['reportObject']; 
-      $query = http_build_query(unserialize($reportObject->query)); ?>
+      $reportObject = $report['reportObject'];
+      if($reportObject->query) { 
+          $query = http_build_query(unserialize($reportObject->query)); 
+      } ?>
 <tr>
 <td><?php echo $reportObject->id; ?></td>
 <td><a href="<?php echo uri("reports/show/$reportObject->id"); ?>"><?php echo $reportObject->name; ?></a></td>

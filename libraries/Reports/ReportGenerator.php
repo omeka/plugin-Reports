@@ -41,7 +41,7 @@ abstract class Reports_ReportGenerator
     public function __construct($reportFile) {
         if ($reportFile)
         {
-            set_error_handler($this, 'errorHandler', E_WARNING);
+            set_error_handler(array($this, 'errorHandler'), E_WARNING);
             try {
                 $reportFile->status = ReportsFile::STATUS_IN_PROGRESS;
                 $reportFile->save();
@@ -51,7 +51,7 @@ abstract class Reports_ReportGenerator
                 $this->_params = reports_convertSearchFilters(unserialize($this->_report->query));
                 
                 // Creates a random filename based on the type of report.
-                $filter = new Omeka_Filter_Filename()
+                $filter = new Omeka_Filter_Filename();
                 $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
                 $path = REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $filename;
                 // Generates the report (passes to subclass)
