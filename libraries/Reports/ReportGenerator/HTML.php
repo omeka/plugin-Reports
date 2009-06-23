@@ -69,8 +69,8 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
     #report {width: 920px; margin: 0 auto; padding: 20px; background:#fff;}
     .item {border-bottom: 1px solid #ccc;}
     table {border-bottom:1px dotted #ccc; width:100%;}
-    th, td {vertical-align:top; padding: 10px 0;}
-    th {text-align:right; font-weight:bold;}
+    th, td {vertical-align:top; padding: 10px;}
+    th {text-align:right; font-weight:bold; width:100px}
 </style>
 </head>
 <body>
