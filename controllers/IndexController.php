@@ -102,6 +102,8 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function generateAction()
     {
+        $report = $this->findById();
+        
         if (!is_writable(REPORTS_SAVE_DIRECTORY)) {
             // Disallow generation if the save directory is not writable
             $this->flash('The directory '.REPORTS_SAVE_DIRECTORY.
@@ -110,8 +112,6 @@ class Reports_IndexController extends Omeka_Controller_Action
                          Omeka_Controller_Flash::GENERAL_ERROR);
                          
         } else {
-            $report = $this->findById();
-        
             $reportFile = new ReportsFile();
             $reportFile->report_id = $report->id;
             $reportFile->type = $_GET['format'];
@@ -127,11 +127,10 @@ class Reports_IndexController extends Omeka_Controller_Action
             $command = get_option('reports_php_path').' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
             $reportFile->pid = $this->_fork($command);
             $reportFile->save();
-        
-            $this->redirect->gotoRoute(array('id' => "$report->id",
-                                             'action' => 'show'),
-                                             'reports-id-action');
         }
+        $this->redirect->gotoRoute(array('id'     => "$report->id",
+                                         'action' => 'show'),
+                                   'reports-id-action');
     }
     
     /**
