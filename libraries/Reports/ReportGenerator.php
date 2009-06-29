@@ -84,7 +84,7 @@ abstract class Reports_ReportGenerator
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
         $this->_addStatusMessage("$errstr in $errfile on $errline", 'PHP Warning');
-        $this->reportFile->save();
+        $this->_reportFile->save();
         return true;
     }
     
