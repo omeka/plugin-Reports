@@ -74,29 +74,29 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 </style>
 </head>
 <body>
-    <div id="report">
+    <div id="report"> 
         <h1><?php echo $reportName; ?></h1>
         <p>Generated on <?php echo date('Y-m-d H:i:s O') ?></p>
-        <?php echo $reportDescription; ?>
-        <?php foreach($this->_items as $item) : ?>
+        <p><?php echo $reportDescription; ?></p>
+<?php foreach($this->_items as $item) : ?>
             <div class="item" id="item-<?php echo $item->id; ?>">
                 <h2>Item <?php echo $item->id; ?></h2>
-                <?php foreach($item->getAllElementsBySet() as $set => $elements) : ?>
+<?php     foreach($item->getAllElementsBySet() as $set => $elements) : ?>
                 <h3><?php echo $set; ?></h3>
                 <table class="element-texts" cellpadding="0" cellspacing="0">
-                <?php foreach($elements as $element) : ?>
-                    <?php foreach($item->getTextsByElement($element) as $text) : ?>
+<?php         foreach($elements as $element) :
+                  foreach($item->getTextsByElement($element) as $text) : ?>
                     <tr class="element">
                         <th scope="row" class="element-name"><?php echo $element->name; ?></th>
                         <td class="element-value"><?php echo $text->text; ?></td>
                     </tr>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
+<?php             endforeach;
+              endforeach; ?>
                 </table>
-                <?php endforeach; ?>
-                </div>
-                <?php release_object($item); ?>
-        <?php endforeach; ?>
+<?php      endforeach; ?>
+            </div>
+<?php      release_object($item); 
+      endforeach; ?>
     </div>
 </body>
 </html>
