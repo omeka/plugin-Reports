@@ -22,20 +22,11 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
     private $_file;
     
     /**
-     * The items to be reported on
-     *
-     * @var array
-     */
-    private $_items;
-    
-    /**
      * Creates and generates the HTML report for the items in the report.
      *
      * @param string $filename The filename of the file to be generated
      */
     public function generateReport($filename) {
-        $this->_items = get_db()->getTable('Item')->findBy($this->_params);
-        
         $this->_file = fopen($filename, 'w');
         ob_start(array($this, '_fileOutputCallback'), 1);
         $this->outputHTML();
@@ -78,25 +69,29 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
         <h1><?php echo $reportName; ?></h1>
         <p>Generated on <?php echo date('Y-m-d H:i:s O') ?></p>
         <p><?php echo $reportDescription; ?></p>
-<?php foreach($this->_items as $item) : ?>
+<?php $page = 1;
+      while($items = get_db()->getTable('Item')->findBy($this->_params, 30, $page)):
+          foreach($items as $item) : ?>
             <div class="item" id="item-<?php echo $item->id; ?>">
                 <h2>Item <?php echo $item->id; ?></h2>
-<?php     foreach($item->getAllElementsBySet() as $set => $elements) : ?>
+<?php         foreach($item->getAllElementsBySet() as $set => $elements) : ?>
                 <h3><?php echo $set; ?></h3>
                 <table class="element-texts" cellpadding="0" cellspacing="0">
-<?php         foreach($elements as $element) :
-                  foreach($item->getTextsByElement($element) as $text) : ?>
+<?php             foreach($elements as $element) :
+                      foreach($item->getTextsByElement($element) as $text) : ?>
                     <tr class="element">
                         <th scope="row" class="element-name"><?php echo $element->name; ?></th>
                         <td class="element-value"><?php echo $text->text; ?></td>
                     </tr>
-<?php             endforeach;
-              endforeach; ?>
+<?php                 endforeach;
+                  endforeach; ?>
                 </table>
-<?php      endforeach; ?>
+<?php          endforeach; ?>
             </div>
 <?php      release_object($item); 
-      endforeach; ?>
+          endforeach;
+          $page++;
+      endwhile; ?>
     </div>
 </body>
 </html>
