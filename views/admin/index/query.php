@@ -17,6 +17,10 @@ head($head);
 
 <h1><?php echo $head['title'];?></h1>
 
+<script type="text/javascript" charset="utf-8">
+    Event.observe(window, 'load', Omeka.Search.activateSearchButtons);
+</script>
+
 <div id="primary">
 
 <?php echo flash(); ?>
