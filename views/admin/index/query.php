@@ -11,7 +11,7 @@
  */
 
 $head = array('body_class' => 'reports primary',
-              'title'      => 'Reports | Edit Filter');
+              'title'      => "Report '$reportsreport->name' | Edit Filter");
 head($head);
 ?>
 

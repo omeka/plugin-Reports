@@ -58,6 +58,28 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->formats = reports_getOutputFormats();
     }
     
+    public function addAction()
+    {
+        $varName = strtolower($this->_modelClass);
+        $class = $this->_modelClass;
+        
+        $record = new $class();
+        
+        try {
+            if ($record->saveForm($_POST)) {
+                $this->redirect->gotoRoute(array('id'     => "$record->id",
+                                                 'action' => 'query'),
+                                           'reports-id-action');
+            }
+        } catch (Omeka_Validator_Exception $e) {
+            $this->flashValidationErrors($e);
+        } catch (Exception $e) {
+            $this->flash($e->getMessage());
+        }
+
+        $this->view->assign(array($varName=>$record));
+    }
+    
     /**
      * Edits the filter for a report.
      */
@@ -76,6 +98,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             // $_REQUEST, so we set both to be able to edit a previous query.
             $_GET = $queryArray;
             $_REQUEST = $queryArray;
+            $this->view->reportsreport = $report;
         }
         
     }

@@ -50,7 +50,7 @@ head($head);
 <td><a href="<?php echo uri("reports/query/$reportObject->id"); ?>">Edit filter</a></td>
 <td><form action="<?php echo uri("reports/generate/$reportObject->id"); ?>">
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
-<?php echo $this->formSubmit('submit-generate', 'Go'); ?>
+<?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
 </form>
 </td>
 </tr>

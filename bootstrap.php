@@ -7,9 +7,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
 // Require the necessary files. There is probably a better way to do this.
 $baseDir = str_replace('plugins/Reports', '', dirname(__FILE__));
 require "{$baseDir}paths.php";

@@ -17,6 +17,13 @@ head($head);
 
 <h1><?php echo $head['title'];?></h1>
 
+<div id="generate-report" class="add-button">
+<form action="<?php echo uri("reports/generate/$reportsreport->id"); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding:10px;">
+<?php echo $this->formSelect('format', null, null, $this->formats); ?>
+<?php echo $this->formSubmit('submit-generate', 'Generate a New File', array('class' => 'add', 'style' => 'color: #c50; background-color: transparent; border: none; font-size: 1.2em;')); ?>
+</form>
+</div>
+
 <div id="primary">
 
 <?php echo flash(); ?>
@@ -39,13 +46,8 @@ head($head);
 </table>
 
 <h2>Generated Files</h2>
-<form action="<?php echo uri("reports/generate/$reportsreport->id"); ?>">
-<label for="format">Output Format</label>
-<?php echo $this->formSelect('format', null, null, $this->formats); ?>
-<?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
-</form>
 <?php if (count($reportFiles) == 0) : ?>
-<p>You have not generated any files.</p>
+<p>You have not yet generated any files.</p>
 <?php else: ?>
 <table>
 <thead>
