@@ -96,18 +96,22 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         // Iterate through the rows and columns and draw one label per item.
         $column = 0;
         $row = 0;
-        foreach ($this->_items as $item) {
-            $this->_drawItemLabel($column, $row, $item);
-            $row++;
-            
-            if($row >= self::ROWS) {
-                $column++;
-                $row = 0;
+        $page = 1;
+        while ($items = get_db()->getTable('Item')->findBy($this->_params, 30, $page)) {
+            foreach ($items as $item) {
+                $this->_drawItemLabel($column, $row, $item);
+                $row++;
+
+                if($row >= self::ROWS) {
+                    $column++;
+                    $row = 0;
+                }
+                if($column >= self::COLUMNS) {
+                    $this->_addPage();
+                    $column = 0;
+                }
             }
-            if($column >= self::COLUMNS) {
-                $this->_addPage();
-                $column = 0;
-            }
+            $page++;
         }
         
         $this->_pdf->save($filename);
