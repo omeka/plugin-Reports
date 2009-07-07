@@ -57,7 +57,7 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
      */
     const CHART_API_URI = 'http://chart.apis.google.com/chart';
     
-    // Spacing constants for 5160 labels, in points.
+    // Spacing constants for 5163 labels, in points.
     
     const PAGE_HEIGHT = 792;
     const PAGE_WIDTH = 612;
@@ -67,14 +67,14 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
     const MARGIN_TOP = 36;
     const MARGIN_BOTTOM = 13.5;
     
-    const COLUMNS = 3;
-    const ROWS = 10;
+    const COLUMNS = 2;
+    const ROWS = 5;
     
     const HORIZONTAL_SPACING = 11.25;
     const VERTICAL_SPACING = 0;
     
-    const LABEL_HEIGHT = 72;
-    const LABEL_WIDTH = 189;
+    const LABEL_HEIGHT = 144;
+    const LABEL_WIDTH = 288;
     
     const FONT_SIZE = 10;
     
@@ -157,12 +157,12 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         $image = Zend_Pdf_Image::imageWithPath($temp);
         unlink($temp);
         
-        $page->drawImage($image, $originX, $originY, $originX + 72, $originY + 72);
+        $page->drawImage($image, $originX, $originY, $originX + self::LABEL_HEIGHT, $originY + self::LABEL_HEIGHT);
         $titles = $item->getElementTextsByElementNameAndSetName('Title', 'Dublin Core');
         if(count($titles) > 0) {
-                $textOriginX = $originX + 72;
-                $textOriginY = $originY + 55;
-            $this->_drawWrappedText($titles[0]->text, $textOriginX, $textOriginY, self::LABEL_WIDTH - 75);   
+                $textOriginX = $originX + self::LABEL_HEIGHT;
+                $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
+           $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text)); $this->_drawWrappedText($cleanTitle, $textOriginX, $textOriginY, self::LABEL_WIDTH - (self::LABEL_HEIGHT + 4));   
         }
         
         // Remove clipping rectangle
