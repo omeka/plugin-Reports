@@ -162,7 +162,8 @@ class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
         if(count($titles) > 0) {
                 $textOriginX = $originX + self::LABEL_HEIGHT;
                 $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
-           $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text)); $this->_drawWrappedText($cleanTitle, $textOriginX, $textOriginY, self::LABEL_WIDTH - (self::LABEL_HEIGHT + 4));   
+           $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text));
+           $this->_drawWrappedText($cleanTitle, $textOriginX, $textOriginY, self::LABEL_WIDTH - (self::LABEL_HEIGHT + 4));   
         }
         
         // Remove clipping rectangle
