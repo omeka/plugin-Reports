@@ -74,20 +74,10 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
         foreach ($items as $item) : ?>
             <div class="item" id="item-<?php echo $item->id; ?>">
                 <h2>Item <?php echo $item->id; ?></h2>
-<?php       foreach ($item->getAllElementsBySet() as $set => $elements) : 
-                if (count($elements)): ?>
-                <h3><?php echo $set; ?></h3>
-                <table class="element-texts" cellpadding="0" cellspacing="0">
-<?php               foreach ($elements as $element) :
-                        foreach ($item->getTextsByElement($element) as $text) : ?>
-                    <tr class="element">
-                        <th scope="row" class="element-name"><?php echo $element->name; ?></th>
-                        <td class="element-value"><?php echo $text->text; ?></td>
-                    </tr>
-<?php                   endforeach;
-                    endforeach; ?>
-                </table>
-<?php           endif;
+<?php       $sets = get_db()->getTable('ElementSet')->findByRecordType('Item');
+            // Output all the metadata for all the element sets
+            foreach($sets as $set) :
+                $this->_outputSetElements($item, $set->name);
             endforeach;
             $tags = $item->getTags(); 
             if (count($tags)): ?>
@@ -108,6 +98,56 @@ class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
 </html>
 <?php
     }
+    
+    /**
+     * Prints HTML for the elements from the given item in the given element set
+     * and optionally specific element names.
+     * If no element names are specified, all the elements in the set will be
+     * output.
+     *
+     * @param Item $item The item whose metadata to output
+     * @param string $setName The name of the set to output metadata for
+     * @param array $elementNames Array of element names to be output
+     */
+    private function _outputSetElements($item, $setName, $elementNames = null)
+    {
+        $outputTexts = array();
+        
+        if (!$elementNames) {
+            $elements = $item->getElementsBySetName($setName);
+            foreach ($elements as $element) {
+                foreach ($item->getTextsByElement($element) as $text) {
+                    $outputTexts[] = array('element' => $element->name,
+                                           'text'    => $text->text);
+                }
+            }
+        } else if (is_array($elementNames)) {
+            foreach ($elementNames as $elementName) {
+                $texts = $item->getElementTextsByElementNameAndSetName($elementName, $setName);
+                foreach ($texts as $text) {
+                    $outputTexts[] = array('element' => $elementName,
+                                           'text'    => $text->text);
+                }
+            }
+        }
+        
+        if (count($outputTexts)) {
+            echo "<h3>$setName</h3>";
+            echo '<table class="element-texts" cellpadding="0" cellspacing="0">';
+            foreach($outputTexts as $outputText) {
+                echo '<tr class="element">'
+                   . '<th scope="row" class="element-name">'
+                   . $outputText['element']
+                   . '</th>'
+                   . '<td class="element-value">'
+                   . $outputText['text']
+                   . '</td>'
+                   . '</tr>';
+            }
+            echo '</table>';
+        }
+    }
+    
     
     /**
      * Returns the readable name of this output format.
