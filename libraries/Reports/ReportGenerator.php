@@ -65,9 +65,6 @@ abstract class Reports_ReportGenerator
             }
             $this->_reportFile->pid = null;
             
-            // Add the memory use in KiB as a status message.
-            $memoryKiB = (int) (memory_get_peak_usage() / 1024);
-            $this->_addStatusMessage("Peak memory usage: $memoryKiB KiB");
             $this->_reportFile->save();
         }
     }
@@ -84,7 +81,6 @@ abstract class Reports_ReportGenerator
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
         $this->_addStatusMessage("$errstr in $errfile on $errline", 'PHP Warning');
-        $this->_reportFile->save();
         return true;
     }
     
