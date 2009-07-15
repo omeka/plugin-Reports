@@ -134,20 +134,22 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' generated.',
                          Omeka_Controller_Flash::GENERAL_ERROR);
                          
-        } else {
+        } else if ($this->_checkPhpPath()) {
             $reportFile = new ReportsFile();
             $reportFile->report_id = $report->id;
             $reportFile->type = $_GET['format'];
             $reportFile->status = ReportsFile::STATUS_STARTING;
         
             // Send the base URL to the background process for QR Code
+            // This should be abstracted out to work more generally for
+            // all generators.
             if($reportFile->type == 'PdfQrCode') {
                 $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
             }
         
             $reportFile->save();
-        
-            $command = get_option('reports_php_path').' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
+            
+            $command = escapeshellcmd(get_option('reports_php_path')).' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
             $reportFile->pid = $this->_fork($command);
             $reportFile->save();
         }
@@ -155,6 +157,45 @@ class Reports_IndexController extends Omeka_Controller_Action
                                          'action' => 'show'),
                                    'reports-id-action');
     }
+    
+    /**
+     * Checks if the configured PHP-CLI path points to a valid PHP binary.
+     * Flash an appropriate error if the path is invalid.
+     */
+    private function _checkPhpPath()
+    {
+        // Try to execute PHP and check for appropriate version
+        $command = escapeshellcmd(get_option('reports_php_path')).' -v';
+        $output = array();
+        exec($command, $output, $returnCode);
+        
+        $error = 'The configured PHP path ('.get_option('reports_php_path').')';
+        if ($returnCode != 0) {
+            $this->flashError($error.' is invalid.');
+            return false;
+        }
+        
+        // Attempt to parse the output from 'php -v' (the first line only)
+        preg_match('/(?<name>^\\w+) (?<version>[\\d\\.]+)/', $output[0], $matches);
+        $cliName    = $matches['name'];
+        $cliVersion = $matches['version'];
+        $phpVersion = phpversion();
+        
+        if ($cliName != 'PHP'  || !$cliVersion) {
+            $this->flashError($error.' does not point to a PHP-CLI binary.');
+            return false;
+        } else if (version_compare($cliVersion, '5.2', '<')) {
+            $this->flashError($error.' points to a PHP-CLI binary with an'
+                            . " invalid version ($cliVersion).");
+            return false;
+        } else if ($cliVersion != $phpVersion) {
+            $this->flash($error.' points to a PHP-CLI binary with a different' 
+                       . " version number ($version) than the one Omeka is"
+                       . " running on ($phpVersion).");
+        }
+        return true;
+    }
+    
     
     /**
      * Returns the path to the background bootstrap script.
