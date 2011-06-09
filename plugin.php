@@ -17,9 +17,9 @@ define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
 
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
-                                      '/libraries/Reports/ReportGenerator');
+                                      '/models/Reports/Generator');
 
-define('REPORTS_GENERATOR_PREFIX', 'Reports_ReportGenerator_');
+define('REPORTS_GENERATOR_PREFIX', 'Reports_Generator_');
 
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
