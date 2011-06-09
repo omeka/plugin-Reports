@@ -38,11 +38,6 @@ function reports_install()
 {
     set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
     
-    $command = 'which php 2>&0';
-    $lastLineOutput = exec($command, $output, $returnVar);
-    $phpPath = $returnVar == 0 ? trim($lastLineOutput) : '';
-    set_option('reports_php_path', $phpPath);
-    
     set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
                                          DIRECTORY_SEPARATOR.
                                          'generated_reports');
@@ -121,7 +116,6 @@ function reports_install()
 function reports_uninstall()
 {
     delete_option('reports_plugin_version');
-    delete_option('reports_php_path');
     delete_option('reports_save_directory');
     
     $db = get_db();
@@ -139,7 +133,6 @@ function reports_uninstall()
  */
 function reports_config_form()
 {
-    $phpPath = get_option('reports_php_path');
     $saveDirectory = get_option('reports_save_directory');
     
     include 'config_form.php';
@@ -150,7 +143,6 @@ function reports_config_form()
  */
 function reports_config()
 {
-    set_option('reports_php_path', $_POST['reports_php_path']);
     set_option('reports_save_directory', $_POST['reports_save_directory']);
 }
 

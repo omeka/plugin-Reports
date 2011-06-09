@@ -149,8 +149,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         
             $reportFile->save();
             
-            $command = escapeshellcmd(get_option('reports_php_path')).' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
-            $reportFile->pid = $this->_fork($command);
+            throw new Exception("Use Omeka_Job.");
             $reportFile->save();
         }
         $this->redirect->gotoRoute(array('id'     => "$report->id",
@@ -164,36 +163,7 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     private function _checkPhpPath()
     {
-        // Try to execute PHP and check for appropriate version
-        $command = escapeshellcmd(get_option('reports_php_path')).' -v';
-        $output = array();
-        exec($command, $output, $returnCode);
-        
-        $error = 'The configured PHP path ('.get_option('reports_php_path').')';
-        if ($returnCode != 0) {
-            $this->flashError($error.' is invalid.');
-            return false;
-        }
-        
-        // Attempt to parse the output from 'php -v' (the first line only)
-        preg_match('/(?<name>^\\w+) (?<version>[\\d\\.]+)/', $output[0], $matches);
-        $cliName    = $matches['name'];
-        $cliVersion = $matches['version'];
-        $phpVersion = phpversion();
-        
-        if ($cliName != 'PHP'  || !$cliVersion) {
-            $this->flashError($error.' does not point to a PHP-CLI binary.');
-            return false;
-        } else if (version_compare($cliVersion, '5.2', '<')) {
-            $this->flashError($error.' points to a PHP-CLI binary with an'
-                            . " invalid version ($cliVersion).");
-            return false;
-        } else if ($cliVersion != $phpVersion) {
-            $this->flash($error.' points to a PHP-CLI binary with a different' 
-                       . " version number ($version) than the one Omeka is"
-                       . " running on ($phpVersion).");
-        }
-        return true;
+        throw new Exception("Remove me.");
     }
     
     
