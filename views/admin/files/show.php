@@ -16,4 +16,4 @@ header("Content-Disposition: inline; filename=report.{$generator->getExtension()
 
 //Stop output buffering to allow the output of large file
 ob_end_flush();
-readfile(REPORTS_SAVE_DIRECTORY . DIRECTORY_SEPARATOR . $reportsfile->filename);
+readfile(REPORTS_SAVE_DIRECTORY . '/' . $reportsfile->filename);

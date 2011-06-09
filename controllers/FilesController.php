@@ -30,7 +30,7 @@ class Reports_FilesController extends Omeka_Controller_Action
         $reportFile = $this->findById();
         $report = $reportFile->getReport();
         
-        $filename = REPORTS_SAVE_DIRECTORY.DIRECTORY_SEPARATOR.$reportFile->filename;
+        $filename = REPORTS_SAVE_DIRECTORY . '/' . $reportFile->filename;
         $reportFile->delete();
         if (is_writable($filename)) {
             unlink($filename);

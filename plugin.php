@@ -16,10 +16,8 @@ define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
 define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
 
-define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.
-                                      DIRECTORY_SEPARATOR.'libraries'.
-                                      DIRECTORY_SEPARATOR.'Reports'.
-                                      DIRECTORY_SEPARATOR.'ReportGenerator');
+define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
+                                      '/libraries/Reports/ReportGenerator');
 
 define('REPORTS_GENERATOR_PREFIX', 'Reports_ReportGenerator_');
 
@@ -39,7 +37,7 @@ function reports_install()
     set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
     
     set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
-                                         DIRECTORY_SEPARATOR.
+                                         '/'.
                                          'generated_reports');
     
     $db = get_db();
