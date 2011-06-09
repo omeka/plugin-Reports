@@ -4,6 +4,8 @@
  *
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
+ * TODO: Convert to Omeka_Job
+ * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
  * @copyright Copyright 2009 Center for History and New Media
