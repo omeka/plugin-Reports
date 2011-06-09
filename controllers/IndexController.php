@@ -147,6 +147,15 @@ class Reports_IndexController extends Omeka_Controller_Action
             $reportFile->save();
             
             throw new Exception("Use Omeka_Job.");
+            $report = $db->getTable('ReportsFile')->find($reportFile->id);
+
+            // Get the report type (corresponds to the name of the class)
+            $reportType = $report->type;
+
+            // Set the report generator class.
+            $generatorClass = 'Reports_ReportGenerator_'.$reportType;
+
+            new $generatorClass($report);
             $reportFile->save();
         }
         $this->redirect->gotoRoute(array('id'     => "$report->id",
