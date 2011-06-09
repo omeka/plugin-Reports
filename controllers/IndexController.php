@@ -70,9 +70,14 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         try {
             if ($record->saveForm($_POST)) {
-                $this->redirect->gotoRoute(array('id'     => "$record->id",
-                                                 'action' => 'query'),
-                                           'reports-id-action');
+                $this->redirect->gotoRoute(
+                    array(
+                        'module' => 'reports',
+                        'id'     => $record->id,
+                        'action' => 'query'
+                    ),
+                    'default'
+                );
             }
         } catch (Omeka_Validator_Exception $e) {
             $this->flashValidationErrors($e);
@@ -161,8 +166,13 @@ class Reports_IndexController extends Omeka_Controller_Action
         // FIXME: Should not do any work in the constructor.
         new $generatorClass($report);
         $reportFile->save();
-        $this->redirect->gotoRoute(array('id'     => "$report->id",
-                                         'action' => 'show'),
-                                   'reports-id-action');
+        $this->redirect->gotoRoute(
+            array(
+                'module' => 'reports',
+                'id'     => $report->id,
+                'action' => 'show',
+            ),
+            'default'
+        );
     }
 }

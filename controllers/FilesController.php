@@ -36,8 +36,13 @@ class Reports_FilesController extends Omeka_Controller_Action
             unlink($filename);
         }
         
-        $this->redirect->gotoRoute(array('id' => "$report->id",
-                                         'action' => 'show'),
-                                   'reports-id-action');
+        $this->redirect->gotoRoute(
+            array(
+                'module' => 'reports',
+                'id' => $report->id,
+                'action' => 'show',
+            ),
+            'default'
+        );
     }
 }
