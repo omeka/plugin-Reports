@@ -33,6 +33,7 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' generated.', Omeka_Controller_Flash::ALERT);
         }
         
+        // FIXME: Switch to Zend_Http_Client to remove this dependency.
         if(ini_get('allow_url_fopen') != 1) {
             $this->flash('Warning: The PHP directive "allow_url_fopen" is set'.
                          ' to false.  You will be unable to generate QR Code'.
