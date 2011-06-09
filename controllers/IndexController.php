@@ -59,11 +59,13 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->formats = reports_getOutputFormats();
     }
     
+    /**
+     * FIXME: Duplicates Omeka_Controller_Action::addAction() except for the
+     * redirect.
+     */
     public function addAction()
     {
-        $varName = strtolower($this->_modelClass);
-        $class = $this->_modelClass;
-        
+        $class = $this->_helper->db->getDefaultModelName();
         $record = new $class();
         
         try {
@@ -75,7 +77,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         } catch (Omeka_Validator_Exception $e) {
             $this->flashValidationErrors($e);
         }
-        $this->view->assign(array($varName=>$record));
+        $this->view->assign(array(strtolower($class) => $record));
     }
     
     /**
