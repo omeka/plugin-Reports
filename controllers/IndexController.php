@@ -19,7 +19,7 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_modelClass = 'ReportsReport';
+        $this->_modelClass = 'Reports_Report';
     }
     
     /**
@@ -39,7 +39,7 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' reports.', Omeka_Controller_Flash::ALERT);
         }
         
-        $reports = $this->getTable('ReportsReport')->findAllReports();
+        $reports = $this->getTable('Reports_Report')->findAllReports();
         foreach($reports as $report) {
             $id = $report->id;
             $creator = $report->creator;
@@ -132,10 +132,10 @@ class Reports_IndexController extends Omeka_Controller_Action
                          Omeka_Controller_Flash::GENERAL_ERROR);
                          
         } else if ($this->_checkPhpPath()) {
-            $reportFile = new ReportsFile();
+            $reportFile = new Reports_File();
             $reportFile->report_id = $report->id;
             $reportFile->type = $_GET['format'];
-            $reportFile->status = ReportsFile::STATUS_STARTING;
+            $reportFile->status = Reports_File::STATUS_STARTING;
         
             // Send the base URL to the background process for QR Code
             // This should be abstracted out to work more generally for
@@ -147,13 +147,13 @@ class Reports_IndexController extends Omeka_Controller_Action
             $reportFile->save();
             
             throw new Exception("Use Omeka_Job.");
-            $report = $db->getTable('ReportsFile')->find($reportFile->id);
+            $report = $db->getTable('Reports_File')->find($reportFile->id);
 
             // Get the report type (corresponds to the name of the class)
             $reportType = $report->type;
 
             // Set the report generator class.
-            $generatorClass = 'Reports_ReportGenerator_'.$reportType;
+            $generatorClass = 'Reports_Generator_'.$reportType;
 
             new $generatorClass($report);
             $reportFile->save();

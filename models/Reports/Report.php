@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsReport extends Omeka_Record
+class Reports_Report extends Omeka_Record
 {
     public $id;
     public $name;

@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsFileTable extends Omeka_Db_Table
+class Reports_FileTable extends Omeka_Db_Table
 {
     /**
      * Finds all report files and sorts by creation date, descending.

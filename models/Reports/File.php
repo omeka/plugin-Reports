@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsFile extends Omeka_Record
+class Reports_File extends Omeka_Record
 {
     const STATUS_STARTING    = 'starting';
     const STATUS_IN_PROGRESS = 'in progress';

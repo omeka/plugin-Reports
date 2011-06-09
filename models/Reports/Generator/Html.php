@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Generators
  */
-class Reports_ReportGenerator_HTML extends Reports_ReportGenerator
+class Reports_Generator_Html extends Reports_Generator
 {
     /**
      * The file handle to output to

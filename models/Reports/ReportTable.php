@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsReportTable extends Omeka_Db_Table
+class Reports_ReportTable extends Omeka_Db_Table
 {
     /**
      * Finds all report records and sorts by ID, descending.

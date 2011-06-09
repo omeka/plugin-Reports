@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Generators
  */
-abstract class Reports_ReportGenerator
+abstract class Reports_Generator
 {
     /**
      * Model object for file to be generated.

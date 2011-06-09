@@ -15,7 +15,7 @@
  * @package Reports
  * @subpackage Generators
  */
-class Reports_ReportGenerator_PdfQrCode extends Reports_ReportGenerator
+class Reports_Generator_PdfQrCode extends Reports_Generator
 {
     /**
      * The Item objects for the items being reported on
