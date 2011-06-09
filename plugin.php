@@ -5,6 +5,7 @@
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
  * TODO: Convert to Omeka_Job
+ * TODO: ACL integration
  * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
@@ -14,6 +15,8 @@
 
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
+// FIXME: Redefining this as a constant reduces flexibility and saves no
+// typing at all.
 define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
 
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
@@ -34,9 +37,8 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
  */
 function reports_install()
 {
-    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
-                                         '/'.
-                                         'generated_reports');
+    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY .
+                                         '/generated_reports');
     
     $db = get_db();
     
