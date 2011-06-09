@@ -249,55 +249,52 @@ function reports_convertSearchFilters($query) {
     }
     
     //Here we add some filtering for the request    
-    try {
-        
-        // User-specific item browsing
-        if ($userToView = $query['user']) {
-            if (is_numeric($userToView)) {
-                $filter['user'] = $userToView;
-            }
+    // User-specific item browsing
+    if ($userToView = $query['user']) {
+        if (is_numeric($userToView)) {
+            $filter['user'] = $userToView;
         }
+    }
 
-        if ($query['featured']) {
-            $filter['featured'] = true;
-        }
+    if ($query['featured']) {
+        $filter['featured'] = true;
+    }
+    
+    if ($collection = $query['collection']) {
+        $filter['collection'] = $collection;
+    }
+    
+    if ($type = $query['type']) {
+        $filter['type'] = $type;
+    }
+    
+    if (($tag = $query['tag']) || ($tag = $query['tags'])) {
+        $filter['tags'] = $tag;
+    }
+    
+    if ($excludeTags = $query['excludeTags']) {
+        $filter['excludeTags'] = $excludeTags;
+    }
+    
+    if ($search = $query['search']) {
+        $filter['search'] = $search;
+    }
+    
+    //The advanced or 'itunes' search
+    if ($advanced = $query['advanced']) {
         
-        if ($collection = $query['collection']) {
-            $filter['collection'] = $collection;
-        }
-        
-        if ($type = $query['type']) {
-            $filter['type'] = $type;
-        }
-        
-        if (($tag = $query['tag']) || ($tag = $query['tags'])) {
-            $filter['tags'] = $tag;
-        }
-        
-        if ($excludeTags = $query['excludeTags']) {
-            $filter['excludeTags'] = $excludeTags;
-        }
-        
-        if ($search = $query['search']) {
-            $filter['search'] = $search;
-        }
-        
-        //The advanced or 'itunes' search
-        if ($advanced = $query['advanced']) {
-            
-            //We need to filter out the empty entries if any were provided
-            foreach ($advanced as $k => $entry) {                    
-                if (empty($entry['element_id']) || empty($entry['type'])) {
-                    unset($advanced[$k]);
-                }
+        //We need to filter out the empty entries if any were provided
+        foreach ($advanced as $k => $entry) {                    
+            if (empty($entry['element_id']) || empty($entry['type'])) {
+                unset($advanced[$k]);
             }
-            $filter['advanced_search'] = $advanced;
-        };
-        
-        if ($range = $query['range']) {
-            $filter['range'] = $range;
         }
+        $filter['advanced_search'] = $advanced;
+    };
+    
+    if ($range = $query['range']) {
+        $filter['range'] = $range;
+    }
         
-    } 
     return array_merge($perms, $filter, $order);
 }
