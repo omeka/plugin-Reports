@@ -160,6 +160,8 @@ function reports_admin_navigation_main($tabs)
  */
 function reports_define_routes($router)
 {
+    // FIXME: Remove all these routes, they have overlapping functionality
+    // with Zend's default route.
     $router->addRoute('reports-sub-controllers',
                       new Zend_Controller_Router_Route(
                           'reports/:controller/:action/:id',
@@ -170,6 +172,7 @@ function reports_define_routes($router)
                           'reports/:action',
                           array( 'module'     => 'reports',
                                  'controller' => 'index')));
+    // FIXME: Remove this redundant default route.
     $router->addRoute('reports-id-action', 
                       new Zend_Controller_Router_Route(
                           'reports/:action/:id',

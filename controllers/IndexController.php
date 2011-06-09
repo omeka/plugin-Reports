@@ -156,6 +156,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         // Set the report generator class.
         $generatorClass = 'Reports_Generator_'.$reportType;
 
+        // FIXME: Should not do any work in the constructor.
         new $generatorClass($report);
         $reportFile->save();
         $this->redirect->gotoRoute(array('id'     => "$report->id",
