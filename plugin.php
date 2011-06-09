@@ -300,8 +300,6 @@ function reports_convertSearchFilters($query) {
             $filter['range'] = $range;
         }
         
-    } catch (Exception $e) {
-        $controller->flash($e->getMessage());
-    }
+    } 
     return array_merge($perms, $filter, $order);
 }

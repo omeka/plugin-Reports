@@ -73,10 +73,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             }
         } catch (Omeka_Validator_Exception $e) {
             $this->flashValidationErrors($e);
-        } catch (Exception $e) {
-            $this->flash($e->getMessage());
         }
-
         $this->view->assign(array($varName=>$record));
     }
     
