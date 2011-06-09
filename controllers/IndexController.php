@@ -162,27 +162,4 @@ class Reports_IndexController extends Omeka_Controller_Action
     {
         throw new Exception("Remove me.");
     }
-    
-    
-    /**
-     * Returns the path to the background bootstrap script.
-     *
-     * @return string Path to bootstrap
-     */
-    private function _getBootstrapFilePath()
-    {
-        return REPORTS_PLUGIN_DIRECTORY
-             . DIRECTORY_SEPARATOR 
-             . 'bootstrap.php';
-    }
-    
-    /**
-     * Launch a background process, returning control to the foreground.
-     * 
-     * @link http://www.php.net/manual/en/ref.exec.php#70135
-     * @return int The background process' PID
-     */
-    private function _fork($command) {
-        return exec("$command > /dev/null 2>&1 & echo $!");
-    }
 }
