@@ -19,7 +19,7 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_modelClass = 'Reports_Report';
+        $this->_helper->db->setDefaultModelName('Reports_Report');
     }
     
     /**
