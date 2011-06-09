@@ -130,45 +130,35 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' must be writable by the server for reports to be'.
                          ' generated.',
                          Omeka_Controller_Flash::GENERAL_ERROR);
-                         
-        } else if ($this->_checkPhpPath()) {
-            $reportFile = new Reports_File();
-            $reportFile->report_id = $report->id;
-            $reportFile->type = $_GET['format'];
-            $reportFile->status = Reports_File::STATUS_STARTING;
-        
-            // Send the base URL to the background process for QR Code
-            // This should be abstracted out to work more generally for
-            // all generators.
-            if($reportFile->type == 'PdfQrCode') {
-                $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
-            }
-        
-            $reportFile->save();
-            
-            throw new Exception("Use Omeka_Job.");
-            $report = $db->getTable('Reports_File')->find($reportFile->id);
-
-            // Get the report type (corresponds to the name of the class)
-            $reportType = $report->type;
-
-            // Set the report generator class.
-            $generatorClass = 'Reports_Generator_'.$reportType;
-
-            new $generatorClass($report);
-            $reportFile->save();
+            return;             
+        } 
+        $reportFile = new Reports_File();
+        $reportFile->report_id = $report->id;
+        $reportFile->type = $_GET['format'];
+        $reportFile->status = Reports_File::STATUS_STARTING;
+    
+        // Send the base URL to the background process for QR Code
+        // This should be abstracted out to work more generally for
+        // all generators.
+        if($reportFile->type == 'PdfQrCode') {
+            $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
+    
+        $reportFile->save();
+        
+        throw new Exception("Use Omeka_Job.");
+        $report = $db->getTable('Reports_File')->find($reportFile->id);
+
+        // Get the report type (corresponds to the name of the class)
+        $reportType = $report->type;
+
+        // Set the report generator class.
+        $generatorClass = 'Reports_Generator_'.$reportType;
+
+        new $generatorClass($report);
+        $reportFile->save();
         $this->redirect->gotoRoute(array('id'     => "$report->id",
                                          'action' => 'show'),
                                    'reports-id-action');
-    }
-    
-    /**
-     * Checks if the configured PHP-CLI path points to a valid PHP binary.
-     * Flash an appropriate error if the path is invalid.
-     */
-    private function _checkPhpPath()
-    {
-        throw new Exception("Remove me.");
     }
 }
