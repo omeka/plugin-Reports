@@ -34,8 +34,6 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
  */
 function reports_install()
 {
-    set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
-    
     set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
                                          '/'.
                                          'generated_reports');
@@ -113,7 +111,6 @@ function reports_install()
  */
 function reports_uninstall()
 {
-    delete_option('reports_plugin_version');
     delete_option('reports_save_directory');
     
     $db = get_db();
@@ -128,6 +125,9 @@ function reports_uninstall()
 
 /**
  * Shows the configuration form.
+ *
+ * FIXME: Injection possibility for save_directory as database option,
+ * move this to config setting.
  */
 function reports_config_form()
 {
