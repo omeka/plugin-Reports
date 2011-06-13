@@ -90,7 +90,6 @@ function reports_install()
        status: Status of generation (starting, in progress, completed, error)
        messages: Status messages from generation process
        created: Date report was generated
-       pid: Process ID for background script
        options: Extra options to pass to generator
     */
     $sql = "
@@ -102,7 +101,6 @@ function reports_install()
         `status` ENUM('starting', 'in progress', 'completed', 'error') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'starting',
         `messages` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        `pid` INT UNSIGNED DEFAULT NULL,
         `options` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         PRIMARY KEY  (`id`),
         INDEX(`report_id`)

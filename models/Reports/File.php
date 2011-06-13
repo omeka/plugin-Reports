@@ -26,7 +26,6 @@ class Reports_File extends Omeka_Record
     public $status;
     public $messages;
     public $created;
-    public $pid;
     public $options;
     
     /**

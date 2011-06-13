@@ -126,7 +126,6 @@ abstract class Reports_Generator
             $this->_reportFile->status = Reports_File::STATUS_ERROR;
             $this->_addStatusMessage($e->getMessage(), 'Error');
         }
-        $this->_reportFile->pid = null;
         $this->_reportFile->save();
     }
 }
