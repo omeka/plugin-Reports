@@ -30,17 +30,14 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function browseAction()
     {
+        $saveDirectory = reports_save_directory();
+        if (!$saveDirectory) {
+            $this->flashError('The report save directory does not exist.');
+        }
         if(!is_writable(reports_save_directory())) {
-            $this->flash('Warning: The directory '.reports_save_directory().
+            $this->flash('Warning: The directory ' . $saveDirectory .
                          ' must be writable by the server for reports to be'.
                          ' generated.', Omeka_Controller_Flash::ALERT);
-        }
-        
-        // FIXME: Switch to Zend_Http_Client to remove this dependency.
-        if(ini_get('allow_url_fopen') != 1) {
-            $this->flash('Warning: The PHP directive "allow_url_fopen" is set'.
-                         ' to false.  You will be unable to generate QR Code'.
-                         ' reports.', Omeka_Controller_Flash::ALERT);
         }
         
         $reports = $this->getTable('Reports_Report')->findAllReports();
@@ -97,7 +94,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         if(isset($_GET['search'])) {
             $report->query = serialize($_GET);
-            $report->save();
+            $report->forceSave();
             $this->redirect->goto('index');
         } 
         else {

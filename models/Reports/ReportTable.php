@@ -14,6 +14,8 @@
  */
 class Reports_ReportTable extends Omeka_Db_Table
 {
+    protected $_name = 'reports';
+
     /**
      * Finds all report records and sorts by ID, descending.
      *

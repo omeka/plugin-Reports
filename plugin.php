@@ -7,7 +7,6 @@
  * TODO: ACL integration
  * TODO: Status indicator on browse page.
  * TODO: Make reports downloadable via the admin UI.
- * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
  * @copyright Copyright 2011 Center for History and New Media
@@ -34,12 +33,8 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
  */
 function reports_install()
 {
-    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY .
-                                         '/generated_reports');
-    
     $db = get_db();
     
-    // FIXME: Rename reports_reports to a sane table name.
     /* Table: reports_reports
        
        id: Primary key 
@@ -50,7 +45,7 @@ function reports_install()
        modified: Date report was last modified
     */
     $sql = "
-    CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_reports` (
+    CREATE TABLE IF NOT EXISTS `{$db->prefix}reports` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `name` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `description` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -109,8 +104,6 @@ function reports_install()
  */
 function reports_uninstall()
 {
-    delete_option('reports_save_directory');
-    
     $db = get_db();
     
     $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_reports`;";
@@ -119,27 +112,6 @@ function reports_uninstall()
     $db->query($sql);
     $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_files`;";
     $db->query($sql);
-}
-
-/**
- * Shows the configuration form.
- *
- * FIXME: Injection possibility for save_directory as database option,
- * move this to config setting.
- */
-function reports_config_form()
-{
-    $saveDirectory = get_option('reports_save_directory');
-    
-    include 'config_form.php';
-}
-
-/**
- * Processes the configuration form.
- */
-function reports_config()
-{
-    set_option('reports_save_directory', $_POST['reports_save_directory']);
 }
 
 /**
@@ -295,5 +267,10 @@ function reports_convert_search_filters($query) {
 
 function reports_save_directory()
 {
-    return get_option('reports_save_directory');
+    $default = sys_get_temp_dir();
+    $config = Omeka_Context::getInstance()->config->plugins;
+    if (!$config || !$config->Reports || !$config->Reports->saveDirectory) {
+        return $default;
+    }
+    return realpath($config->Reports->saveDirectory);
 }
