@@ -27,7 +27,18 @@ class Reports_File extends Omeka_Record
     public $messages;
     public $created;
     public $options;
-    
+
+    /**
+     * Unlink the associated file.
+     */    
+    protected function afterDelete()
+    {
+        $filename = REPORTS_SAVE_DIRECTORY . '/' . $this->filename;
+        if (is_writable($filename)) {
+            unlink($filename);
+        }
+    }
+
     /**
      * Gets the report associated with this object.
      *
@@ -49,6 +60,8 @@ class Reports_File extends Omeka_Record
     {
         $formats = reports_getOutputFormats();
         $class = REPORTS_GENERATOR_PREFIX.$this->type;
+        // FIXME: Do not instantiate this class with a null argument
+        // (unnecessary).
         return new $class(null);
     }
 }
