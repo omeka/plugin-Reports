@@ -50,7 +50,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             
             $userName = $this->getTable('Entity')->find($creator)->getName();
             $query = unserialize($report->query);
-            $params = reports_convertSearchFilters($query);
+            $params = reports_convert_search_filters($query);
             $count = $this->getTable('Item')->count($params);
             
             $reportsDisplay[] = array(
@@ -59,7 +59,7 @@ class Reports_IndexController extends Omeka_Controller_Action
                 'count' => $count);
         }
         $this->view->reports = $reportsDisplay;
-        $this->view->formats = reports_getOutputFormats();
+        $this->view->formats = reports_get_output_formats();
     }
     
     /**
@@ -120,7 +120,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         $reportFiles = $report->getFiles();
         
-        $formats = reports_getOutputFormats();
+        $formats = reports_get_output_formats();
         
         $this->view->formats = $formats;
         

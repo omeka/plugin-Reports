@@ -195,7 +195,7 @@ function reports_define_acl($acl)
  * @param int $entityId Entity ID
  * @return string Full name of entity
  */
-function reports_getNameForEntityId($entityId)
+function reports_get_name_for_entity_id($entityId)
 {
     return get_db()->getTable('Entity')->find($entityId)->getName();
 }
@@ -205,7 +205,7 @@ function reports_getNameForEntityId($entityId)
  *
  * @return array Array in format className => readableName
  */
-function reports_getOutputFormats()
+function reports_get_output_formats()
 {
     $dir = new DirectoryIterator(REPORTS_GENERATOR_DIRECTORY);
     $formats = array();
@@ -232,7 +232,7 @@ function reports_getOutputFormats()
  * @param array $query HTTP query string array
  * @return array Array of findBy() parameters
  */
-function reports_convertSearchFilters($query) {
+function reports_convert_search_filters($query) {
     $perms  = array();
     $filter = array();
     $order  = array();

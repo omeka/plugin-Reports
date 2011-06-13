@@ -38,7 +38,7 @@ head($head);
 <td><?php echo $reportsreport->description; ?></td>
 </tr>
 <th>Creator</th>
-<td><?php echo reports_getNameForEntityId($reportsreport->creator); ?></td>
+<td><?php echo reports_get_name_for_entity_id($reportsreport->creator); ?></td>
 </tr>
 <th>Date Added</th>
 <td><?php echo $reportsreport->modified; ?></td>
