@@ -36,7 +36,6 @@ function reports_install()
 {
     $db = get_db();
     
-    // FIXME: Rename reports_reports to a sane table name.
     /* Table: reports_reports
        
        id: Primary key 
@@ -47,7 +46,7 @@ function reports_install()
        modified: Date report was last modified
     */
     $sql = "
-    CREATE TABLE IF NOT EXISTS `{$db->prefix}reports_reports` (
+    CREATE TABLE IF NOT EXISTS `{$db->prefix}reports` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `name` TINYTEXT COLLATE utf8_unicode_ci NOT NULL,
         `description` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
