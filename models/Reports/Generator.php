@@ -108,7 +108,7 @@ abstract class Reports_Generator
         set_error_handler(array($this, 'errorHandler'), E_WARNING);
         try {
             $this->_reportFile->status = Reports_File::STATUS_IN_PROGRESS;
-            $this->_reportFile->save();
+            $this->_reportFile->forceSave();
     
             $this->_report = $this->_reportFile->getReport();
             $this->_params = reports_convert_search_filters(unserialize($this->_report->query));
@@ -126,6 +126,6 @@ abstract class Reports_Generator
             $this->_reportFile->status = Reports_File::STATUS_ERROR;
             $this->_addStatusMessage($e->getMessage(), 'Error');
         }
-        $this->_reportFile->save();
+        $this->_reportFile->forceSave();
     }
 }

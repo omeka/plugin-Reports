@@ -94,7 +94,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         if(isset($_GET['search'])) {
             $report->query = serialize($_GET);
-            $report->save();
+            $report->forceSave();
             $this->redirect->goto('index');
         } 
         else {
