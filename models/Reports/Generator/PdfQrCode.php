@@ -70,6 +70,9 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
     const LABEL_WIDTH = 288;
     
     const FONT_SIZE = 10;
+
+    const QR_HEIGHT = 300;
+    const QR_WIDTH = 300;
     
     /**
      * Creates and generates the PDF report for the items in the report.
@@ -121,7 +124,7 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
         $args = array(
             'cht' => 'qr',
             'chl' => $this->_baseUrl . '/items/show/' . $item->id,
-            'chs' => '300x300',
+            'chs' => self::QR_WIDTH . 'x' . self::QR_HEIGHT,
         );
         return self::CHART_API_URI . '?' . http_build_query($args);
     }
