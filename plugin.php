@@ -10,7 +10,7 @@
  * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
- * @copyright Copyright 2009 Center for History and New Media
+ * @copyright Copyright 2011 Center for History and New Media
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
