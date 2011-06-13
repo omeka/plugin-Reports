@@ -30,8 +30,12 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function browseAction()
     {
+        $saveDirectory = reports_save_directory();
+        if (!$saveDirectory) {
+            $this->flashError('The report save directory does not exist.');
+        }
         if(!is_writable(reports_save_directory())) {
-            $this->flash('Warning: The directory '.reports_save_directory().
+            $this->flash('Warning: The directory ' . $saveDirectory .
                          ' must be writable by the server for reports to be'.
                          ' generated.', Omeka_Controller_Flash::ALERT);
         }
