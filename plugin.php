@@ -7,7 +7,6 @@
  * TODO: ACL integration
  * TODO: Status indicator on browse page.
  * TODO: Make reports downloadable via the admin UI.
- * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
  * @copyright Copyright 2011 Center for History and New Media
