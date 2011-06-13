@@ -307,7 +307,7 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      * @return string HTTP Content-type
      */
     public function getContentType() {
-        return 'applicaton/pdf';
+        return 'application/pdf';
     }
     
     /**
