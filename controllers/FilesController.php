@@ -19,7 +19,7 @@ class Reports_FilesController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_modelClass = 'Reports_File';
+        $this->_helper->db->setDefaultModelName('Reports_File');
     }
     
     /**
