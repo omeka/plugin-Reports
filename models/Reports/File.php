@@ -33,7 +33,7 @@ class Reports_File extends Omeka_Record
      */    
     protected function afterDelete()
     {
-        $filename = REPORTS_SAVE_DIRECTORY . '/' . $this->filename;
+        $filename = reports_save_directory() . '/' . $this->filename;
         if (is_writable($filename)) {
             unlink($filename);
         }

@@ -16,10 +16,6 @@
 
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
-// FIXME: Redefining this as a constant reduces flexibility and saves no
-// typing at all.
-define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
-
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
                                       '/models/Reports/Generator');
 
@@ -295,4 +291,9 @@ function reports_convertSearchFilters($query) {
     }
         
     return array_merge($perms, $filter, $order);
+}
+
+function reports_save_directory()
+{
+    return get_option('reports_save_directory');
 }

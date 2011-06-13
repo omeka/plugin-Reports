@@ -30,8 +30,8 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function browseAction()
     {
-        if(!is_writable(REPORTS_SAVE_DIRECTORY)) {
-            $this->flash('Warning: The directory '.REPORTS_SAVE_DIRECTORY.
+        if(!is_writable(reports_save_directory())) {
+            $this->flash('Warning: The directory '.reports_save_directory().
                          ' must be writable by the server for reports to be'.
                          ' generated.', Omeka_Controller_Flash::ALERT);
         }
@@ -135,10 +135,10 @@ class Reports_IndexController extends Omeka_Controller_Action
     {
         $report = $this->findById();
         
-        if (!is_writable(REPORTS_SAVE_DIRECTORY)) {
+        if (!is_writable(reports_save_directory())) {
             // Disallow generation if the save directory is not writable
-            $this->flash('The directory '.REPORTS_SAVE_DIRECTORY.
-                         ' must be writable by the server for reports to be'.
+            $this->flash('The directory ' . reports_save_directory() .
+                         ' must be writable by the server for reports to be' .
                          ' generated.',
                          Omeka_Controller_Flash::GENERAL_ERROR);
             return;             
