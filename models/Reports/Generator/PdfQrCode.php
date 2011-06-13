@@ -2,7 +2,7 @@
 /**
  * @package Reports
  * @subpackage Generators
- * @copyright Copyright (c) 2009 Center for History and New Media
+ * @copyright Copyright (c) 2011 Center for History and New Media
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
  
@@ -17,13 +17,6 @@
  */
 class Reports_Generator_PdfQrCode extends Reports_Generator
 {
-    /**
-     * The Item objects for the items being reported on
-     *
-     * @var array
-     */
-    private $_items;
-    
     /**
      * The PDF document object
      *
@@ -52,11 +45,6 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      */
     private $_baseUrl;
     
-    /**
-     * The URL of the Google chart API, used to generate the QR codes
-     */
-    const CHART_API_URI = 'http://chart.apis.google.com/chart';
-    
     // Spacing constants for 5163 labels, in points.
     
     const PAGE_HEIGHT = 792;
@@ -77,17 +65,17 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
     const LABEL_WIDTH = 288;
     
     const FONT_SIZE = 10;
+
+    const QR_HEIGHT = 300;
+    const QR_WIDTH = 300;
     
     /**
      * Creates and generates the PDF report for the items in the report.
      *
      * @param string $filename The filename of the file to be generated
      */
-    public function generateReport($filename) {
-        // FIXME: Do not retrieve all items at once, especially since 
-        // later while() loop retrieves items in chunks.
-        $this->_items = get_db()->getTable('Item')->findBy($this->_params);
-        
+    public function generateReport($filename) 
+    {
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
         
@@ -120,23 +108,6 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
     }
     
     /**
-     * Generate a URI to a QR code for the specified item using the Google
-     * Chart API.
-     *
-     * @param Item $item The Item object to generate a code for
-     * @return string The QR Code's URI
-     */
-    private function _qrCodeUri($item)
-    {
-        $args = array(
-            'cht' => 'qr',
-            'chl' => $this->_baseUrl . '/items/show/' . $item->id,
-            'chs' => '300x300',
-        );
-        return self::CHART_API_URI . '?' . http_build_query($args);
-    }
-    
-    /**
      * Draw one label section for one item on the PDF document.
      *
      * @param int $column Horizontal index on the current page
@@ -163,14 +134,7 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
             $originY + self::LABEL_HEIGHT
         );
         
-        // FIXME: Use tempnam() for this.
-        // Temporarily save the generated QR Code.
-        $temp = REPORTS_SAVE_DIRECTORY. '/qrcode.png';
-        // FIXME: Use Zend_Http_Client for this.
-        file_put_contents($temp, file_get_contents($this->_qrCodeUri($item)));
-        $image = Zend_Pdf_Image::imageWithPath($temp);
-        unlink($temp);
-        
+        $image = $this->_getQrCode($this->_baseUrl . '/items/show/' . $item->id);
         $page->drawImage(
             $image, 
             $originX, 
@@ -290,6 +254,17 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
         $widths = $font->widthsForGlyphs($glyphs);
         $stringWidth = (array_sum($widths) / $font->getUnitsPerEm()) * $fontSize;
         return $stringWidth;
+    }
+
+    private function _getQrCode($uri)
+    {
+        if (!$this->_qrGenerator) {
+            $this->_qrGenerator = new Reports_Generator_PdfQrCode_GoogleCharts(
+                self::QR_WIDTH,
+                self::QR_HEIGHT
+            );
+        }
+        return $this->_qrGenerator->generate($uri);
     }
 
     /**
