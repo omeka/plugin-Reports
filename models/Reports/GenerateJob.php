@@ -11,8 +11,8 @@ class Reports_GenerateJob extends Omeka_JobAbstract
         $reportType = $report->type;
         $generatorClass = 'Reports_Generator_'.$reportType;
 
-        // FIXME: Should not do any work in the constructor.
-        new $generatorClass($report);
+        $generator = new $generatorClass($report);
+        $generator->generate();
         $report->forceSave();
     }
 }

@@ -39,34 +39,7 @@ abstract class Reports_Generator
      * @param Reports_File $reportFile The report file to be generated
      */
     public function __construct($reportFile) {
-        if ($reportFile)
-        {
-            set_error_handler(array($this, 'errorHandler'), E_WARNING);
-            try {
-                $reportFile->status = Reports_File::STATUS_IN_PROGRESS;
-                $reportFile->save();
-                $this->_reportFile = $reportFile;
-        
-                $this->_report = $this->_reportFile->getReport();
-                $this->_params = reports_convertSearchFilters(unserialize($this->_report->query));
-                
-                // Creates a random filename based on the type of report.
-                $filter = new Omeka_Filter_Filename();
-                $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
-                $path = REPORTS_SAVE_DIRECTORY . '/' . $filename;
-                // Generates the report (passes to subclass)
-                $this->generateReport($path);
-        
-                $this->_reportFile->status = Reports_File::STATUS_COMPLETED;
-                $this->_reportFile->filename = $filename;
-            } catch (Exception $e) {
-                $this->_reportFile->status = Reports_File::STATUS_ERROR;
-                $this->_addStatusMessage($e->getMessage(), 'Error');
-            }
-            $this->_reportFile->pid = null;
-            
-            $this->_reportFile->save();
-        }
+        $this->_reportFile = $reportFile;
     }
 
     /**
@@ -129,4 +102,31 @@ abstract class Reports_Generator
      * @return string File extension
      */
     public abstract function getExtension();
+
+    public function generate()
+    {
+        set_error_handler(array($this, 'errorHandler'), E_WARNING);
+        try {
+            $this->_reportFile->status = Reports_File::STATUS_IN_PROGRESS;
+            $this->_reportFile->save();
+    
+            $this->_report = $this->_reportFile->getReport();
+            $this->_params = reports_convertSearchFilters(unserialize($this->_report->query));
+            
+            // Creates a random filename based on the type of report.
+            $filter = new Omeka_Filter_Filename();
+            $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
+            $path = REPORTS_SAVE_DIRECTORY . '/' . $filename;
+            // Generates the report (passes to subclass)
+            $this->generateReport($path);
+    
+            $this->_reportFile->status = Reports_File::STATUS_COMPLETED;
+            $this->_reportFile->filename = $filename;
+        } catch (Exception $e) {
+            $this->_reportFile->status = Reports_File::STATUS_ERROR;
+            $this->_addStatusMessage($e->getMessage(), 'Error');
+        }
+        $this->_reportFile->pid = null;
+        $this->_reportFile->save();
+    }
 }
