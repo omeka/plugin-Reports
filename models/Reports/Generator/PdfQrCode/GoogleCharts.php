@@ -6,12 +6,14 @@ class Reports_Generator_PdfQrCode_GoogleCharts
      * The URL of the Google chart API, used to generate the QR codes
      */
     const CHART_API_URI = 'http://chart.apis.google.com/chart';
-    
 
-    public function __construct($width, $height)
+    const TEMP_FILE_PREFIX = 'omeka-reports-qr';    
+
+    public function __construct($width, $height, $tempDir = null)
     {
         $this->_width = $width;
         $this->_height = $height;    
+        $this->_tempDir = $tempDir ? $tempDir : sys_get_temp_dir();
     }
     
     /**
@@ -21,10 +23,11 @@ class Reports_Generator_PdfQrCode_GoogleCharts
      */
     public function generate($data)
     {
-        // FIXME: Use tempnam() for this.
-        // Temporarily save the generated QR Code.
-        $temp = REPORTS_SAVE_DIRECTORY. '/qrcode.png';
-
+        $temp = tempnam($this->_tempDir, self::TEMP_FILE_PREFIX);
+        // Zend_Pdf_Image dies if lacking the correct file extension.
+        $tempPng = $temp . ".png";
+        rename($temp, $tempPng);
+        $temp = $tempPng;
         $url = $this->_qrCodeUri($data);
         $client = new Zend_Http_Client($url);
         $response = $client->request('GET');
