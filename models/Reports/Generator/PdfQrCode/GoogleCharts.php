@@ -24,11 +24,20 @@ class Reports_Generator_PdfQrCode_GoogleCharts
         // FIXME: Use tempnam() for this.
         // Temporarily save the generated QR Code.
         $temp = REPORTS_SAVE_DIRECTORY. '/qrcode.png';
-        // FIXME: Use Zend_Http_Client for this.
-        file_put_contents($temp, file_get_contents($this->_qrCodeUri($data)));
-        $image = Zend_Pdf_Image::imageWithPath($temp);
-        unlink($temp);
-        return $image;
+
+        $url = $this->_qrCodeUri($data);
+        $client = new Zend_Http_Client($url);
+        $response = $client->request('GET');
+        if ($response->isSuccessful()) {
+            file_put_contents($temp, $response->getBody());
+            $image = Zend_Pdf_Image::imageWithPath($temp);
+            unlink($temp);
+            return $image;
+        } else {
+            throw new Zend_Http_Client_Exception(
+                "Could not retrieve QR chart from Google."
+            );
+        }
     }
 
     /**
