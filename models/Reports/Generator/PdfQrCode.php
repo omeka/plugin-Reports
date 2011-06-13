@@ -18,13 +18,6 @@
 class Reports_Generator_PdfQrCode extends Reports_Generator
 {
     /**
-     * The Item objects for the items being reported on
-     *
-     * @var array
-     */
-    private $_items;
-    
-    /**
      * The PDF document object
      *
      * @var Zend_Pdf
@@ -83,11 +76,8 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      *
      * @param string $filename The filename of the file to be generated
      */
-    public function generateReport($filename) {
-        // FIXME: Do not retrieve all items at once, especially since 
-        // later while() loop retrieves items in chunks.
-        $this->_items = get_db()->getTable('Item')->findBy($this->_params);
-        
+    public function generateReport($filename) 
+    {
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
         
