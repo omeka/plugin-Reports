@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsReport extends Omeka_Record
+class Reports_Report extends Omeka_Record
 {
     public $id;
     public $name;
@@ -38,10 +38,10 @@ class ReportsReport extends Omeka_Record
     /**
      * Gets all the generated files for this report.
      *
-     * @return array Array of ReportsFile objects.
+     * @return array Array of Reports_File objects.
      */
     public function getFiles()
     {
-        return $this->_db->getTable('ReportsFile')->findByReportId($this->id);
+        return $this->_db->getTable('Reports_File')->findByReportId($this->id);
     }
 }

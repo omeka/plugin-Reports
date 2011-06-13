@@ -4,7 +4,9 @@
  *
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
- * TODO: Convert to Omeka_Job
+ * TODO: ACL integration
+ * TODO: Status indicator on browse page.
+ * TODO: Make reports downloadable via the admin UI.
  * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
@@ -14,14 +16,14 @@
 
 define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 
+// FIXME: Redefining this as a constant reduces flexibility and saves no
+// typing at all.
 define('REPORTS_SAVE_DIRECTORY', get_option('reports_save_directory'));
 
-define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.
-                                      DIRECTORY_SEPARATOR.'libraries'.
-                                      DIRECTORY_SEPARATOR.'Reports'.
-                                      DIRECTORY_SEPARATOR.'ReportGenerator');
+define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
+                                      '/models/Reports/Generator');
 
-define('REPORTS_GENERATOR_PREFIX', 'Reports_ReportGenerator_');
+define('REPORTS_GENERATOR_PREFIX', 'Reports_Generator_');
 
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
@@ -36,19 +38,12 @@ add_filter('admin_navigation_main', 'reports_admin_navigation_main');
  */
 function reports_install()
 {
-    set_option('reports_plugin_version', get_plugin_ini('Reports', 'version'));
-    
-    $command = 'which php 2>&0';
-    $lastLineOutput = exec($command, $output, $returnVar);
-    $phpPath = $returnVar == 0 ? trim($lastLineOutput) : '';
-    set_option('reports_php_path', $phpPath);
-    
-    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY.
-                                         DIRECTORY_SEPARATOR.
-                                         'generated_reports');
+    set_option('reports_save_directory', REPORTS_PLUGIN_DIRECTORY .
+                                         '/generated_reports');
     
     $db = get_db();
     
+    // FIXME: Rename reports_reports to a sane table name.
     /* Table: reports_reports
        
        id: Primary key 
@@ -95,7 +90,6 @@ function reports_install()
        status: Status of generation (starting, in progress, completed, error)
        messages: Status messages from generation process
        created: Date report was generated
-       pid: Process ID for background script
        options: Extra options to pass to generator
     */
     $sql = "
@@ -107,7 +101,6 @@ function reports_install()
         `status` ENUM('starting', 'in progress', 'completed', 'error') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'starting',
         `messages` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        `pid` INT UNSIGNED DEFAULT NULL,
         `options` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         PRIMARY KEY  (`id`),
         INDEX(`report_id`)
@@ -120,8 +113,6 @@ function reports_install()
  */
 function reports_uninstall()
 {
-    delete_option('reports_plugin_version');
-    delete_option('reports_php_path');
     delete_option('reports_save_directory');
     
     $db = get_db();
@@ -136,10 +127,12 @@ function reports_uninstall()
 
 /**
  * Shows the configuration form.
+ *
+ * FIXME: Injection possibility for save_directory as database option,
+ * move this to config setting.
  */
 function reports_config_form()
 {
-    $phpPath = get_option('reports_php_path');
     $saveDirectory = get_option('reports_save_directory');
     
     include 'config_form.php';
@@ -150,7 +143,6 @@ function reports_config_form()
  */
 function reports_config()
 {
-    set_option('reports_php_path', $_POST['reports_php_path']);
     set_option('reports_save_directory', $_POST['reports_save_directory']);
 }
 
@@ -170,6 +162,8 @@ function reports_admin_navigation_main($tabs)
  */
 function reports_define_routes($router)
 {
+    // FIXME: Remove all these routes, they have overlapping functionality
+    // with Zend's default route.
     $router->addRoute('reports-sub-controllers',
                       new Zend_Controller_Router_Route(
                           'reports/:controller/:action/:id',
@@ -180,12 +174,6 @@ function reports_define_routes($router)
                           'reports/:action',
                           array( 'module'     => 'reports',
                                  'controller' => 'index')));
-    $router->addRoute('reports-id-action', 
-                      new Zend_Controller_Router_Route(
-                          'reports/:action/:id',
-                          array( 'module'     => 'reports',
-                                 'controller' => 'index'),
-                          array( 'id'         => '\d+')));
 }
 
 /**
@@ -259,57 +247,52 @@ function reports_convertSearchFilters($query) {
     }
     
     //Here we add some filtering for the request    
-    try {
-        
-        // User-specific item browsing
-        if ($userToView = $query['user']) {
-            if (is_numeric($userToView)) {
-                $filter['user'] = $userToView;
-            }
+    // User-specific item browsing
+    if ($userToView = $query['user']) {
+        if (is_numeric($userToView)) {
+            $filter['user'] = $userToView;
         }
-
-        if ($query['featured']) {
-            $filter['featured'] = true;
-        }
-        
-        if ($collection = $query['collection']) {
-            $filter['collection'] = $collection;
-        }
-        
-        if ($type = $query['type']) {
-            $filter['type'] = $type;
-        }
-        
-        if (($tag = $query['tag']) || ($tag = $query['tags'])) {
-            $filter['tags'] = $tag;
-        }
-        
-        if ($excludeTags = $query['excludeTags']) {
-            $filter['excludeTags'] = $excludeTags;
-        }
-        
-        if ($search = $query['search']) {
-            $filter['search'] = $search;
-        }
-        
-        //The advanced or 'itunes' search
-        if ($advanced = $query['advanced']) {
-            
-            //We need to filter out the empty entries if any were provided
-            foreach ($advanced as $k => $entry) {                    
-                if (empty($entry['element_id']) || empty($entry['type'])) {
-                    unset($advanced[$k]);
-                }
-            }
-            $filter['advanced_search'] = $advanced;
-        };
-        
-        if ($range = $query['range']) {
-            $filter['range'] = $range;
-        }
-        
-    } catch (Exception $e) {
-        $controller->flash($e->getMessage());
     }
+
+    if ($query['featured']) {
+        $filter['featured'] = true;
+    }
+    
+    if ($collection = $query['collection']) {
+        $filter['collection'] = $collection;
+    }
+    
+    if ($type = $query['type']) {
+        $filter['type'] = $type;
+    }
+    
+    if (($tag = $query['tag']) || ($tag = $query['tags'])) {
+        $filter['tags'] = $tag;
+    }
+    
+    if ($excludeTags = $query['excludeTags']) {
+        $filter['excludeTags'] = $excludeTags;
+    }
+    
+    if ($search = $query['search']) {
+        $filter['search'] = $search;
+    }
+    
+    //The advanced or 'itunes' search
+    if ($advanced = $query['advanced']) {
+        
+        //We need to filter out the empty entries if any were provided
+        foreach ($advanced as $k => $entry) {                    
+            if (empty($entry['element_id']) || empty($entry['type'])) {
+                unset($advanced[$k]);
+            }
+        }
+        $filter['advanced_search'] = $advanced;
+    };
+    
+    if ($range = $query['range']) {
+        $filter['range'] = $range;
+    }
+        
     return array_merge($perms, $filter, $order);
 }

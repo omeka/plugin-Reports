@@ -14,12 +14,15 @@
  */
 class Reports_IndexController extends Omeka_Controller_Action
 {
+    private $_jobDispatcher;
+
     /**
      * Sets the model class for the Reports controller.
      */
     public function init()
     {
-        $this->_modelClass = 'ReportsReport';
+        $this->_helper->db->setDefaultModelName('Reports_Report');
+        $this->_jobDispatcher = $this->getInvokeArg('bootstrap')->jobs;
     }
     
     /**
@@ -33,13 +36,14 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' generated.', Omeka_Controller_Flash::ALERT);
         }
         
+        // FIXME: Switch to Zend_Http_Client to remove this dependency.
         if(ini_get('allow_url_fopen') != 1) {
             $this->flash('Warning: The PHP directive "allow_url_fopen" is set'.
                          ' to false.  You will be unable to generate QR Code'.
                          ' reports.', Omeka_Controller_Flash::ALERT);
         }
         
-        $reports = $this->getTable('ReportsReport')->findAllReports();
+        $reports = $this->getTable('Reports_Report')->findAllReports();
         foreach($reports as $report) {
             $id = $report->id;
             $creator = $report->creator;
@@ -58,26 +62,30 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->formats = reports_getOutputFormats();
     }
     
+    /**
+     * FIXME: Duplicates Omeka_Controller_Action::addAction() except for the
+     * redirect.
+     */
     public function addAction()
     {
-        $varName = strtolower($this->_modelClass);
-        $class = $this->_modelClass;
-        
+        $class = $this->_helper->db->getDefaultModelName();
         $record = new $class();
         
         try {
             if ($record->saveForm($_POST)) {
-                $this->redirect->gotoRoute(array('id'     => "$record->id",
-                                                 'action' => 'query'),
-                                           'reports-id-action');
+                $this->redirect->gotoRoute(
+                    array(
+                        'module' => 'reports',
+                        'id'     => $record->id,
+                        'action' => 'query'
+                    ),
+                    'default'
+                );
             }
         } catch (Omeka_Validator_Exception $e) {
             $this->flashValidationErrors($e);
-        } catch (Exception $e) {
-            $this->flash($e->getMessage());
         }
-
-        $this->view->assign(array($varName=>$record));
+        $this->view->assign(array(strtolower($class) => $record));
     }
     
     /**
@@ -133,89 +141,34 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' must be writable by the server for reports to be'.
                          ' generated.',
                          Omeka_Controller_Flash::GENERAL_ERROR);
-                         
-        } else if ($this->_checkPhpPath()) {
-            $reportFile = new ReportsFile();
-            $reportFile->report_id = $report->id;
-            $reportFile->type = $_GET['format'];
-            $reportFile->status = ReportsFile::STATUS_STARTING;
-        
-            // Send the base URL to the background process for QR Code
-            // This should be abstracted out to work more generally for
-            // all generators.
-            if($reportFile->type == 'PdfQrCode') {
-                $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
-            }
-        
-            $reportFile->save();
-            
-            $command = escapeshellcmd(get_option('reports_php_path')).' '.$this->_getBootstrapFilePath()." -r $reportFile->id";
-            $reportFile->pid = $this->_fork($command);
-            $reportFile->save();
+            return;             
+        } 
+        $reportFile = new Reports_File();
+        $reportFile->report_id = $report->id;
+        $reportFile->type = $_GET['format'];
+        $reportFile->status = Reports_File::STATUS_STARTING;
+    
+        // Send the base URL to the background process for QR Code
+        // This should be abstracted out to work more generally for
+        // all generators.
+        if($reportFile->type == 'PdfQrCode') {
+            $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
-        $this->redirect->gotoRoute(array('id'     => "$report->id",
-                                         'action' => 'show'),
-                                   'reports-id-action');
-    }
     
-    /**
-     * Checks if the configured PHP-CLI path points to a valid PHP binary.
-     * Flash an appropriate error if the path is invalid.
-     */
-    private function _checkPhpPath()
-    {
-        // Try to execute PHP and check for appropriate version
-        $command = escapeshellcmd(get_option('reports_php_path')).' -v';
-        $output = array();
-        exec($command, $output, $returnCode);
-        
-        $error = 'The configured PHP path ('.get_option('reports_php_path').')';
-        if ($returnCode != 0) {
-            $this->flashError($error.' is invalid.');
-            return false;
-        }
-        
-        // Attempt to parse the output from 'php -v' (the first line only)
-        preg_match('/(?<name>^\\w+) (?<version>[\\d\\.]+)/', $output[0], $matches);
-        $cliName    = $matches['name'];
-        $cliVersion = $matches['version'];
-        $phpVersion = phpversion();
-        
-        if ($cliName != 'PHP'  || !$cliVersion) {
-            $this->flashError($error.' does not point to a PHP-CLI binary.');
-            return false;
-        } else if (version_compare($cliVersion, '5.2', '<')) {
-            $this->flashError($error.' points to a PHP-CLI binary with an'
-                            . " invalid version ($cliVersion).");
-            return false;
-        } else if ($cliVersion != $phpVersion) {
-            $this->flash($error.' points to a PHP-CLI binary with a different' 
-                       . " version number ($version) than the one Omeka is"
-                       . " running on ($phpVersion).");
-        }
-        return true;
-    }
-    
-    
-    /**
-     * Returns the path to the background bootstrap script.
-     *
-     * @return string Path to bootstrap
-     */
-    private function _getBootstrapFilePath()
-    {
-        return REPORTS_PLUGIN_DIRECTORY
-             . DIRECTORY_SEPARATOR 
-             . 'bootstrap.php';
-    }
-    
-    /**
-     * Launch a background process, returning control to the foreground.
-     * 
-     * @link http://www.php.net/manual/en/ref.exec.php#70135
-     * @return int The background process' PID
-     */
-    private function _fork($command) {
-        return exec("$command > /dev/null 2>&1 & echo $!");
+        $reportFile->forceSave();
+        $this->_jobDispatcher->send('Reports_GenerateJob',
+            array(
+                'fileId' => $reportFile->id, 
+            )
+        );         
+
+        $this->redirect->gotoRoute(
+            array(
+                'module' => 'reports',
+                'id'     => $report->id,
+                'action' => 'show',
+            ),
+            'default'
+        );
     }
 }

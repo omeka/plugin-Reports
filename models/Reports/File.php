@@ -12,7 +12,7 @@
  * @package Reports
  * @subpackage Models
  */
-class ReportsFile extends Omeka_Record
+class Reports_File extends Omeka_Record
 {
     const STATUS_STARTING    = 'starting';
     const STATUS_IN_PROGRESS = 'in progress';
@@ -26,9 +26,19 @@ class ReportsFile extends Omeka_Record
     public $status;
     public $messages;
     public $created;
-    public $pid;
     public $options;
-    
+
+    /**
+     * Unlink the associated file.
+     */    
+    protected function afterDelete()
+    {
+        $filename = REPORTS_SAVE_DIRECTORY . '/' . $this->filename;
+        if (is_writable($filename)) {
+            unlink($filename);
+        }
+    }
+
     /**
      * Gets the report associated with this object.
      *
@@ -37,7 +47,7 @@ class ReportsFile extends Omeka_Record
     public function getReport()
     {
         if($report_id = $this->report_id) {
-            return $this->_db->getTable('ReportsReport')->find($report_id);
+            return $this->_db->getTable('Reports_Report')->find($report_id);
         }
     }
     
@@ -50,6 +60,8 @@ class ReportsFile extends Omeka_Record
     {
         $formats = reports_getOutputFormats();
         $class = REPORTS_GENERATOR_PREFIX.$this->type;
+        // FIXME: Do not instantiate this class with a null argument
+        // (unnecessary).
         return new $class(null);
     }
 }

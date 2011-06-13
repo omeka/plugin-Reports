@@ -19,25 +19,24 @@ class Reports_FilesController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_modelClass = 'ReportsFile';
+        $this->_helper->db->setDefaultModelName('Reports_File');
     }
     
     /**
-     * Deletes a ReportsFile model and deletes the underlying file.
+     * Deletes a Reports_File instance and deletes the underlying file.
      */
     public function deleteAction()
     {
         $reportFile = $this->findById();
         $report = $reportFile->getReport();
-        
-        $filename = REPORTS_SAVE_DIRECTORY.DIRECTORY_SEPARATOR.$reportFile->filename;
         $reportFile->delete();
-        if (is_writable($filename)) {
-            unlink($filename);
-        }
-        
-        $this->redirect->gotoRoute(array('id' => "$report->id",
-                                         'action' => 'show'),
-                                   'reports-id-action');
+        $this->redirect->gotoRoute(
+            array(
+                'module' => 'reports',
+                'id' => $report->id,
+                'action' => 'show',
+            ),
+            'default'
+        );
     }
 }
