@@ -84,6 +84,8 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      * @param string $filename The filename of the file to be generated
      */
     public function generateReport($filename) {
+        // FIXME: Do not retrieve all items at once, especially since 
+        // later while() loop retrieves items in chunks.
         $this->_items = get_db()->getTable('Item')->findBy($this->_params);
         
         $options = unserialize($this->_reportFile->options);
@@ -126,10 +128,12 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      */
     private function _qrCodeUri($item)
     {
-        $args = array('cht' => 'qr',
-                      'chl' => $this->_baseUrl.'/items/show/'.$item->id,
-                      'chs' => '300x300');
-        return self::CHART_API_URI.'?'.http_build_query($args);
+        $args = array(
+            'cht' => 'qr',
+            'chl' => $this->_baseUrl . '/items/show/' . $item->id,
+            'chs' => '300x300',
+        );
+        return self::CHART_API_URI . '?' . http_build_query($args);
     }
     
     /**
@@ -142,28 +146,50 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
     private function _drawItemLabel($column, $row, $item)
     {
         $page = $this->_page;
-        // Start at the bottom left corner and count over for columns and down for rows.
-        $originX = self::MARGIN_LEFT + ($column * (self::LABEL_WIDTH + self::HORIZONTAL_SPACING));
-        $originY = 792 - self::MARGIN_TOP - (($row + 1) * (self::LABEL_HEIGHT + self::VERTICAL_SPACING));
+        // Start at the bottom left corner and count over for columns and down 
+        // for rows.
+        $originX = self::MARGIN_LEFT 
+            + ($column * (self::LABEL_WIDTH + self::HORIZONTAL_SPACING));
+        $originY = self::PAGE_HEIGHT - self::MARGIN_TOP 
+            - (($row + 1) * (self::LABEL_HEIGHT + self::VERTICAL_SPACING));
         
         $page->saveGS();
         
         // Clip on label boundaries to stop text from running over.
-        $page->clipRectangle($originX, $originY, $originX + self::LABEL_WIDTH, $originY + self::LABEL_HEIGHT);
+        $page->clipRectangle(
+            $originX, 
+            $originY, 
+            $originX + self::LABEL_WIDTH, 
+            $originY + self::LABEL_HEIGHT
+        );
         
+        // FIXME: Use tempnam() for this.
         // Temporarily save the generated QR Code.
         $temp = REPORTS_SAVE_DIRECTORY. '/qrcode.png';
+        // FIXME: Use Zend_Http_Client for this.
         file_put_contents($temp, file_get_contents($this->_qrCodeUri($item)));
         $image = Zend_Pdf_Image::imageWithPath($temp);
         unlink($temp);
         
-        $page->drawImage($image, $originX, $originY, $originX + self::LABEL_HEIGHT, $originY + self::LABEL_HEIGHT);
-        $titles = $item->getElementTextsByElementNameAndSetName('Title', 'Dublin Core');
+        $page->drawImage(
+            $image, 
+            $originX, 
+            $originY, 
+            $originX + self::LABEL_HEIGHT, 
+            $originY + self::LABEL_HEIGHT
+        );
+        $titles = $item->getElementTextsByElementNameAndSetName(
+            'Title', 'Dublin Core');
         if(count($titles) > 0) {
-                $textOriginX = $originX + self::LABEL_HEIGHT;
-                $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
-           $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text));
-           $this->_drawWrappedText($cleanTitle, $textOriginX, $textOriginY, self::LABEL_WIDTH - (self::LABEL_HEIGHT + 4));   
+            $textOriginX = $originX + self::LABEL_HEIGHT;
+            $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
+            $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text));
+            $this->_drawWrappedText(
+                $cleanTitle, 
+                $textOriginX, 
+                $textOriginY, 
+                self::LABEL_WIDTH - (self::LABEL_HEIGHT + 4)
+            );   
         }
         
         // Remove clipping rectangle
@@ -221,7 +247,12 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
             // if adding a new word isn't wider than $wrapWidth, add the
             // word to the line
             $wrappedWord = empty($wrappedLine) ? $word : " $word";
-            if ($this->_widthForStringUsingFontSize($wrappedLine.$wrappedWord, $this->_font, self::FONT_SIZE) < $wrapWidth) {
+            $stringWidth = $this->_widthForStringUsingFontSize(
+                $wrappedLine . $wrappedWord, 
+                $this->_font, 
+                self::FONT_SIZE
+            );
+            if ($stringWidth < $wrapWidth) {
                 $wrappedLine .= $wrappedWord;
             } else {
                 if (empty($wrappedLine)) {
