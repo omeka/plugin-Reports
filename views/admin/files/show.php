@@ -8,6 +8,9 @@
  * @subpackage Views
  * @copyright Copyright (c) 2011 Center for History and New Media
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * FIXME: Use chunked version of readfile() to avoid dying from going over
+ * the memory limit.
  */
 $generator = $reports_file->getGenerator();
 
