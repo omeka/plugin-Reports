@@ -38,7 +38,7 @@ class Reports_Report extends Omeka_Record
     /**
      * Gets all the generated files for this report.
      *
-     * @return array Array of ReportsFile objects.
+     * @return array Array of Reports_File objects.
      */
     public function getFiles()
     {

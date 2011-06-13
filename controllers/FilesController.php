@@ -19,11 +19,13 @@ class Reports_FilesController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_modelClass = 'ReportsFile';
+        $this->_modelClass = 'Reports_File';
     }
     
     /**
-     * Deletes a ReportsFile model and deletes the underlying file.
+     * Deletes a Reports_File instance and deletes the underlying file.
+     * 
+     * FIXME: Deleting the file itself should be part of that model.
      */
     public function deleteAction()
     {
