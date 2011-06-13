@@ -14,12 +14,15 @@
  */
 class Reports_IndexController extends Omeka_Controller_Action
 {
+    private $_jobDispatcher;
+
     /**
      * Sets the model class for the Reports controller.
      */
     public function init()
     {
         $this->_helper->db->setDefaultModelName('Reports_Report');
+        $this->_jobDispatcher = $this->getInvokeArg('bootstrap')->jobs;
     }
     
     /**
@@ -152,20 +155,13 @@ class Reports_IndexController extends Omeka_Controller_Action
             $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
     
-        $reportFile->save();
-        
-        throw new Exception("Use Omeka_Job.");
-        $report = $db->getTable('Reports_File')->find($reportFile->id);
+        $reportFile->forceSave();
+        $this->_jobDispatcher->send('Reports_GenerateJob',
+            array(
+                'fileId' => $reportFile->id, 
+            )
+        );         
 
-        // Get the report type (corresponds to the name of the class)
-        $reportType = $report->type;
-
-        // Set the report generator class.
-        $generatorClass = 'Reports_Generator_'.$reportType;
-
-        // FIXME: Should not do any work in the constructor.
-        new $generatorClass($report);
-        $reportFile->save();
         $this->redirect->gotoRoute(
             array(
                 'module' => 'reports',

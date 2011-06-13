@@ -16,7 +16,7 @@ abstract class Reports_Generator
 {
     /**
      * Model object for file to be generated.
-     * @var ReportsFile
+     * @var Reports_File
      */
     protected $_reportFile;
     
@@ -36,14 +36,14 @@ abstract class Reports_Generator
      * Generates a random filename and passes to the subclass' generateReport
      * method to create and save the report.
      * 
-     * @param ReportsFile $reportFile The report file to be generated
+     * @param Reports_File $reportFile The report file to be generated
      */
     public function __construct($reportFile) {
         if ($reportFile)
         {
             set_error_handler(array($this, 'errorHandler'), E_WARNING);
             try {
-                $reportFile->status = ReportsFile::STATUS_IN_PROGRESS;
+                $reportFile->status = Reports_File::STATUS_IN_PROGRESS;
                 $reportFile->save();
                 $this->_reportFile = $reportFile;
         
@@ -57,10 +57,10 @@ abstract class Reports_Generator
                 // Generates the report (passes to subclass)
                 $this->generateReport($path);
         
-                $this->_reportFile->status = ReportsFile::STATUS_COMPLETED;
+                $this->_reportFile->status = Reports_File::STATUS_COMPLETED;
                 $this->_reportFile->filename = $filename;
             } catch (Exception $e) {
-                $this->_reportFile->status = ReportsFile::STATUS_ERROR;
+                $this->_reportFile->status = Reports_File::STATUS_ERROR;
                 $this->_addStatusMessage($e->getMessage(), 'Error');
             }
             $this->_reportFile->pid = null;

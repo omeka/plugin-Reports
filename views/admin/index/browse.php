@@ -48,7 +48,7 @@ head($head);
 <td><?php echo $reportObject->modified; ?></td>
 <td><a href="<?php echo uri("items/browse")."?$query"; ?>"><?php echo $report['count']; ?></a></td>
 <td><a href="<?php echo uri("reports/index/query/$reportObject->id"); ?>">Edit filter</a></td>
-<td><form action="<?php echo uri("reports/generate/$reportObject->id"); ?>">
+<td><form action="<?php echo uri("reports/index/generate/$reportObject->id"); ?>">
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
 <?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
 </form>

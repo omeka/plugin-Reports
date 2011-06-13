@@ -4,8 +4,9 @@
  *
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
- * TODO: Convert to Omeka_Job
  * TODO: ACL integration
+ * TODO: Status indicator on browse page.
+ * TODO: Make reports downloadable via the admin UI.
  * FIXME: Remove all unnecessaries.  
  * @package Reports
  * @author Center for History and New Media
@@ -42,6 +43,7 @@ function reports_install()
     
     $db = get_db();
     
+    // FIXME: Rename reports_reports to a sane table name.
     /* Table: reports_reports
        
        id: Primary key 
