@@ -11,7 +11,7 @@
  */
 
 $head = array('body_class' => 'reports primary',
-              'title'      => "Report #$reportsreport->id");
+              'title'      => "Report #$report->id");
 head($head);
 ?>
 
@@ -23,7 +23,7 @@ echo uri(
     array(
         'controller' => 'index',
         'action' => 'generate',
-        'id' => $reportsreport->id, // FIXME: Variable name WTF.
+        'id' => $report->id,
     ),
     'default'
 ); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding:10px;">
@@ -39,17 +39,17 @@ echo uri(
 <table>
 <tr>
 <th>Name</th>
-<td><?php echo $reportsreport->name; ?></td>
+<td><?php echo $report->name; ?></td>
 </tr>
 <tr>
 <th>Description</th>
-<td><?php echo $reportsreport->description; ?></td>
+<td><?php echo $report->description; ?></td>
 </tr>
 <th>Creator</th>
-<td><?php echo reports_get_name_for_entity_id($reportsreport->creator); ?></td>
+<td><?php echo reports_get_name_for_entity_id($report->creator); ?></td>
 </tr>
 <th>Date Added</th>
-<td><?php echo $reportsreport->modified; ?></td>
+<td><?php echo $report->modified; ?></td>
 </tr>
 </table>
 
