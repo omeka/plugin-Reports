@@ -10,6 +10,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  *
  * FIXME: Add CSRF token to mini-forms on this page.
+ * FIXME: Fix all broken uri() calls.
  */
 
 $head = array('body_class' => 'reports primary',
