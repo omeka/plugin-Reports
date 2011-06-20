@@ -204,11 +204,11 @@ function reports_convert_search_filters($query) {
         $filter['type'] = $type;
     }
     
-    if (($tag = $query['tag']) || ($tag = $query['tags'])) {
+    if (($tag = @$query['tag']) || ($tag = @$query['tags'])) {
         $filter['tags'] = $tag;
     }
     
-    if ($excludeTags = $query['excludeTags']) {
+    if ($excludeTags = @$query['excludeTags']) {
         $filter['excludeTags'] = $excludeTags;
     }
     
