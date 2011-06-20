@@ -22,7 +22,6 @@ add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
 add_plugin_hook('config_form', 'reports_config_form');
 add_plugin_hook('config', 'reports_config');
-add_plugin_hook('define_routes', 'reports_define_routes');
 add_plugin_hook('define_acl', 'reports_define_acl');
 add_filter('admin_navigation_main', 'reports_admin_navigation_main');
 
@@ -120,26 +119,6 @@ function reports_admin_navigation_main($tabs)
 {
     $tabs['Reports'] = uri('reports');
     return $tabs;
-}
-
-/**
- * Defines custom routes for the reports controllers.
- * @param Zend_Controller_Router_Interface $router Router
- */
-function reports_define_routes($router)
-{
-    // FIXME: Remove all these routes, they have overlapping functionality
-    // with Zend's default route.
-    $router->addRoute('reports-sub-controllers',
-                      new Zend_Controller_Router_Route(
-                          'reports/:controller/:action/:id',
-                          array( 'module'     => 'reports'),
-                          array( 'id'         => '\d+')));
-    $router->addRoute('reports-action', 
-                      new Zend_Controller_Router_Route(
-                          'reports/:action',
-                          array( 'module'     => 'reports',
-                                 'controller' => 'index')));
 }
 
 /**
