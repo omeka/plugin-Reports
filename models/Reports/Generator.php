@@ -131,19 +131,10 @@ abstract class Reports_Generator
         $this->_reportFile->forceSave();
     }
 
-    public static function factory($type)
+    public static function factory($reportFile)
     {
-        if ($type instanceof Reports_File) {
-            $typeStr = $type->type;
-            $file = $type;
-        } else {
-            $typeStr = $type; 
-            $file = null;
-        }
-        $class = self::CLASS_PREFIX . $typeStr;
-        // FIXME: Do not instantiate this class with a null argument
-        // (unnecessary).
-        return new $class($file);
+        $class = self::CLASS_PREFIX . $reportFile->type;
+        return new $class($reportFile);
     }
 
     public static function getFormats($fromDir)
