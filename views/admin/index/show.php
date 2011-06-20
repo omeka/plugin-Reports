@@ -73,8 +73,21 @@ echo uri(
     <td><?php echo $file->getGenerator()->getReadableName(); ?></td>
     <td><?php echo ucwords($status = $file->status); ?></td>
     <?php if ($status == Reports_File::STATUS_COMPLETED) : ?>
-    <td><a href="<?php echo uri("reports/files/show/$file->id"); ?>">View file</a></td>
-    <td><a href="<?php echo uri("reports/files/delete/$file->id"); ?>" class="delete">Delete file</a></td>
+    <td><a href="<?php 
+echo uri(
+    array(
+        'controller' => 'files',
+        'id' => $file->id,
+    )    
+); ?>">View file</a></td>
+    <td><a href="<?php 
+echo uri(
+    array(
+        'controller' => 'files',
+        'action' => 'delete',
+        'id' => $file->id,
+    )
+); ?>" class="delete">Delete file</a></td>
     <?php else: ?>
     <td></td>
     <td></td>
