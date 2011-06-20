@@ -5,7 +5,7 @@
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
  * TODO: Status indicator on browse page.
- * TODO: Make reports downloadable via the admin UI.
+ * TODO: Reports should be stored using Omeka_Storage.
  * @package Reports
  * @author Center for History and New Media
  * @copyright Copyright 2011 Center for History and New Media
