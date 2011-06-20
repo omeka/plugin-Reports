@@ -18,7 +18,15 @@ head($head);
 <h1><?php echo $head['title'];?></h1>
 
 <div id="generate-report" class="add-button">
-<form action="<?php echo uri("reports/generate/$reportsreport->id"); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding:10px;">
+<form action="<?php 
+echo uri(
+    array(
+        'controller' => 'index',
+        'action' => 'generate',
+        'id' => $reportsreport->id, // FIXME: Variable name WTF.
+    ),
+    'default'
+); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding:10px;">
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
 <?php echo $this->formSubmit('submit-generate', 'Generate a New File', array('class' => 'add', 'style' => 'color: #c50; background-color: transparent; border: none; font-size: 1.2em;')); ?>
 </form>
