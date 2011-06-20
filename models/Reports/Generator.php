@@ -145,4 +145,23 @@ abstract class Reports_Generator
         // (unnecessary).
         return new $class($file);
     }
+
+    public static function getFormats($fromDir)
+    {
+        $dir = new DirectoryIterator($fromDir);
+        $formats = array();
+        foreach ($dir as $entry) {
+            if ($entry->isFile() && !$entry->isDot()) {
+                $filename = $entry->getFilename();
+                if (preg_match('/^(.+)\.php$/', $filename, $match) 
+                    && $match[1] != 'Abstract'
+                ) {
+                    $object = Reports_Generator::factory($match[1]);
+                    $name = $object->getReadableName();
+                    $formats[$match[1]] = $name;
+                }
+            }
+        }
+        return $formats;
+    }
 }
