@@ -14,6 +14,8 @@
  */
 abstract class Reports_Generator
 {
+    const CLASS_PREFIX = 'Reports_Generator_';
+
     /**
      * Model object for file to be generated.
      * @var Reports_File
@@ -127,5 +129,20 @@ abstract class Reports_Generator
             $this->_addStatusMessage($e->getMessage(), 'Error');
         }
         $this->_reportFile->forceSave();
+    }
+
+    public static function factory($type)
+    {
+        if ($type instanceof Reports_File) {
+            $typeStr = $type->type;
+            $file = $type;
+        } else {
+            $typeStr = $type; 
+            $file = null;
+        }
+        $class = self::CLASS_PREFIX . $typeStr;
+        // FIXME: Do not instantiate this class with a null argument
+        // (unnecessary).
+        return new $class($file);
     }
 }
