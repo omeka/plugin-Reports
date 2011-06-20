@@ -4,7 +4,6 @@
  *
  * Main script for the plugin, sets up hooks and filters to the Omeka API.
  *
- * TODO: ACL integration
  * TODO: Status indicator on browse page.
  * TODO: Make reports downloadable via the admin UI.
  * @package Reports
@@ -117,7 +116,16 @@ function reports_uninstall()
  */
 function reports_admin_navigation_main($tabs)
 {
-    $tabs['Reports'] = uri('reports');
+    if (has_permission('Reports_Index', 'index')) {
+        $tabs['Reports'] = uri(
+            array(
+                'controller' => 'index',
+                'module' => 'reports',
+                'action' => 'index',
+            ),
+            'default'
+        );
+    }
     return $tabs;
 }
 
