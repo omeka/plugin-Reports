@@ -19,14 +19,16 @@ head($head);
 
 <h1><?php echo $head['title'];?></h1>
 
-<p id="add-report" class="add-button"><a href="<?php echo uri('reports/add'); ?>" class="add">Add a Report</a></p>
+<p id="add-report" class="add-button"><a href="<?php 
+echo uri(array('action' => 'add')); ?>" class="add">Add a Report</a></p>
 
 <div id="primary">
 
 <?php echo flash(); ?>
 
 <?php if (count($reports) == 0) : ?>
-<p>You haven&apos;t created any reports yet.  <a href="<?php echo uri('reports/add'); ?>">Create one.</a></p>
+<p>You haven&apos;t created any reports yet.  <a href="<?php 
+echo uri(array('action' => 'add')); ?>">Create one.</a></p>
 <?php else : ?>
 <table>
 <thead>
@@ -45,12 +47,30 @@ head($head);
       } ?>
 <tr>
 <td><?php echo $reportObject->id; ?></td>
-<td><a href="<?php echo uri("reports/index/show/$reportObject->id"); ?>"><?php echo $reportObject->name; ?></a></td>
+<td><a href="<?php 
+echo uri(
+    array(
+        'action' => 'show',
+        'id' => $reportObject->id,
+    )
+); ?>"><?php echo $reportObject->name; ?></a></td>
 <td><?php echo $report['userName']; ?></td>
 <td><?php echo $reportObject->modified; ?></td>
 <td><a href="<?php echo uri("items/browse")."?$query"; ?>"><?php echo $report['count']; ?></a></td>
-<td><a href="<?php echo uri("reports/index/query/$reportObject->id"); ?>">Edit filter</a></td>
-<td><form action="<?php echo uri("reports/index/generate/$reportObject->id"); ?>">
+<td><a href="<?php 
+echo uri(
+    array(
+        'action' => 'query',
+        'id' => $reportObject->id,        
+    )
+); ?>">Edit filter</a></td>
+<td><form action="<?php 
+echo uri(
+    array(
+        'action' => 'generate',
+        'id' => $reportObject->id,
+    )    
+); ?>">
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
 <?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
 </form>
