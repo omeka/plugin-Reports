@@ -14,6 +14,8 @@
  */
 abstract class Reports_Generator
 {
+    const CLASS_PREFIX = 'Reports_Generator_';
+
     /**
      * Model object for file to be generated.
      * @var Reports_File
@@ -127,5 +129,35 @@ abstract class Reports_Generator
             $this->_addStatusMessage($e->getMessage(), 'Error');
         }
         $this->_reportFile->forceSave();
+    }
+
+    public static function factory($reportFile)
+    {
+        $class = self::CLASS_PREFIX . $reportFile->type;
+        return new $class($reportFile);
+    }
+
+    public static function getFormats($fromDir)
+    {
+        $dir = new DirectoryIterator($fromDir);
+        $formats = array();
+        foreach ($dir as $entry) {
+            if ($entry->isFile() && !$entry->isDot()) {
+                $filename = $entry->getFilename();
+                if (preg_match('/^(.+)\.php$/', $filename, $match) 
+                    && $match[1] != 'Abstract'
+                ) {
+                    $className = self::CLASS_PREFIX . $match[1];
+                    if (!method_exists($className, 'getReadableName')) {
+                        throw new InvalidArgumentException(
+                            "Invalid report type: {$match[1]}."
+                        );
+                    }
+                    $name = call_user_func(array($className, 'getReadableName'));
+                    $formats[$match[1]] = $name;
+                }
+            }
+        }
+        return $formats;
     }
 }

@@ -18,8 +18,6 @@ define('REPORTS_PLUGIN_DIRECTORY', dirname(__FILE__));
 define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
                                       '/models/Reports/Generator');
 
-define('REPORTS_GENERATOR_PREFIX', 'Reports_Generator_');
-
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
 add_plugin_hook('config_form', 'reports_config_form');
@@ -179,22 +177,7 @@ function reports_get_name_for_entity_id($entityId)
  */
 function reports_get_output_formats()
 {
-    $dir = new DirectoryIterator(REPORTS_GENERATOR_DIRECTORY);
-    $formats = array();
-    foreach ($dir as $entry) {
-        if ($entry->isFile() && !$entry->isDot()) {
-            $filename = $entry->getFilename();
-            if(preg_match('/^(.+)\.php$/', $filename, $match) && $match[1] != 'Abstract') {
-                // Get and set only the name of the file minus the extension.
-                //require_once($pathname);
-                $class = REPORTS_GENERATOR_PREFIX."${match[1]}";
-                $object = new $class(null);
-                $name = $object->getReadableName();
-                $formats[$match[1]] = $name;
-            }
-        }
-    }
-    return $formats;
+    return Reports_Generator::getFormats(REPORTS_GENERATOR_DIRECTORY);
 }
 
 /**

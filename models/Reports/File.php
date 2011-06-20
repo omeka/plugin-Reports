@@ -58,10 +58,6 @@ class Reports_File extends Omeka_Record
      */
     public function getGenerator()
     {
-        $formats = reports_get_output_formats();
-        $class = REPORTS_GENERATOR_PREFIX.$this->type;
-        // FIXME: Do not instantiate this class with a null argument
-        // (unnecessary).
-        return new $class(null);
+        return Reports_Generator::factory($this);
     }
 }
