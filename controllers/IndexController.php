@@ -121,7 +121,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         
         $this->view->formats = $formats;
         
-        $this->view->reportsreport = $report;
+        $this->view->report = $report;
         $this->view->reportFiles = $reportFiles;
     }
     
