@@ -244,3 +244,13 @@ function reports_save_directory()
     }
     return realpath($config->Reports->saveDirectory);
 }
+
+function reports_get_storage_prefix()
+{
+    $default = 'reports/';
+    $config = Omeka_Context::getInstance()->config->plugins;
+    if (!$config || !$config->Reports || !$config->Reports->storagePrefix) {
+        return $default;
+    }
+    return (string)$config->Reports->storagePrefix;
+}

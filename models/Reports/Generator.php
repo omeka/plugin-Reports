@@ -33,6 +33,8 @@ abstract class Reports_Generator
      * @var array
      */
     protected $_params;
+
+    private $_storagePrefix;
     
     /**
      * Generates a random filename and passes to the subclass' generateReport
@@ -40,8 +42,9 @@ abstract class Reports_Generator
      * 
      * @param Reports_File $reportFile The report file to be generated
      */
-    public function __construct($reportFile) {
+    public function __construct($reportFile, $storagePrefix) {
         $this->_reportFile = $reportFile;
+        $this->_storagePrefix = $storagePrefix;
     }
 
     /**
@@ -118,7 +121,8 @@ abstract class Reports_Generator
             // Creates a random filename based on the type of report.
             $filter = new Omeka_Filter_Filename();
             $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
-            $path = reports_save_directory() . '/' . $filename;
+
+            $path = $this->_storagePrefix . $filename;
             // Generates the report (passes to subclass)
             $this->generateReport($path);
     
@@ -134,7 +138,8 @@ abstract class Reports_Generator
     public static function factory($reportFile)
     {
         $class = self::CLASS_PREFIX . $reportFile->type;
-        return new $class($reportFile);
+        $storagePrefix = reports_get_storage_prefix();
+        return new $class($reportFile, $storagePrefix);
     }
 
     public static function getFormats($fromDir)
