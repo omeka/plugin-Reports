@@ -46,7 +46,7 @@ echo uri(
 <td><?php echo $report->description; ?></td>
 </tr>
 <th>Creator</th>
-<td><?php echo reports_get_name_for_entity_id($report->creator); ?></td>
+<td><?php echo html_escape($report->getCreatorName()); ?></td>
 </tr>
 <th>Date Added</th>
 <td><?php echo $report->modified; ?></td>

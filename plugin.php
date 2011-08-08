@@ -35,7 +35,7 @@ function reports_install()
        name: Name of report
        description: Description of report
        query: Filter for items
-       creator: Entity ID of creator
+       creator: User ID of creator
        modified: Date report was last modified
     */
     $sql = "
@@ -142,17 +142,6 @@ function reports_define_acl($acl)
                                                           'delete')));
     $acl->loadResourceList(array('Reports_Files' => array('show',
                                                           'delete')));
-}
-
-/**
- * Gets the full name associated with the given entity.
- *
- * @param int $entityId Entity ID
- * @return string Full name of entity
- */
-function reports_get_name_for_entity_id($entityId)
-{
-    return get_db()->getTable('Entity')->find($entityId)->getName();
 }
 
 /**

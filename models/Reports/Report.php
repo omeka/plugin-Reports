@@ -53,4 +53,10 @@ class Reports_Report extends Omeka_Record
     {
         return $this->_db->getTable('Reports_File')->findByReportId($this->id);
     }
+
+    public function getCreatorName()
+    {
+        $user = $this->getTable('User')->find($this->creator);
+        return $user->Entity->getName();
+    }
 }

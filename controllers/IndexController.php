@@ -46,7 +46,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             $id = $report->id;
             $creator = $report->creator;
             
-            $userName = $this->getTable('Entity')->find($creator)->getName();
+            $userName = $this->getTable('User')->find($creator)->getName();
             $query = unserialize($report->query);
             $params = reports_convert_search_filters($query);
             $count = $this->getTable('Item')->count($params);
