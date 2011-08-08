@@ -57,6 +57,6 @@ class Reports_Report extends Omeka_Record
     public function getCreatorName()
     {
         $user = $this->getTable('User')->find($this->creator);
-        return $user->Entity->getName();
+        return $user->first_name . ' ' . $user->last_name;
     }
 }
