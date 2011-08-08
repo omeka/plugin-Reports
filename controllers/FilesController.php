@@ -21,6 +21,15 @@ class Reports_FilesController extends Omeka_Controller_Action
     {
         $this->_helper->db->setDefaultModelName('Reports_File');
     }
+
+    public function showAction()
+    {
+        $file = $this->_helper->db->findById();
+        $storage = $this->getInvokeArg('bootstrap')->storage;
+        $prefix = reports_get_storage_prefix();
+        $uri = $storage->getUri("$prefix{$file->filename}");
+        return $this->_helper->redirector->gotoUrl($uri);
+    }
     
     /**
      * Deletes a Reports_File instance and deletes the underlying file.
