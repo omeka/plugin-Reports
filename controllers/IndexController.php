@@ -31,6 +31,7 @@ class Reports_IndexController extends Omeka_Controller_Action
     public function browseAction()
     {
         $saveDirectory = reports_save_directory();
+        $reportsDisplay = array();
         if (!$saveDirectory) {
             $this->flashError('The report save directory does not exist.');
         }
