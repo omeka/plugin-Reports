@@ -19,8 +19,6 @@ define('REPORTS_GENERATOR_DIRECTORY', REPORTS_PLUGIN_DIRECTORY .
 
 add_plugin_hook('install', 'reports_install');
 add_plugin_hook('uninstall', 'reports_uninstall');
-add_plugin_hook('config_form', 'reports_config_form');
-add_plugin_hook('config', 'reports_config');
 add_plugin_hook('define_acl', 'reports_define_acl');
 add_filter('admin_navigation_main', 'reports_admin_navigation_main');
 
