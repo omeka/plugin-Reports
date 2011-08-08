@@ -88,13 +88,6 @@ abstract class Reports_Generator
     public abstract function generateReport($path);
     
     /**
-     * Returns the readable name of the subclass' output format.
-     *
-     * @return string Human-readable name for output format
-     */
-    public abstract function getReadableName();
-    
-    /**
      * Returns the HTTP content type to declare for the output format.
      *
      * @return string HTTP Content-type

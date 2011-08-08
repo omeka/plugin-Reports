@@ -12,7 +12,9 @@
  * @package Reports
  * @subpackage Generators
  */
-class Reports_Generator_Html extends Reports_Generator
+class Reports_Generator_Html 
+    extends Reports_Generator
+    implements Reports_GeneratorInterface
 {
     /**
      * The file handle to output to
@@ -154,7 +156,7 @@ class Reports_Generator_Html extends Reports_Generator
      *
      * @return string Human-readable name for output format
      */
-    public function getReadableName() {
+    public static function getReadableName() {
         return 'HTML';
     }
     

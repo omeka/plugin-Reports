@@ -15,7 +15,9 @@
  * @package Reports
  * @subpackage Generators
  */
-class Reports_Generator_PdfQrCode extends Reports_Generator
+class Reports_Generator_PdfQrCode 
+    extends Reports_Generator
+    implements Reports_GeneratorInterface
 {
     /**
      * The PDF document object
@@ -272,7 +274,7 @@ class Reports_Generator_PdfQrCode extends Reports_Generator
      *
      * @return string Human-readable name for output format
      */
-    public function getReadableName() {
+    public static function getReadableName() {
         return 'QR Code (PDF)';
     }
     
