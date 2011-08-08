@@ -18,8 +18,17 @@ class Reports_Report extends Omeka_Record
     public $name;
     public $description;
     public $query;
+
+    /**
+     * @var integer User ID.
+     */
     public $creator;
     public $modified;
+
+    protected function beforeInsert()
+    {
+        $this->creator = current_user()->id;
+    }
     
     /**
      * Throw validation errors for report form.
