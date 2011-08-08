@@ -60,17 +60,24 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->view->formats = reports_get_output_formats();
     }
     
-    /**
-     * FIXME: Duplicates Omeka_Controller_Action::addAction() except for the
-     * redirect.
-     */
     public function addAction()
     {
         $class = $this->_helper->db->getDefaultModelName();
         $record = new $class();
-        
+        require_once dirname(__FILE__) . '/../forms/Reports/Detail.php';
+        $form = new Reports_Form_Detail();
+        $this->view->form = $form;
+        $this->view->assign(array(strtolower($class) => $record));
+
+        if (!$this->_request->isPost()) {
+            return;
+        }
+        if (!$form->isValid($this->_request->getPost())) {
+            return;
+        }
+
         try {
-            if ($record->saveForm($_POST)) {
+            if ($record->saveForm($form->getValues())) {
                 $this->redirect->gotoRoute(
                     array(
                         'module' => 'reports',
@@ -83,7 +90,6 @@ class Reports_IndexController extends Omeka_Controller_Action
         } catch (Omeka_Validator_Exception $e) {
             $this->flashValidationErrors($e);
         }
-        $this->view->assign(array(strtolower($class) => $record));
     }
     
     /**

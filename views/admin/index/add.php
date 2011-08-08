@@ -23,25 +23,7 @@ head($head);
 
 <h2>Report Details</h2>
 <div>
-    <form method="post">
-    <div class="field">
-        <?php echo label(array('for' => 'name'),'Report Name'); ?>
-        <div class="inputs">
-            <?php echo text(array('name'=>'name', 'class'=>'textinput', 'id'=>'name', 'size'=>'40'), $reportsreport->name); ?>
-        </div>
-    <?php echo form_error('name'); ?>
-    </div>
-
-    <div class="field">
-    	<?php echo label(array('for' => 'description'),'Description'); ?>
-        <?php echo form_error('description'); ?>
-        <div class="inputs">
-            <?php echo textarea(array('name'=>'description', 'class'=>'textinput', 'id'=>'description','rows'=>'10','cols'=>'60'), $reportsreport->description); ?>
-        </div>
-    </div>
-    <?php echo $this->formHidden('creator', Omeka_Context::getInstance()->getCurrentUser()->entity_id); ?>
-    <?php echo $this->formSubmit('submit_add_report', 'Add Report', array('class' => 'submit submit-medium')); ?>
-    </form>
+    <?php echo $this->form; ?>
 </div>
 
 </div>
