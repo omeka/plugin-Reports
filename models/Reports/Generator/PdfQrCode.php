@@ -47,6 +47,8 @@ class Reports_Generator_PdfQrCode
      */
     private $_baseUrl;
     
+    private $_qrGenerator;
+
     // Spacing constants for 5163 labels, in points.
     
     const PAGE_HEIGHT = 792;
