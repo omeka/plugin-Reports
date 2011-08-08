@@ -74,9 +74,9 @@ class Reports_Generator_PdfQrCode
     /**
      * Creates and generates the PDF report for the items in the report.
      *
-     * @param string $filename The filename of the file to be generated
+     * @param string $filePath
      */
-    public function generateReport($filename) 
+    public function generateReport($filePath) 
     {
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
@@ -106,7 +106,7 @@ class Reports_Generator_PdfQrCode
             $page++;
         }
         
-        $this->_pdf->save($filename);
+        $this->_pdf->save($filePath);
     }
     
     /**

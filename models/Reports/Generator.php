@@ -128,9 +128,11 @@ abstract class Reports_Generator
             $filter = new Omeka_Filter_Filename();
             $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
 
-            $path = $this->_storagePrefix . $filename;
+            $destPath = $this->_storagePrefix . $filename;
+            $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
             // Generates the report (passes to subclass)
-            $this->generateReport($path);
+            $this->generateReport($tempFilePath);
+            $this->_storage->store($tempFilePath, $destPath);
     
             $this->_reportFile->status = Reports_File::STATUS_COMPLETED;
             $this->_reportFile->filename = $filename;

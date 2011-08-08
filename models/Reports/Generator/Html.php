@@ -26,16 +26,14 @@ class Reports_Generator_Html
     /**
      * Creates and generates the HTML report for the items in the report.
      *
-     * @param string $filename The filename of the file to be generated
+     * @param string $filePath
      */
-    public function generateReport($destPath) {
-        $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
-        $this->_file = fopen($tempFilePath, 'w');
+    public function generateReport($filePath) {
+        $this->_file = fopen($filePath, 'w');
         ob_start(array($this, '_fileOutputCallback'), 1);
         $this->outputHTML();
         ob_end_flush();
         fclose($this->_file);
-        $this->_storage->store($tempFilePath, $destPath);
     }
     
     /**
