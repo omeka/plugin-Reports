@@ -28,12 +28,14 @@ class Reports_Generator_Html
      *
      * @param string $filename The filename of the file to be generated
      */
-    public function generateReport($filename) {
-        $this->_file = fopen($filename, 'w');
+    public function generateReport($destPath) {
+        $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
+        $this->_file = fopen($tempFilePath, 'w');
         ob_start(array($this, '_fileOutputCallback'), 1);
         $this->outputHTML();
         ob_end_flush();
         fclose($this->_file);
+        $this->_storage->store($tempFilePath, $destPath);
     }
     
     /**

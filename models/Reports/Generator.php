@@ -34,6 +34,11 @@ abstract class Reports_Generator
      */
     protected $_params;
 
+    /**
+     * @var Omeka_Storage
+     */
+    protected $_storage;
+
     private $_storagePrefix;
     
     /**
@@ -42,9 +47,17 @@ abstract class Reports_Generator
      * 
      * @param Reports_File $reportFile The report file to be generated
      */
-    public function __construct($reportFile, $storagePrefix) {
+    public function __construct(
+        $reportFile, 
+        $storagePrefix
+    ) {
         $this->_reportFile = $reportFile;
         $this->_storagePrefix = $storagePrefix;
+    }
+
+    public function setStorage($storage)
+    {
+        $this->_storage = $storage;
     }
 
     /**
@@ -132,7 +145,9 @@ abstract class Reports_Generator
     {
         $class = self::CLASS_PREFIX . $reportFile->type;
         $storagePrefix = reports_get_storage_prefix();
-        return new $class($reportFile, $storagePrefix);
+        $inst = new $class($reportFile, $storagePrefix);
+        $inst->setStorage(Zend_Registry::get('storage'));
+        return $inst;
     }
 
     public static function getFormats($fromDir)
