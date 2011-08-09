@@ -83,15 +83,23 @@ class Reports_Generator_PdfQrCode
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
         
-        $this->_pdf = new Zend_Pdf();
+        $pdf = new Zend_Pdf();
         $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
-        $this->_addPage();
+        $this->_addPage($pdf);
+        $pdf->save($filePath);
         
         // Iterate through the rows and columns and draw one label per item.
         $column = 0;
         $row = 0;
         $page = 1;
+        
+        // To conserve memory on big jobs, the PDF should be saved 
+        // incrementally after the initial page has been added. This has the 
+        // additional side effect of producing a partial report in the event
+        // of an error.
+        $updateOnly = true;
         while ($items = get_db()->getTable('Item')->findBy($this->_params, 30, $page)) {
+            $pdf = Zend_Pdf::load($filePath);
             foreach ($items as $item) {
                 $this->_drawItemLabel($column, $row, $item);
                 $row++;
@@ -101,14 +109,15 @@ class Reports_Generator_PdfQrCode
                     $row = 0;
                 }
                 if($column >= self::COLUMNS) {
-                    $this->_addPage();
+                    $this->_addPage($pdf);
                     $column = 0;
                 }
             }
+            $pdf->save($filePath, $updateOnly);
+            _log(memory_get_peak_usage());
             $page++;
         }
         
-        $this->_pdf->save($filePath);
     }
     
     /**
@@ -171,11 +180,11 @@ class Reports_Generator_PdfQrCode
      * Adds a new page to the PDF document, and switches the current page to
      * the new page.
      */
-    private function _addPage()
+    private function _addPage(Zend_Pdf $pdf)
     {
-        $newPage = $this->_pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
+        $newPage = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
         $newPage->setFont($this->_font, self::FONT_SIZE);
-        $this->_pdf->pages[] = $this->_page = $newPage;
+        $pdf->pages[] = $this->_page = $newPage;
     }
     
     /**
