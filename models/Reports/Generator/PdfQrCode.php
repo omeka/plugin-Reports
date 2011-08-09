@@ -20,20 +20,6 @@ class Reports_Generator_PdfQrCode
     implements Reports_GeneratorInterface
 {
     /**
-     * The PDF document object
-     *
-     * @var Zend_Pdf
-     */
-    private $_pdf;
-    
-    /**
-     * The current page in the PDF document
-     *
-     * @var Zend_Pdf_Page
-     */
-    private $_page;
-    
-    /**
      * The current font being used by the PDF document
      *
      * @var Zend_Pdf_Resource_Font
@@ -85,23 +71,25 @@ class Reports_Generator_PdfQrCode
         
         $pdf = new Zend_Pdf();
         $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
-        $this->_addPage($pdf);
         $pdf->save($filePath);
         
         // Iterate through the rows and columns and draw one label per item.
         $column = 0;
         $row = 0;
-        $page = 1;
+        $pageNum = 1;
         
         // To conserve memory on big jobs, the PDF should be saved 
         // incrementally after the initial page has been added. This has the 
         // additional side effect of producing a partial report in the event
         // of an error.
         $updateOnly = true;
-        while ($items = get_db()->getTable('Item')->findBy($this->_params, 30, $page)) {
+        while ($items = $this->_getItems($pageNum)) {
+            // Reloading the PDF file (as opposed to reusing the initial 
+            // object) also saves on memory, albeit inexplicably so.
             $pdf = Zend_Pdf::load($filePath);
+            $page = $this->_addPage($pdf);
             foreach ($items as $item) {
-                $this->_drawItemLabel($column, $row, $item);
+                $this->_drawItemLabel($page, $column, $row, $item);
                 $row++;
 
                 if($row >= self::ROWS) {
@@ -109,15 +97,20 @@ class Reports_Generator_PdfQrCode
                     $row = 0;
                 }
                 if($column >= self::COLUMNS) {
-                    $this->_addPage($pdf);
+                    $page = $this->_addPage($pdf);
                     $column = 0;
                 }
             }
             $pdf->save($filePath, $updateOnly);
             _log(memory_get_peak_usage());
-            $page++;
+            $pageNum++;
         }
         
+    }
+
+    private function _getItems($pageNum)
+    {
+        return get_db()->getTable('Item')->findBy($this->_params, 30, $pageNum);
     }
     
     /**
@@ -127,9 +120,12 @@ class Reports_Generator_PdfQrCode
      * @param int $row Vertical index on the current page
      * @param Item $item The item to report on
      */
-    private function _drawItemLabel($column, $row, $item)
-    {
-        $page = $this->_page;
+    private function _drawItemLabel(
+        Zend_Pdf_Page $page, 
+        $column, 
+        $row, 
+        $item
+    ) {
         // Start at the bottom left corner and count over for columns and down 
         // for rows.
         $originX = self::MARGIN_LEFT 
@@ -162,6 +158,7 @@ class Reports_Generator_PdfQrCode
             $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
             $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text));
             $this->_drawWrappedText(
+                $page,
                 $cleanTitle, 
                 $textOriginX, 
                 $textOriginY, 
@@ -177,14 +174,16 @@ class Reports_Generator_PdfQrCode
     }
     
     /**
-     * Adds a new page to the PDF document, and switches the current page to
-     * the new page.
+     * Adds a new page to the PDF document.
+     *
+     * @return Zend_Pdf_Page
      */
     private function _addPage(Zend_Pdf $pdf)
     {
         $newPage = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
         $newPage->setFont($this->_font, self::FONT_SIZE);
-        $pdf->pages[] = $this->_page = $newPage;
+        $pdf->pages[] = $newPage;
+        return $newPage;
     }
     
     /**
@@ -196,13 +195,18 @@ class Reports_Generator_PdfQrCode
      * @param int $y Y coordinate of origin on page
      * @param int $wrapWidth Maximum width of a line
      */
-    private function _drawWrappedText($text, $x, $y, $wrapWidth) 
-    {
+    private function _drawWrappedText(
+        Zend_Pdf_Page $page, 
+        $text, 
+        $x, 
+        $y, 
+        $wrapWidth
+    ) {
         $wrappedText = $this->_wrapText($text, $wrapWidth);
         $lines = explode("\n", $wrappedText);
         foreach($lines as $line)
         {
-            $this->_page->drawText($line, $x, $y);
+            $page->drawText($line, $x, $y);
             $y -= self::FONT_SIZE + 5;
         }
     }
