@@ -73,9 +73,6 @@ class Reports_Generator_PdfQrCode
         $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
         $pdf->save($filePath);
         
-        // Iterate through the rows and columns and draw one label per item.
-        $column = 0;
-        $row = 0;
         $pageNum = 1;
         
         // To conserve memory on big jobs, the PDF should be saved 
@@ -83,22 +80,30 @@ class Reports_Generator_PdfQrCode
         // additional side effect of producing a partial report in the event
         // of an error.
         $updateOnly = true;
+        $itemsPerPage = self::ROWS * self::COLUMNS;
         while ($items = $this->_getItems($pageNum)) {
             // Reloading the PDF file (as opposed to reusing the initial 
             // object) also saves on memory, albeit inexplicably so.
             $pdf = Zend_Pdf::load($filePath);
-            $page = $this->_addPage($pdf);
-            foreach ($items as $item) {
-                $this->_drawItemLabel($page, $column, $row, $item);
-                $row++;
+            // Split the array into groups with just enough to fit on each 
+            // page.
+            $itemChunks = array_chunk($items, $itemsPerPage);
+            foreach ($itemChunks as $chunk) {
+                _log("Adding page for a new chunk.");
+                $page = $this->_addPage($pdf);
+                $column = 0;
+                $row = 0;
+                foreach ($chunk as $item) {
+                    $this->_drawItemLabel($page, $column, $row, $item);
+                    $row++;
 
-                if($row >= self::ROWS) {
-                    $column++;
-                    $row = 0;
-                }
-                if($column >= self::COLUMNS) {
-                    $page = $this->_addPage($pdf);
-                    $column = 0;
+                    if($row >= self::ROWS) {
+                        $column++;
+                        $row = 0;
+                    }
+                    if($column >= self::COLUMNS) {
+                        $column = 0;
+                    }
                 }
             }
             $pdf->save($filePath, $updateOnly);
