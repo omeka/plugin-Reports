@@ -160,6 +160,7 @@ class Reports_IndexController extends Omeka_Controller_Action
         }
     
         $reportFile->forceSave();
+        $this->_jobDispatcher->setQueueName('reports');
         $this->_jobDispatcher->send('Reports_GenerateJob',
             array(
                 'fileId' => $reportFile->id, 
