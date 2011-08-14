@@ -222,22 +222,21 @@ function reports_convert_search_filters($query) {
     return array_merge($perms, $filter, $order);
 }
 
-function reports_save_directory()
+function reports_get_config($key, $default = null)
 {
-    $default = sys_get_temp_dir();
     $config = Omeka_Context::getInstance()->config->plugins;
-    if (!$config || !$config->Reports || !$config->Reports->saveDirectory) {
+    if (!$config || !$config->Reports || !$config->Reports->$key) {
         return $default;
     }
-    return realpath($config->Reports->saveDirectory);
+    return $config->Reports->$key;
+}
+
+function reports_save_directory()
+{
+    return realpath(reports_get_config('saveDirectory', sys_get_temp_dir()));
 }
 
 function reports_get_storage_prefix()
 {
-    $default = 'reports/';
-    $config = Omeka_Context::getInstance()->config->plugins;
-    if (!$config || !$config->Reports || !$config->Reports->storagePrefix) {
-        return $default;
-    }
-    return (string)$config->Reports->storagePrefix;
+    return (string)reports_get_config('storagePrefix', 'reports/');
 }
