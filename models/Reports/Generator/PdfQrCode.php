@@ -35,6 +35,8 @@ class Reports_Generator_PdfQrCode
     
     private $_qrGenerator;
 
+    private $_itemPageNum = 1;
+
     // Spacing constants for 5163 labels, in points.
     
     const PAGE_HEIGHT = 792;
@@ -73,15 +75,13 @@ class Reports_Generator_PdfQrCode
         $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
         $pdf->save($filePath);
         
-        $pageNum = 1;
-        
         // To conserve memory on big jobs, the PDF should be saved 
         // incrementally after the initial page has been added. This has the 
         // additional side effect of producing a partial report in the event
         // of an error.
         $updateOnly = true;
         $itemsPerPage = self::ROWS * self::COLUMNS;
-        while ($items = $this->_getItems($pageNum)) {
+        while ($items = $this->_getItems()) {
             // Reloading the PDF file (as opposed to reusing the initial 
             // object) also saves on memory, albeit inexplicably so.
             $pdf = Zend_Pdf::load($filePath);
@@ -108,14 +108,21 @@ class Reports_Generator_PdfQrCode
             }
             $pdf->save($filePath, $updateOnly);
             _log(memory_get_peak_usage());
-            $pageNum++;
         }
         
     }
 
-    private function _getItems($pageNum)
+    private function _getItems()
     {
-        return get_db()->getTable('Item')->findBy($this->_params, 30, $pageNum);
+        $items = get_db()
+            ->getTable('Item')
+            ->findBy(
+                $this->_params, 
+                30,
+                $this->_itemPageNum
+            );
+        $this->_itemPageNum++;
+        return $items;
     }
     
     /**
