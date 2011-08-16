@@ -118,7 +118,7 @@ class Reports_Generator_PdfQrCode
             throw new RuntimeException("zlib cannot create '$zipPath'.");
         }
         foreach ($this->_filePaths as $path) {
-            if (preg_match('/.*\-(part.+)\.pdf/', $path, $matches)) {
+            if (preg_match('/.*\-(part.+\.pdf)/', $path, $matches)) {
                 $toFilename = $matches[1];
             } else {
                 $toFilename = basename($path);
