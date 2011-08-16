@@ -133,7 +133,7 @@ abstract class Reports_Generator
             $destPath = $this->_storagePrefix . $filename;
             $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
             // Generates the report (passes to subclass)
-            $this->generateReport($tempFilePath);
+            $tempFilePath = $this->generateReport($tempFilePath);
             $this->_storage->store($tempFilePath, $destPath);
     
             $this->_reportFile->status = Reports_File::STATUS_COMPLETED;

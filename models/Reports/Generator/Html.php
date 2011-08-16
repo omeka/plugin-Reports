@@ -34,6 +34,7 @@ class Reports_Generator_Html
         $this->outputHTML();
         ob_end_flush();
         fclose($this->_file);
+        return $filePath;
     }
     
     /**

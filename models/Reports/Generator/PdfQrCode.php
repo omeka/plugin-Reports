@@ -35,7 +35,22 @@ class Reports_Generator_PdfQrCode
     
     private $_qrGenerator;
 
+    /**
+     * The page count when retrieving items from the database. 
+     *
+     * @var integer
+     */
     private $_itemPageNum = 1;
+
+    private $_pdfPageCount = 0;
+
+    /**
+     * Set of strings corresponding to the path of each intermediate report 
+     * file. 
+     *
+     * @var array
+     */
+    private $_filePaths = array();
 
     // Spacing constants for 5163 labels, in points.
     
@@ -60,56 +75,73 @@ class Reports_Generator_PdfQrCode
 
     const QR_HEIGHT = 300;
     const QR_WIDTH = 300;
+
+    const PDF_PAGES_PER_FILE = 10;
     
     /**
      * Creates and generates the PDF report for the items in the report.
      *
-     * @param string $filePath
+     * @param string $filePath The path to the zip that contains the generated
+     * PDFs.
      */
     public function generateReport($filePath) 
     {
+        if (!extension_loaded('zlib')) {
+            throw new RuntimeException("zlib extension is required to bundle "
+                . "report PDF files.");
+        }
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
-        
-        $pdf = new Zend_Pdf();
         $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
-        $pdf->save($filePath);
-        
-        // To conserve memory on big jobs, the PDF should be saved 
-        // incrementally after the initial page has been added. This has the 
-        // additional side effect of producing a partial report in the event
-        // of an error.
-        $updateOnly = true;
-        $itemsPerPage = self::ROWS * self::COLUMNS;
-        while ($items = $this->_getItems()) {
-            // Reloading the PDF file (as opposed to reusing the initial 
-            // object) also saves on memory, albeit inexplicably so.
-            $pdf = Zend_Pdf::load($filePath);
-            // Split the array into groups with just enough to fit on each 
-            // page.
-            $itemChunks = array_chunk($items, $itemsPerPage);
-            foreach ($itemChunks as $chunk) {
-                _log("Adding page for a new chunk.");
-                $page = $this->_addPage($pdf);
-                $column = 0;
-                $row = 0;
-                foreach ($chunk as $item) {
-                    $this->_drawItemLabel($page, $column, $row, $item);
-                    $row++;
 
-                    if($row >= self::ROWS) {
-                        $column++;
-                        $row = 0;
-                    }
-                    if($column >= self::COLUMNS) {
-                        $column = 0;
-                    }
-                }
+        $fileSuffix = 1;
+        $pdfPath = $this->_newPdf($filePath, $fileSuffix);
+        while ($items = $this->_getItems()) {
+            if ($this->_pdfPageCount >= self::PDF_PAGES_PER_FILE) {
+                $fileSuffix++;
+                $pdfPath = $this->_newPdf($filePath, $fileSuffix);
+                _log("Created new PDF file '$pdfPath'");
+                $this->_pdfPageCount = 0;
             }
-            $pdf->save($filePath, $updateOnly);
-            _log(memory_get_peak_usage());
+            $this->_addItems($items, $pdfPath);
         }
-        
+        $filePath .= '.gz';
+        $this->_zipFiles($filePath);
+        return $filePath;
+    }
+
+    private function _zipFiles($zipPath)
+    {
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipPath, ZIPARCHIVE::CREATE) !== true) {
+            throw new RuntimeException("zlib cannot create '$zipPath'.");
+        }
+        foreach ($this->_filePaths as $path) {
+            if (preg_match('/.*\-(part.+)\.pdf/', $path, $matches)) {
+                $toFilename = $matches[1];
+            } else {
+                $toFilename = basename($path);
+            }
+            $zip->addFile($toFilename,$path);
+            _log("Added '$toFilename' to zip '$path'");
+        }
+        _log("Closing zip file.");
+        $zip->close();        
+    }
+
+    private function _newPdf($filePath, $fileSuffix)
+    {
+        $pdfPath = $this->_getTempFilename($filePath, $fileSuffix);
+        $pdf = new Zend_Pdf();
+        $pdf->save($pdfPath);
+        $this->_filePaths[] = $pdfPath;
+        return $pdfPath;
+    }
+
+    private function _getTempFilename($prefix, $count)
+    {
+        return $prefix . '-part' . $count . '.pdf';
     }
 
     private function _getItems()
@@ -118,7 +150,7 @@ class Reports_Generator_PdfQrCode
             ->getTable('Item')
             ->findBy(
                 $this->_params, 
-                30,
+                30, // TODO: Convert me to a constant.
                 $this->_itemPageNum
             );
         $this->_itemPageNum++;
@@ -184,6 +216,42 @@ class Reports_Generator_PdfQrCode
         // Release objects after use to keep memory usage down
         release_object($item);
     }
+
+    private function _addItems($items, $filePath) {
+        // To conserve memory on big jobs, the PDF should be saved 
+        // incrementally after the initial page has been added. This has the 
+        // additional side effect of producing a partial report in the event
+        // of an error.
+        $updateOnly = true;
+        $itemsPerPage = self::ROWS * self::COLUMNS;
+
+        // Reloading the PDF file (as opposed to reusing the initial 
+        // object) also saves on memory, albeit inexplicably so.
+        $pdf = Zend_Pdf::load($filePath);
+        // Split the array into groups with just enough to fit on each 
+        // page.
+        $itemChunks = array_chunk($items, $itemsPerPage);
+        foreach ($itemChunks as $chunk) {
+            _log("Adding page for a new chunk.");
+            $page = $this->_addPage($pdf);
+            $column = 0;
+            $row = 0;
+            foreach ($chunk as $item) {
+                $this->_drawItemLabel($page, $column, $row, $item);
+                $row++;
+
+                if($row >= self::ROWS) {
+                    $column++;
+                    $row = 0;
+                }
+                if($column >= self::COLUMNS) {
+                    $column = 0;
+                }
+            }
+        }
+        $pdf->save($filePath, $updateOnly);
+        _log(memory_get_peak_usage());
+    }
     
     /**
      * Adds a new page to the PDF document.
@@ -195,6 +263,7 @@ class Reports_Generator_PdfQrCode
         $newPage = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
         $newPage->setFont($this->_font, self::FONT_SIZE);
         $pdf->pages[] = $newPage;
+        $this->_pdfPageCount++;
         return $newPage;
     }
     
