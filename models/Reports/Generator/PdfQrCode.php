@@ -114,7 +114,7 @@ class Reports_Generator_PdfQrCode
     {
         $zip = new ZipArchive();
 
-        if ($zip->open($zipPath, ZIPARCHIVE::CREATE) !== true) {
+        if ($zip->open($zipPath, ZIPARCHIVE::CM_PKWARE_IMPLODE) !== true) {
             throw new RuntimeException("zlib cannot create '$zipPath'.");
         }
         foreach ($this->_filePaths as $path) {
@@ -123,11 +123,12 @@ class Reports_Generator_PdfQrCode
             } else {
                 $toFilename = basename($path);
             }
-            $zip->addFile($toFilename,$path);
-            _log("Added '$toFilename' to zip '$path'");
+            $zip->addFile($path, $toFilename);
+            _log("Added '$toFilename' to zip '$zipPath'.");
         }
         _log("Closing zip file.");
         $zip->close();        
+        _log(memory_get_peak_usage());
     }
 
     private function _newPdf($filePath, $fileSuffix)
