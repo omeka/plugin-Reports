@@ -86,8 +86,8 @@ class Reports_Generator_PdfQrCode
      */
     public function generateReport($filePath) 
     {
-        if (!extension_loaded('zlib')) {
-            throw new RuntimeException("zlib extension is required to bundle "
+        if (!extension_loaded('zip')) {
+            throw new RuntimeException("zip extension is required to bundle "
                 . "report PDF files.");
         }
         $options = unserialize($this->_reportFile->options);
