@@ -105,7 +105,7 @@ class Reports_Generator_PdfQrCode
             }
             $this->_addItems($items, $pdfPath);
         }
-        $filePath .= '.gz';
+        $filePath .= '.zip';
         $this->_zipFiles($filePath);
         return $filePath;
     }
