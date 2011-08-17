@@ -79,7 +79,7 @@ echo uri(
         'controller' => 'files',
         'id' => $file->id,
     )    
-); ?>">View file</a></td>
+); ?>">Download file</a></td>
     <td><a href="<?php 
 echo uri(
     array(
