@@ -12,7 +12,6 @@ class Reports_Form_Detail extends Omeka_Form
         ));
         $this->addElement('textarea', 'description', array(
             'label' => 'Description',
-            'required' => true,
             'rows' => '10',
             'cols' => '60',
         ));
