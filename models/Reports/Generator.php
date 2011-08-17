@@ -44,11 +44,11 @@ abstract class Reports_Generator
     /**
      * Generates a random filename and passes to the subclass' generateReport
      * method to create and save the report.
-     * 
+     *
      * @param Reports_File $reportFile The report file to be generated
      */
     public function __construct(
-        $reportFile, 
+        $reportFile,
         $storagePrefix
     ) {
         $this->_reportFile = $reportFile;
@@ -88,6 +88,7 @@ abstract class Reports_Generator
      */
     final protected function _addStatusMessage($message, $prepend = 'Notice', $delimiter = "\n")
     {
+        _log('error -- in _addStatusMessage');
         if (strlen($this->_reportFile->messages) == 0) {
             $delimiter = '';
         }
@@ -141,6 +142,7 @@ abstract class Reports_Generator
         } catch (Exception $e) {
             $this->_reportFile->status = Reports_File::STATUS_ERROR;
             $this->_addStatusMessage($e->getMessage(), 'Error');
+            _log($e, Zend_Log::ERR);
         }
         $this->_reportFile->forceSave();
     }
@@ -161,7 +163,7 @@ abstract class Reports_Generator
         foreach ($dir as $entry) {
             if ($entry->isFile() && !$entry->isDot()) {
                 $filename = $entry->getFilename();
-                if (preg_match('/^(.+)\.php$/', $filename, $match) 
+                if (preg_match('/^(.+)\.php$/', $filename, $match)
                     && $match[1] != 'Abstract'
                 ) {
                     $className = self::CLASS_PREFIX . $match[1];
