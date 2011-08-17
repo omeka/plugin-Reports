@@ -107,7 +107,18 @@ class Reports_Generator_PdfQrCode
         }
         $filePath .= '.zip';
         $this->_zipFiles($filePath);
+        $this->_unlinkFiles();
         return $filePath;
+    }
+
+    private function _unlinkFiles()
+    {
+        foreach ($this->_filePaths as $path) {
+            if (file_exists($path) && is_file($path)) {
+                unlink($path);
+                _log("Deleted temporary file '$path'");
+            }
+        }
     }
 
     private function _zipFiles($zipPath)
