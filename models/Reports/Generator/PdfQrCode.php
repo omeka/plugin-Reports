@@ -76,7 +76,7 @@ class Reports_Generator_PdfQrCode
     const QR_HEIGHT = 300;
     const QR_WIDTH = 300;
 
-    const PDF_PAGES_PER_FILE = 10;
+    const PDF_PAGES_PER_FILE = 30;
     
     /**
      * Creates and generates the PDF report for the items in the report.
@@ -262,7 +262,8 @@ class Reports_Generator_PdfQrCode
             }
         }
         $pdf->save($filePath, $updateOnly);
-        _log(memory_get_peak_usage());
+        //_log(memory_get_peak_usage());
+        _log(memory_get_usage(true));
     }
     
     /**
