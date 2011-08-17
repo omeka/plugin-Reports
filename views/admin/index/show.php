@@ -26,9 +26,9 @@ echo uri(
         'id' => $report->id,
     ),
     'default'
-); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding:10px;">
+); ?>" class="add" style="background-color: #F4F3EB; color: #c50; padding-right:10px;">
 <?php echo $this->formSelect('format', null, null, $this->formats); ?>
-<?php echo $this->formSubmit('submit-generate', 'Generate a New File', array('class' => 'add', 'style' => 'color: #c50; background-color: transparent; border: none; font-size: 1.2em;')); ?>
+<?php echo $this->formSubmit('submit-generate', 'Generate a New File', array('class' => 'add', 'style' => 'float:none; display:inline;')); ?>
 </form>
 </div>
 
