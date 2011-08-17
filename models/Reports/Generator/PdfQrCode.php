@@ -105,7 +105,6 @@ class Reports_Generator_PdfQrCode
             }
             $this->_addItems($items, $pdfPath);
         }
-        $filePath .= '.zip';
         $this->_zipFiles($filePath);
         $this->_unlinkFiles();
         return $filePath;
@@ -402,6 +401,6 @@ class Reports_Generator_PdfQrCode
      * @return string File extension
      */
     public function getExtension() {
-        return 'pdf';
+        return 'zip';
     }
 }

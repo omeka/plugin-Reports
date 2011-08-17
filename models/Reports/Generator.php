@@ -129,7 +129,9 @@ abstract class Reports_Generator
             
             // Creates a random filename based on the type of report.
             $filter = new Omeka_Filter_Filename();
-            $filename = $filter->renameFileForArchive('report_'.$this->getExtension());
+            $filename = $filter->renameFileForArchive(
+                'report.' . $this->getExtension()
+            );
 
             $destPath = $this->_storagePrefix . $filename;
             $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
