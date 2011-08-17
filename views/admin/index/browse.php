@@ -42,10 +42,13 @@ echo uri(array('action' => 'add')); ?>">Create one.</a></p>
     <th>Generate</th>
 </thead>
 <?php foreach($reports as $report) : 
-      $reportObject = $report['reportObject'];
-      if($reportObject->query) { 
-          $query = http_build_query(unserialize($reportObject->query)); 
-      } ?>
+          $reportObject = $report['reportObject'];
+          if($reportObject->query):
+              $query = http_build_query(unserialize($reportObject->query));
+          else:
+              $query = '';
+          endif;
+?>
 <tr>
 <td><?php echo $reportObject->id; ?></td>
 <td><a href="<?php 
