@@ -29,7 +29,8 @@ class Reports_Generator_PdfQrCode_GoogleCharts
         rename($temp, $tempPng);
         $temp = $tempPng;
         $url = $this->_qrCodeUri($data);
-        $client = new Zend_Http_Client($url);
+        $client = new Omeka_Http_Client($url);
+        $client->setMaxRetries(10);
         $response = $client->request('GET');
         if ($response->isSuccessful()) {
             file_put_contents($temp, $response->getBody());
