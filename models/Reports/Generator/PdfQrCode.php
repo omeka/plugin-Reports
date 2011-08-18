@@ -52,6 +52,8 @@ class Reports_Generator_PdfQrCode
      */
     private $_filePaths = array();
 
+    private $_pagesPerFile = 30;
+
     // Spacing constants for 5163 labels, in points.
     
     const PAGE_HEIGHT = 792;
@@ -76,7 +78,10 @@ class Reports_Generator_PdfQrCode
     const QR_HEIGHT = 300;
     const QR_WIDTH = 300;
 
-    const PDF_PAGES_PER_FILE = 30;
+    public function setPagesPerFile($count)
+    {
+        $this->_pagesPerFile = $count;
+    }
     
     /**
      * Creates and generates the PDF report for the items in the report.
@@ -97,7 +102,7 @@ class Reports_Generator_PdfQrCode
         $fileSuffix = 1;
         $pdfPath = $this->_newPdf($filePath, $fileSuffix);
         while ($items = $this->_getItems()) {
-            if ($this->_pdfPageCount >= self::PDF_PAGES_PER_FILE) {
+            if ($this->_pdfPageCount >= $this->_pagesPerFile) {
                 $fileSuffix++;
                 $pdfPath = $this->_newPdf($filePath, $fileSuffix);
                 _log("Created new PDF file '$pdfPath'");
