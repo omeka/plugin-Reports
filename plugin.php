@@ -115,13 +115,15 @@ function reports_uninstall()
 function reports_admin_navigation_main($tabs)
 {
     if (has_permission('Reports_Index', 'index')) {
-        $tabs['Reports'] = uri(
+        $tabs['Reports'] = __v()->url(
             array(
                 'controller' => 'index',
                 'module' => 'reports',
                 'action' => 'index',
             ),
-            'default'
+            'default',
+            array(),
+            true
         );
     }
     return $tabs;
