@@ -45,8 +45,12 @@ class Reports_IndexController extends Omeka_Controller_Action
         foreach($reports as $report) {
             $id = $report->id;
             $creator = $report->creator;
-            
-            $userName = $this->getTable('User')->find($creator)->getName();
+            $user = $this->getTable('User')->find($creator);
+            if(method_exists($user, 'getName')) {
+                $userName = $this->getTable('User')->find($creator)->getName();
+            } else {
+                $userName = $this->getTable('User')->find($creator)->Entity->getName();
+            }
             $query = unserialize($report->query);
             $params = reports_convert_search_filters($query);
             $count = $this->getTable('Item')->count($params);
@@ -103,7 +107,7 @@ class Reports_IndexController extends Omeka_Controller_Action
             $report->query = serialize($_GET);
             $report->forceSave();
             $this->redirect->goto('index');
-        } 
+        }
         else {
             $queryArray = unserialize($report->query);
             // Some parts of the advanced search check $_GET, others check
@@ -145,8 +149,8 @@ class Reports_IndexController extends Omeka_Controller_Action
                          ' must be writable by the server for reports to be' .
                          ' generated.',
                          Omeka_Controller_Flash::GENERAL_ERROR);
-            return;             
-        } 
+            return;
+        }
         $reportFile = new Reports_File();
         $reportFile->report_id = $report->id;
         $reportFile->type = $_GET['format'];
@@ -163,9 +167,9 @@ class Reports_IndexController extends Omeka_Controller_Action
         $this->_jobDispatcher->setQueueName('reports');
         $this->_jobDispatcher->send('Reports_GenerateJob',
             array(
-                'fileId' => $reportFile->id, 
+                'fileId' => $reportFile->id,
             )
-        );         
+        );
 
         $this->redirect->gotoRoute(
             array(
