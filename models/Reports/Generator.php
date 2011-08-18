@@ -49,10 +49,25 @@ abstract class Reports_Generator
      */
     public function __construct(
         $reportFile,
-        $storagePrefix
+        $options = array()
     ) {
         $this->_reportFile = $reportFile;
-        $this->_storagePrefix = $storagePrefix;
+        $this->setOptions($options);
+    }
+
+    final public function setOptions(array $options)
+    {
+        foreach ($options as $k => $v) {
+            $method = 'set' . ucwords($k);
+            if (method_exists($this, $method)) {
+                $this->$method($v);
+            }
+        }
+    }
+
+    public function setStoragePrefix($prefix)
+    {
+        $this->_storagePrefix = $prefix;
     }
 
     public function setStorage($storage)
@@ -151,8 +166,8 @@ abstract class Reports_Generator
     public static function factory($reportFile)
     {
         $class = self::CLASS_PREFIX . $reportFile->type;
-        $storagePrefix = reports_get_storage_prefix();
-        $inst = new $class($reportFile, $storagePrefix);
+        $options = reports_get_config();
+        $inst = new $class($reportFile, $options);
         $inst->setStorage(Zend_Registry::get('storage'));
         return $inst;
     }

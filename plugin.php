@@ -222,9 +222,21 @@ function reports_convert_search_filters($query) {
     return array_merge($perms, $filter, $order);
 }
 
-function reports_get_config($key, $default = null)
+function reports_get_config($key = null, $default = null)
 {
+    $defaults = array(
+        'storagePrefix' => 'reports/',
+    );
+
     $config = Omeka_Context::getInstance()->config->plugins;
+    // Return the whole config if no key given.
+    if (!$key) {
+        if ($config->Reports) {
+            return $defaults + $config->Reports->toArray();
+        } else {
+            return $defaults;
+        }
+    }
     if (!$config || !$config->Reports || !$config->Reports->$key) {
         return $default;
     }
