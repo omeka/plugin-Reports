@@ -88,7 +88,6 @@ abstract class Reports_Generator
      */
     final protected function _addStatusMessage($message, $prepend = 'Notice', $delimiter = "\n")
     {
-        _log('error -- in _addStatusMessage');
         if (strlen($this->_reportFile->messages) == 0) {
             $delimiter = '';
         }
