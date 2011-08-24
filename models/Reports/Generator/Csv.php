@@ -66,7 +66,11 @@ class Reports_Generator_Csv
             }
         }
         $headers[] = 'itemType';
+        $headers[] = 'collection';
+        $headers[] = 'tags';
         $headers[] = 'file';
+        $headers[] = 'public';
+        $headers[] = 'featured';
         fputcsv($this->_file, $headers);
     }
     
@@ -87,14 +91,19 @@ class Reports_Generator_Csv
                 } else {
                      $texts = "";
                     foreach ($itemTexts as $text) {
-                        $texts .= $text->text. ',';
+                        $texts .= $text->text. '^^';
                     }
-                    $texts = rtrim($texts, ',');
+                    $texts = rtrim($texts, '^^');
                     $csvArray[] = $texts;
                 }
             }
         }
+                
         $csvArray[] = $item->getItemType()->name;
+        $csvArray[] = $item->getCollection()->name;
+        $csvArray[] = $this->itemTags($item);
+        $csvArray[] = $item->public;
+        $csvArray[] = $item->featured;
         $csvArray[] = $this->fileUrls($item);
         fputcsv($this->_file, $csvArray);
     }
@@ -113,6 +122,16 @@ class Reports_Generator_Csv
         }
         $urlString = rtrim($urlString, ",");
         return $urlString;
+    }
+    
+    private function itemTags($item) {
+        $tagString = "";
+        $tags = get_db()->getTable('Tag')->findBy(array('record'=>$item));
+        foreach($tags as $tag) {
+            $tagString .= $tag->name . ",";
+        }
+        rtrim(',', $tagString);
+        return $tagString;
     }
     
     /**
