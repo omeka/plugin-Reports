@@ -68,9 +68,9 @@ class Reports_Generator_Csv
         $headers[] = 'itemType';
         $headers[] = 'collection';
         $headers[] = 'tags';
-        $headers[] = 'file';
         $headers[] = 'public';
         $headers[] = 'featured';
+        $headers[] = 'file';
         fputcsv($this->_file, $headers);
     }
     
