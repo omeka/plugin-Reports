@@ -21,7 +21,12 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_helper->db->setDefaultModelName('Reports_Report');
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName('Reports_Report');
+        } else {
+            $this->_modelClass = 'Reports_Report';
+        }
+
         $this->_jobDispatcher = $this->getInvokeArg('bootstrap')->jobs;
     }
     
@@ -66,12 +71,11 @@ class Reports_IndexController extends Omeka_Controller_Action
     
     public function addAction()
     {
-        $class = $this->_helper->db->getDefaultModelName();
-        $record = new $class();
+        $record = new Reports_Report();
         require_once dirname(__FILE__) . '/../forms/Reports/Detail.php';
         $form = new Reports_Form_Detail();
         $this->view->form = $form;
-        $this->view->assign(array(strtolower($class) => $record));
+        $this->view->assign(array('reports_report' => $record));
 
         if (!$this->_request->isPost()) {
             return;

@@ -19,12 +19,16 @@ class Reports_FilesController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->_helper->db->setDefaultModelName('Reports_File');
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName('Reports_File');
+        } else {
+            $this->_modelClass = 'Reports_File';
+        }
     }
 
     public function showAction()
     {
-        $file = $this->_helper->db->findById();
+        $file = $this->findById();
         $storage = $this->getInvokeArg('bootstrap')->storage;
         $prefix = reports_get_storage_prefix();
         $uri = $storage->getUri("$prefix{$file->filename}");
