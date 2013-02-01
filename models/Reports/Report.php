@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Models
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -12,7 +10,7 @@
  * @package Reports
  * @subpackage Models
  */
-class Reports_Report extends Omeka_Record
+class Reports_Report extends Omeka_Record_AbstractRecord
 {
     public $id;
     public $name;
@@ -25,9 +23,21 @@ class Reports_Report extends Omeka_Record
     public $creator;
     public $modified;
 
-    protected function beforeInsert()
+    protected function _initializeMixins()
+    {
+        // Add the search mixin.
+        $this->_mixins[] = new Mixin_Search($this);
+    }
+
+    protected function beforeSave()
     {
         $this->creator = current_user()->id;
+        
+        // Make the report searchable by admins
+        $this->setSearchTextPrivate();
+        $this->setSearchTextTitle($this->name);
+        $this->addSearchText($this->name);
+        $this->addSearchText($this->description);
     }
     
     /**

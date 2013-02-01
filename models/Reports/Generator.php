@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Generators
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -136,14 +134,14 @@ abstract class Reports_Generator
         set_error_handler(array($this, 'errorHandler'), E_WARNING);
         try {
             $this->_reportFile->status = Reports_File::STATUS_IN_PROGRESS;
-            $this->_reportFile->forceSave();
+            $this->_reportFile->save();
     
             $this->_report = $this->_reportFile->getReport();
             $this->_params = reports_convert_search_filters(unserialize($this->_report->query));
             
             // Creates a random filename based on the type of report.
             $filter = new Omeka_Filter_Filename();
-            $filename = $filter->renameFileForArchive(
+            $filename = $filter->renameFile(
                 'report.' . $this->getExtension()
             );
 
@@ -160,7 +158,7 @@ abstract class Reports_Generator
             $this->_addStatusMessage($e->getMessage(), 'Error');
             _log($e, Zend_Log::ERR);
         }
-        $this->_reportFile->forceSave();
+        $this->_reportFile->save();
     }
 
     public static function factory($reportFile)

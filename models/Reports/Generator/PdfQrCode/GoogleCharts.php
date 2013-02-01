@@ -1,11 +1,10 @@
 <?php
-
 class Reports_Generator_PdfQrCode_GoogleCharts
 {
     /**
      * The URL of the Google chart API, used to generate the QR codes
      */
-    const CHART_API_URI = 'http://chart.apis.google.com/chart';
+    const CHART_API_URI = 'https://chart.googleapis.com/chart';
 
     const TEMP_FILE_PREFIX = 'omeka-reports-qr';    
 
