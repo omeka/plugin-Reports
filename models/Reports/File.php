@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Models
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -12,7 +10,7 @@
  * @package Reports
  * @subpackage Models
  */
-class Reports_File extends Omeka_Record
+class Reports_File extends Omeka_Record_AbstractRecord
 {
     const STATUS_STARTING    = 'starting';
     const STATUS_IN_PROGRESS = 'in progress';
@@ -28,15 +26,15 @@ class Reports_File extends Omeka_Record
     public $created;
     public $options;
 
+    protected $_generator;
+
     /**
      * Unlink the associated file.
      */    
     protected function afterDelete()
     {
-        $filename = reports_save_directory() . '/' . $this->filename;
-        if (is_writable($filename)) {
-            unlink($filename);
-        }
+        $g = $this->getGenerator();
+        $g->deleteFile($this->filename);
     }
 
     /**
@@ -46,7 +44,7 @@ class Reports_File extends Omeka_Record
      */
     public function getReport()
     {
-        if($report_id = $this->report_id) {
+        if ($report_id = $this->report_id) {
             return $this->_db->getTable('Reports_Report')->find($report_id);
         }
     }
@@ -58,6 +56,20 @@ class Reports_File extends Omeka_Record
      */
     public function getGenerator()
     {
-        return Reports_Generator::factory($this);
+        if (!$this->_generator) {
+            $this->_generator = Reports_Generator::factory($this);
+        }
+        return $this->_generator;
+    }
+    
+    /**
+     * Returns whether the report can be stored in the associated Omeka_Storage object
+     *
+     * @param array &$errors The array of errors for why a file cannot store
+     * @return bool whether the report can be stored in the associated Omeka_Storage object  
+     */
+    function canStore(&$errors)
+    {
+        return $this->getGenerator()->canStore($errors);
     }
 }

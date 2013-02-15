@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Models
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -12,7 +10,7 @@
  * @package Reports
  * @subpackage Models
  */
-class Reports_FileTable extends Omeka_Db_Table
+class Table_Reports_File extends Omeka_Db_Table
 {
     /**
      * Finds all report files and sorts by creation date, descending.

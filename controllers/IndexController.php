@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Controllers
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -12,81 +10,64 @@
  * @package Reports
  * @subpackage Controllers
  */
-class Reports_IndexController extends Omeka_Controller_Action
+class Reports_IndexController extends Omeka_Controller_AbstractActionController
 {
     private $_jobDispatcher;
+
+    protected $_browseRecordsPerPage = 10;
 
     /**
      * Sets the model class for the Reports controller.
      */
     public function init()
     {
-        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
-            $this->_helper->db->setDefaultModelName('Reports_Report');
-        } else {
-            $this->_modelClass = 'Reports_Report';
-        }
-
-        $this->_jobDispatcher = $this->getInvokeArg('bootstrap')->jobs;
+        $this->_helper->db->setDefaultModelName('Reports_Report');
+        $this->_jobDispatcher = Zend_Registry::get('bootstrap')->getResource('jobs');
     }
     
     /**
      * Displays the browse page for all reports.
      */
     public function browseAction()
-    {
-        $saveDirectory = reports_save_directory();
-        $reportsDisplay = array();
-        if (!$saveDirectory) {
-            $this->flashError('The report save directory does not exist.');
-        }
-        if(!is_writable(reports_save_directory())) {
-            $this->flash('Warning: The directory ' . $saveDirectory .
-                         ' must be writable by the server for reports to be'.
-                         ' generated.', Omeka_Controller_Flash::ALERT);
+    {   
+        $db = $this->_helper->db;
+        
+        if (!$this->_getParam('sort_field')) {
+            $this->_setParam('sort_field', 'added');
+            $this->_setParam('sort_dir', 'd');
         }
         
-        $reports = $this->getTable('Reports_Report')->findAllReports();
-        foreach($reports as $report) {
-            $id = $report->id;
-            $creator = $report->creator;
-            $user = $this->getTable('User')->find($creator);
-            if(method_exists($user, 'getName')) {
-                $userName = $this->getTable('User')->find($creator)->getName();
-            } else {
-                $userName = $this->getTable('User')->find($creator)->Entity->getName();
-            }
+        parent::browseAction();        
+        
+        $reportItemCounts = array();
+        $reportUserNames = array();
+        foreach($this->view->reports_reports as $report) {            
+            $user = $db->getTable('User')->find($report->creator);
             $query = unserialize($report->query);
             $params = reports_convert_search_filters($query);
-            $count = $this->getTable('Item')->count($params);
-            
-            $reportsDisplay[] = array(
-                'reportObject' => $report,
-                'userName' => $userName,
-                'count' => $count);
+            $itemCount = $db->getTable('Item')->count($params);
+            $reportItemCounts[(string)$report->id] = $itemCount;
+            $reportUserNames[(string)$report->id] = $user->name;
         }
-        $this->view->reports = $reportsDisplay;
+                
+        $this->view->reportItemCounts = $reportItemCounts;
+        $this->view->reportUserNames = $reportUserNames;
         $this->view->formats = reports_get_output_formats();
     }
     
     public function addAction()
     {
         $record = new Reports_Report();
-        require_once dirname(__FILE__) . '/../forms/Reports/Detail.php';
+        require_once REPORTS_PLUGIN_DIRECTORY . '/forms/Reports/Detail.php';
         $form = new Reports_Form_Detail();
         $this->view->form = $form;
-        $this->view->assign(array('reports_report' => $record));
-
-        if (!$this->_request->isPost()) {
-            return;
-        }
-        if (!$form->isValid($this->_request->getPost())) {
-            return;
-        }
-
-        try {
-            if ($record->saveForm($form->getValues())) {
-                $this->redirect->gotoRoute(
+        $this->view->assign(array('report' => $record));
+        
+        $request = $this->getRequest();
+        if ($request->isPost() && $form->isValid($request->getPost())) {            
+            $record->setPostData($form->getValues());
+            if ($record->save()) {
+                $this->_helper->redirector->gotoRoute(
                     array(
                         'module' => 'reports',
                         'id'     => $record->id,
@@ -95,8 +76,6 @@ class Reports_IndexController extends Omeka_Controller_Action
                     'default'
                 );
             }
-        } catch (Omeka_Validator_Exception $e) {
-            $this->flashValidationErrors($e);
         }
     }
     
@@ -105,14 +84,12 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function queryAction()
     {
-        $report = $this->findById();
-        
-        if(isset($_GET['search'])) {
-            $report->query = serialize($_GET);
-            $report->forceSave();
-            $this->redirect->goto('index');
-        }
-        else {
+        $report = $this->_helper->db->findById();
+        if (isset($_GET['search'])) {
+            $report->query = serialize($_GET);            
+            $report->save();
+            $this->_helper->redirector->goto('index');                        
+        } else {
             $queryArray = unserialize($report->query);
             // Some parts of the advanced search check $_GET, others check
             // $_REQUEST, so we set both to be able to edit a previous query.
@@ -120,22 +97,17 @@ class Reports_IndexController extends Omeka_Controller_Action
             $_REQUEST = $queryArray;
             $this->view->reportsreport = $report;
         }
-        
     }
     
     /**
      * Shows details and generated files for a report.
      */
     public function showAction()
-    {
-        $report = $this->findById();
-        
+    {        
+        $report = $this->_helper->db->findById();
         $reportFiles = $report->getFiles();
-        
         $formats = reports_get_output_formats();
-        
         $this->view->formats = $formats;
-        
         $this->view->report = $report;
         $this->view->reportFiles = $reportFiles;
     }
@@ -145,16 +117,8 @@ class Reports_IndexController extends Omeka_Controller_Action
      */
     public function generateAction()
     {
-        $report = $this->findById();
+        $report = $this->_helper->db->findById();
         
-        if (!is_writable(reports_save_directory())) {
-            // Disallow generation if the save directory is not writable
-            $this->flash('The directory ' . reports_save_directory() .
-                         ' must be writable by the server for reports to be' .
-                         ' generated.',
-                         Omeka_Controller_Flash::GENERAL_ERROR);
-            return;
-        }
         $reportFile = new Reports_File();
         $reportFile->report_id = $report->id;
         $reportFile->type = $_GET['format'];
@@ -163,19 +127,29 @@ class Reports_IndexController extends Omeka_Controller_Action
         // Send the base URL to the background process for QR Code
         // This should be abstracted out to work more generally for
         // all generators.
-        if($reportFile->type == 'PdfQrCode') {
+        if ($reportFile->type == 'PdfQrCode') {
             $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
-    
-        $reportFile->forceSave();
-        $this->_jobDispatcher->setQueueName('reports');
-        $this->_jobDispatcher->send('Reports_GenerateJob',
-            array(
-                'fileId' => $reportFile->id,
-            )
-        );
+        
+        $errors = array();
+        if (!$reportFile->canStore($errors)) {
+            $errorMessage = __('The report cannot be saved.  Please check your report storage settings.');
+            foreach($errors as $error) {
+                $errorMessage .= ' ' . $error;
+            }
+            $this->_helper->flashMessenger($errorMessage, 'error');
+        } else {
+            $reportFile->save();
 
-        $this->redirect->gotoRoute(
+            $this->_jobDispatcher->setQueueName('reports');
+            $this->_jobDispatcher->sendLongRunning('Reports_GenerateJob',
+                array(
+                    'fileId' => $reportFile->id,
+                )
+            );
+        }
+        
+        $this->_helper->redirector->gotoRoute(
             array(
                 'module' => 'reports',
                 'id'     => $report->id,

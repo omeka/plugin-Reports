@@ -119,14 +119,14 @@ class Reports_Generator_Html
         if (!$elementNames) {
             $elements = $item->getElementsBySetName($setName);
             foreach ($elements as $element) {
-                foreach ($item->getTextsByElement($element) as $text) {
+                foreach ($item->getElementTexts($setName, $element->name) as $text) {
                     $outputTexts[] = array('element' => $element->name,
                                            'text'    => $text->text);
                 }
             }
         } else if (is_array($elementNames)) {
             foreach ($elementNames as $elementName) {
-                $texts = $item->getElementTextsByElementNameAndSetName($elementName, $setName);
+                $texts = $item->getElementTexts($setName, $elementName);
                 foreach ($texts as $text) {
                     $outputTexts[] = array('element' => $elementName,
                                            'text'    => $text->text);
