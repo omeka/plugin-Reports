@@ -31,17 +31,6 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
     public function browseAction()
     {   
         $db = $this->_helper->db;
-        $saveDirectory = reports_save_directory();
-        
-        if (!$saveDirectory) {
-            $errorMessage = __('The report save directory does not exist.');
-            $this->_helper->flashMessenger($errorMessage, 'error');
-        }
-        
-        if (!is_writable(reports_save_directory())) {
-            $errorMessage = __('Warning: The directory %s must be writable by the server for reports to be generated.', $saveDirectory);
-            $this->_helper->flashMessenger($errorMessage, 'error');            
-        }
         
         if (!$this->_getParam('sort_field')) {
             $this->_setParam('sort_field', 'added');
@@ -114,7 +103,7 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
      * Shows details and generated files for a report.
      */
     public function showAction()
-    {
+    {        
         $report = $this->_helper->db->findById();
         $reportFiles = $report->getFiles();
         $formats = reports_get_output_formats();
@@ -130,12 +119,6 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
     {
         $report = $this->_helper->db->findById();
         
-        if (!is_writable(reports_save_directory())) {
-            // Disallow generation if the save directory is not writable
-            $errorMessage = __('The directory %s must be writable by the server for reports to be generated.', reports_save_directory());
-            $this->_helper->flashMessenger($errorMessage, 'error');
-            return;
-        }
         $reportFile = new Reports_File();
         $reportFile->report_id = $report->id;
         $reportFile->type = $_GET['format'];
@@ -147,16 +130,26 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
         if ($reportFile->type == 'PdfQrCode') {
             $reportFile->options = serialize(array('baseUrl' => WEB_ROOT));
         }
-    
-        $reportFile->save();
-        $this->_jobDispatcher->setQueueName('reports');
-        $this->_jobDispatcher->sendLongRunning('Reports_GenerateJob',
-            array(
-                'fileId' => $reportFile->id,
-            )
-        );
         
-         $this->_helper->redirector->gotoRoute(
+        $errors = array();
+        if (!$reportFile->canStore($errors)) {
+            $errorMessage = __('The report cannot be saved.  Please check your report storage settings.');
+            foreach($errors as $error) {
+                $errorMessage .= ' ' . $error;
+            }
+            $this->_helper->flashMessenger($errorMessage, 'error');
+        } else {
+            $reportFile->save();
+
+            $this->_jobDispatcher->setQueueName('reports');
+            $this->_jobDispatcher->sendLongRunning('Reports_GenerateJob',
+                array(
+                    'fileId' => $reportFile->id,
+                )
+            );
+        }
+        
+        $this->_helper->redirector->gotoRoute(
             array(
                 'module' => 'reports',
                 'id'     => $report->id,

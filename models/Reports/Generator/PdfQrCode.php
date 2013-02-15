@@ -211,9 +211,8 @@ class Reports_Generator_PdfQrCode
             $originX + self::LABEL_HEIGHT, 
             $originY + self::LABEL_HEIGHT
         );
-        $titles = $item->getElementTextsByElementNameAndSetName(
-            'Title', 'Dublin Core');
-        if(count($titles) > 0) {
+        $titles = $item->getElementTexts('Dublin Core', 'Title');
+        if (count($titles) > 0) {
             $textOriginX = $originX + self::LABEL_HEIGHT;
             $textOriginY = $originY + (0.8 * self::LABEL_HEIGHT) ;
             $cleanTitle = strip_tags(htmlspecialchars_decode($titles[0]->text));

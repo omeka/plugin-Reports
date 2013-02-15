@@ -22,10 +22,13 @@ class Reports_FilesController extends Omeka_Controller_AbstractActionController
 
     public function showAction()
     {
-        $file = $this->findById();
-        $storage = $this->getInvokeArg('bootstrap')->storage;
-        $prefix = reports_get_storage_prefix();
-        $uri = $storage->getUri("$prefix{$file->filename}");
+        $reportsFile = $this->_helper->db->findById();
+        $g = $reportsFile->getGenerator();        
+        $storage = $g->getStorage();        
+        $storagePrefixDir = $g->getStoragePrefixDir();
+        $destPath = $storagePrefixDir . '/' . $reportsFile->filename;
+        $uri = $storage->getUri($destPath);
+                
         return $this->_helper->redirector->gotoUrl($uri);
     }
     
@@ -34,7 +37,7 @@ class Reports_FilesController extends Omeka_Controller_AbstractActionController
      */
     public function deleteAction()
     {
-        $reportFile = $this->findById();
+        $reportFile = $this->_helper->db->findById();
         $report = $reportFile->getReport();
         $reportFile->delete();
         $this->_helper->redirector->gotoRoute(

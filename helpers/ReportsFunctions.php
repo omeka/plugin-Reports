@@ -84,10 +84,17 @@ function reports_convert_search_filters($query) {
     return array_merge($perms, $filter, $order);
 }
 
-function reports_get_config($key = null, $default = null)
+/**
+ * Returns a configuration setting
+ *
+ * @param string $key HTTP query string array
+ * @param mixed $defaultValue  The default value for the configuration setting if it is not defined elsewhere
+ * @return mixed The configuration value  
+ */
+function reports_get_config($key = null, $defaultValue = null)
 {
     $defaults = array(
-        'storagePrefix' => 'reports/',
+        'storagePrefixDir' => 'reports',
     );
 
     $config = Zend_Registry::get('bootstrap')->getResource('Config')->plugins;
@@ -101,17 +108,7 @@ function reports_get_config($key = null, $default = null)
         }
     }
     if (!$config || !$config->Reports || !$config->Reports->$key) {
-        return $default;
+        return $defaultValue;
     }
     return $config->Reports->$key;
-}
-
-function reports_save_directory()
-{
-    return realpath(reports_get_config('saveDirectory', sys_get_temp_dir()));
-}
-
-function reports_get_storage_prefix()
-{
-    return (string)reports_get_config('storagePrefix', 'reports/');
 }
