@@ -1,9 +1,7 @@
 <?php
 /**
- * @package Reports
- * @subpackage Generators
- * @copyright Copyright (c) 2011 Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
  
 /**
@@ -39,7 +37,7 @@ abstract class Reports_Generator
      */
     protected $_storage;
 
-    private $_storagePrefix;
+    private $_storagePrefixDir;
     
     /**
      * Generates a random filename and passes to the subclass' generateReport
@@ -65,14 +63,24 @@ abstract class Reports_Generator
         }
     }
 
-    public function setStoragePrefix($prefix)
+    public function getStoragePrefixDir()
     {
-        $this->_storagePrefix = $prefix;
+        return $this->_storagePrefixDir;
+    }
+
+    public function setStoragePrefixDir($prefixDir)
+    {
+        $this->_storagePrefixDir = $prefixDir;
     }
 
     public function setStorage($storage)
     {
         $this->_storage = $storage;
+    }
+    
+    public function getStorage($storage)
+    {
+        return $this->_storage;
     }
 
     /**
@@ -136,31 +144,70 @@ abstract class Reports_Generator
         set_error_handler(array($this, 'errorHandler'), E_WARNING);
         try {
             $this->_reportFile->status = Reports_File::STATUS_IN_PROGRESS;
-            $this->_reportFile->forceSave();
+            $this->_reportFile->save();
     
             $this->_report = $this->_reportFile->getReport();
             $this->_params = reports_convert_search_filters(unserialize($this->_report->query));
             
             // Creates a random filename based on the type of report.
             $filter = new Omeka_Filter_Filename();
-            $filename = $filter->renameFileForArchive(
+            $filename = $filter->renameFile(
                 'report.' . $this->getExtension()
             );
 
-            $destPath = $this->_storagePrefix . $filename;
-            $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
             // Generates the report (passes to subclass)
+            $tempFilePath = tempnam($this->_storage->getTempDir(), 'reports');
             $tempFilePath = $this->generateReport($tempFilePath);
+            
+            // Store the report
+            $destPath = $this->_storagePrefixDir . '/'  . $filename;
             $this->_storage->store($tempFilePath, $destPath);
     
             $this->_reportFile->status = Reports_File::STATUS_COMPLETED;
             $this->_reportFile->filename = $filename;
         } catch (Exception $e) {
             $this->_reportFile->status = Reports_File::STATUS_ERROR;
-            $this->_addStatusMessage($e->getMessage(), 'Error');
+            $this->_addStatusMessage('storagePrefixDir: ' . $this->_storagePrefixDir . ' filename: ' . $filename . ' error:' . $e->getMessage(), 'Error');
             _log($e, Zend_Log::ERR);
         }
-        $this->_reportFile->forceSave();
+        $this->_reportFile->save();
+    }
+
+    public function deleteFile($filename) 
+    {
+        $destPath = $this->_storagePrefixDir . '/' . $filename;
+        $this->_storage->delete($destPath);
+    }
+    
+    /**
+     * Returns whether the report can be stored in the associated Omeka_Storage object
+     *
+     * @param array &$errors The array of errors for why a file cannot store
+     * @return bool whether the report can be stored in the associated Omeka_Storage object  
+     */
+    public function canStore(&$errors)
+    {
+        // this is a hack because Omeka_Storage_Adapter_Filesystem
+        // does not correctly implement canStore when the localDir 
+        // has been changed. It also offers no way to remove the subDirs
+        // we don't use or care about.  
+        // So we must directly test whether the directory we plan to write to is writeable
+        $ad = $this->_storage->getAdapter();
+        if ($ad instanceof Omeka_Storage_Adapter_Filesystem) {
+            $opt = $ad->getOptions();
+            $localDir = $opt['localDir'];
+            $absPath = $localDir . '/' . $this->_storagePrefixDir; // this reimplements Omeka_Storage_Adapter_Filesystem::_getAbsPath
+            $result = is_writable($absPath);
+            if (!$result) {
+                if (!$errors) {
+                    $errors = array();
+                }
+                $errors[] = __("Make sure that %s is exists and is writeable.", $absPath);
+            }
+            return $result;
+        }
+        
+        return $this->_storage->canStore();
     }
 
     public static function factory($reportFile)
