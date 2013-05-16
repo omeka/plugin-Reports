@@ -83,7 +83,7 @@ echo flash();
     <h2><?php echo __('You have no reports.'); ?></h2>
     <?php if (is_allowed('Reports_Index', 'add')): ?>
         <p><?php echo __('Get started by adding your first report.'); ?></p>
-        <a href="<?php echo html_escape(url('report/add')); ?>" class="add big green button"><?php echo __('Add a Report'); ?></a>
+        <a href="<?php echo html_escape(url('reports/add')); ?>" class="add big green button"><?php echo __('Add a Report'); ?></a>
     <?php endif; ?>
 <?php endif; ?>
 
