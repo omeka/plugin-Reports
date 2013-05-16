@@ -87,6 +87,6 @@ echo flash();
     <?php endif; ?>
 <?php endif; ?>
 
-<?php fire_plugin_hook('admin_reports_browse', array('reports' => $reports, 'view' => $this)); ?>
+<?php fire_plugin_hook('admin_reports_browse', array('reports' => $report, 'view' => $this)); ?>
 
 <?php echo foot(); ?>
