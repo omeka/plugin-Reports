@@ -101,7 +101,7 @@ function reports_get_config($key = null, $defaultValue = null)
     
     // Return the whole config if no key given.
     if (!$key) {
-        if ($config->Reports) {
+        if ($config) {
             return $defaults + $config->Reports->toArray();
         } else {
             return $defaults;
