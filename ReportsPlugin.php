@@ -101,6 +101,15 @@ class ReportsPlugin extends Omeka_Plugin_AbstractPlugin
             INDEX(`report_id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $db->query($sql);
+        
+        //Check if the report file exists
+        $storage = FILES_DIR."/reports";
+        
+        if(!file_exists($storage)){
+            $oldumask = umask(0);
+            mkdir($storage, 0775); // or even 01777 so you get the sticky bit set
+            umask($oldumask);
+        }
     }
 
     /**
