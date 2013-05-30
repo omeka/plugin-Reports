@@ -49,7 +49,7 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
             $reportItemCounts[(string)$report->id] = $itemCount;
             $reportUserNames[(string)$report->id] = $user->name;
         }
-                
+ 
         $this->view->reportItemCounts = $reportItemCounts;
         $this->view->reportUserNames = $reportUserNames;
         $this->view->formats = reports_get_output_formats();

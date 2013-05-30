@@ -4,7 +4,6 @@ echo head(array('title'=>$pageTitle, 'bodyclass'=>'reports'));
 echo common('reports-nav');
 echo flash();
 ?>
-
 <?php if (total_records('Reports_Report') > 0): ?>
     <div class="table-actions">
     <?php if (is_allowed('Reports_Index', 'add')): ?>
