@@ -1,0 +1,123 @@
+# Translation for the Reports plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Reports\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ReportsPlugin.php:143
+msgid "Reports"
+msgstr ""
+
+#: ReportsPlugin.php:176
+msgid "Report"
+msgstr ""
+
+#: controllers/IndexController.php:136
+msgid "The report cannot be saved.  Please check your report storage settings."
+msgstr ""
+
+#: models/Reports/Generator.php:205
+#, php-format
+msgid "Make sure that %s is exists and is writeable."
+msgstr ""
+
+#: views/admin/index/add.php:13 views/admin/index/browse.php:11
+#: views/admin/index/browse.php:76 views/admin/index/browse.php:85
+msgid "Add a Report"
+msgstr ""
+
+#: views/admin/index/add.php:35
+msgid "Add Report"
+msgstr ""
+
+#: views/admin/index/browse.php:2
+msgid "Browse Reports"
+msgstr ""
+
+#: views/admin/index/browse.php:22 views/admin/index/show.php:60
+msgid "ID"
+msgstr ""
+
+#: views/admin/index/browse.php:27
+msgid "Filter"
+msgstr ""
+
+#: views/admin/index/browse.php:28
+msgid "Generate"
+msgstr ""
+
+#: views/admin/index/browse.php:58
+msgid "Edit Filter"
+msgstr ""
+
+#: views/admin/index/browse.php:79
+msgid "There are no reports on this page."
+msgstr ""
+
+#: views/admin/index/browse.php:79
+msgid "View All Reports"
+msgstr ""
+
+#: views/admin/index/browse.php:82
+msgid "You have no reports."
+msgstr ""
+
+#: views/admin/index/browse.php:84
+msgid "Get started by adding your first report."
+msgstr ""
+
+#: views/admin/index/query.php:14
+#, php-format
+msgid "Edit Filter for '%s' | Reports"
+msgstr ""
+
+#: views/admin/index/query.php:25
+#, php-format
+msgid "Report Filter for '%s'"
+msgstr ""
+
+#: views/admin/index/show.php:14
+#, php-format
+msgid "Report #%s | Reports"
+msgstr ""
+
+#: views/admin/index/show.php:32
+msgid "Generate a New File"
+msgstr ""
+
+#: views/admin/index/show.php:36
+msgid "Report Details"
+msgstr ""
+
+#: views/admin/index/show.php:54
+msgid "Generated Files"
+msgstr ""
+
+#: views/admin/index/show.php:56
+msgid "You have not yet generated any files."
+msgstr ""
+
+#: views/admin/index/show.php:63
+msgid "Status"
+msgstr ""
+
+#: views/admin/index/show.php:80
+msgid "Download File"
+msgstr ""
+
+#: views/admin/index/show.php:88
+msgid "Delete File"
+msgstr ""
