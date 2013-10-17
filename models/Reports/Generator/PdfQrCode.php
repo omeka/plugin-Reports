@@ -5,6 +5,8 @@
  * @copyright Copyright (c) 2011 Center for History and New Media
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
+
+defined('REPORTS_TTF_DIRECTORY') or define('REPORTS_TTF_DIRECTORY', REPORTS_PLUGIN_DIRECTORY.'/models/Reports/Generator/PdfQrCode/fonts');
  
 /**
  * Report generator for PDF output with QR Codes included.
@@ -97,7 +99,7 @@ class Reports_Generator_PdfQrCode
         }
         $options = unserialize($this->_reportFile->options);
         $this->_baseUrl = $options['baseUrl'];
-        $this->_font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
+        $this->_font = Zend_Pdf_Font::fontWithPath( REPORTS_TTF_DIRECTORY . '/DejaVuSans.ttf', Zend_Pdf_Font::EMBED_DONT_EMBED);
 
         $fileSuffix = 1;
         $pdfPath = $this->_newPdf($filePath, $fileSuffix);
@@ -303,7 +305,7 @@ class Reports_Generator_PdfQrCode
         $lines = explode("\n", $wrappedText);
         foreach($lines as $line)
         {
-            $page->drawText($line, $x, $y);
+            $page->drawText($line, $x, $y, 'UTF-8');
             $y -= self::FONT_SIZE + 5;
         }
     }
