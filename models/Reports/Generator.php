@@ -78,7 +78,7 @@ abstract class Reports_Generator
         $this->_storage = $storage;
     }
     
-    public function getStorage($storage)
+    public function getStorage()
     {
         return $this->_storage;
     }
