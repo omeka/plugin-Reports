@@ -103,15 +103,17 @@ class ReportsPlugin extends Omeka_Plugin_AbstractPlugin
         $db->query($sql);
         
         //IF reports folder doesn't exist create it
-        $dir = Zend_Registry::get('storage');
-        $localDir = $dir->getAdapter()->getOptions();
-        $localDir = $localDir['localDir'];
-        $reports = $localDir."/reports";
+        $storage = Zend_Registry::get('storage');
+        if($storage instanceof Omeka_Storage_Adapter_Filesystem){
+            $options = $storage->getAdapter()->getOptions();
+            $localDir = $options['localDir'];
+            $reports = $localDir."/reports";
         
-        if(file_exists($localDir) and !file_exists($reports)){
-            $oldMask = umask(0);
-            mkdir($reports, 0775);
-            umask($oldMask);
+            if(file_exists($localDir) and !file_exists($reports)){
+                $oldMask = umask(0);
+                mkdir($reports, 0775);
+                umask($oldMask);
+            }
         }
         
     }
