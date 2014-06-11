@@ -3,6 +3,7 @@ $pageTitle = __('Browse Reports') . ' ' .  __('(%s total)', $total_results);
 echo head(array('title'=>$pageTitle, 'bodyclass'=>'reports'));
 echo common('reports-nav');
 echo flash();
+$report = (isset($report))? $report: array();
 ?>
 <?php if (total_records('Reports_Report') > 0): ?>
     <div class="table-actions">
