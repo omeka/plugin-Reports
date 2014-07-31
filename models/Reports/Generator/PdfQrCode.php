@@ -131,7 +131,7 @@ class Reports_Generator_PdfQrCode
         $zlibTrue = (extension_loaded('zlib'))? "true" : "false ";
         if ($zip->open($zipPath, ZIPARCHIVE::OVERWRITE ) !== true) {
             $error = $zip->getStatusString();
-            throw new RuntimeException("zlib cannot create '$zipPath': $error.");
+            throw new RuntimeException("ZipArchive cannot create '$zipPath': $error.");
         }
         foreach ($this->_filePaths as $path) {
             if (preg_match('/.*\-(part.+\.pdf)/', $path, $matches)) {
