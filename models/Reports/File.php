@@ -61,7 +61,12 @@ class Reports_File extends Omeka_Record_AbstractRecord
         }
         return $this->_generator;
     }
-    
+
+     protected function _initializeMixins()
+     {
+         $this->_mixins[] = new Mixin_Timestamp($this, 'created', null);
+     }
+
     /**
      * Returns whether the report can be stored in the associated Omeka_Storage object
      *
