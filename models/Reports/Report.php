@@ -27,6 +27,7 @@ class Reports_Report extends Omeka_Record_AbstractRecord
     {
         // Add the search mixin.
         $this->_mixins[] = new Mixin_Search($this);
+        $this->_mixins[] = new Mixin_Timestamp($this, 'modified', null);
     }
 
     protected function beforeSave()
