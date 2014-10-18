@@ -86,7 +86,4 @@ $report = (isset($report))? $report: array();
         <a href="<?php echo html_escape(url('reports/add')); ?>" class="add big green button"><?php echo __('Add a Report'); ?></a>
     <?php endif; ?>
 <?php endif; ?>
-
-<?php fire_plugin_hook('admin_reports_browse', array('reports' => $report, 'view' => $this)); ?>
-
 <?php echo foot(); ?>
