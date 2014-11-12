@@ -20,7 +20,17 @@ class Reports_FilesController extends Omeka_Controller_AbstractActionController
         $this->_helper->db->setDefaultModelName('Reports_File');
     }
 
+    public function browseAction()
+    {
+        throw new Omeka_Controller_Exception_404;
+    }
+
     public function showAction()
+    {
+        throw new Omeka_Controller_Exception_404;
+    }
+
+    public function editAction()
     {
         throw new Omeka_Controller_Exception_404;
     }

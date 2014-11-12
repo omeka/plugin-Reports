@@ -16,13 +16,9 @@ echo head($head);
 ?>
 <?php echo common('reports-nav'); ?>
 
-<script type="text/javascript" charset="utf-8">
-    Event.observe(window, 'load', Omeka.Search.activateSearchButtons);
-</script>
-
 <?php echo flash(); ?>
 
-<h2><?php echo __("Report Filter for '%s'", $reportsreport->name); ?></h2>
+<h2><?php echo html_escape(__("Report Filter for '%s'", $reportsreport->name)); ?></h2>
 
 <?php echo items_search_form(array(), current_url()); ?>
 

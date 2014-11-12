@@ -43,27 +43,15 @@ $report = (isset($report))? $report: array();
                     endif;
                 ?>
                 <tr class="report<?php if(++$key%2==1) echo ' odd'; else echo ' even'; ?>">
-                    <td><?php echo $report->id; ?></td>                        
-                    <td><a href="<?php echo url(array('action' => 'show', 'id' => $report->id)); ?>">
-                        <?php echo $report->name; ?></a>
+                    <td><?php echo $report->id; ?></td>
+                    <td><a href="<?php echo record_url($report); ?>">
+                        <?php echo html_escape($report->name); ?></a>
                     </td>
-                    <td><?php echo $reportUserNames[(string)$report->id]; ?></td>
+                    <td><?php echo html_escape($report->getCreatorName()); ?></td>
                     <td><?php echo format_date($report->modified); ?></td>
                     <td><a href="<?php echo url("items/browse")."?$query"; ?>"><?php echo $reportItemCounts[(string)$report->id]; ?></a></td>
-                    <td><a href="<?php 
-                    echo url(
-                        array(
-                            'action' => 'query',
-                            'id' => $report->id,        
-                        )
-                    ); ?>"><?php echo __('Edit Filter'); ?></a></td>
-                    <td><form action="<?php 
-                    echo url(
-                        array(
-                            'action' => 'generate',
-                            'id' => $report->id,
-                        )    
-                    ); ?>">
+                    <td><a href="<?php echo record_url($report, 'query'); ?>"><?php echo __('Edit Filter'); ?></a></td>
+                    <td><form action="<?php echo record_url($report, 'generate'); ?>">
                     <?php echo $this->formSelect('format', null, null, $this->formats); ?>
                     <?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
                     </form>

@@ -47,11 +47,9 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
             $params = reports_convert_search_filters($query);
             $itemCount = $db->getTable('Item')->count($params);
             $reportItemCounts[(string)$report->id] = $itemCount;
-            $reportUserNames[(string)$report->id] = $user->name;
         }
  
         $this->view->reportItemCounts = $reportItemCounts;
-        $this->view->reportUserNames = $reportUserNames;
         $this->view->formats = reports_get_output_formats();
     }
     
@@ -157,5 +155,10 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
             ),
             'default'
         );
+    }
+
+    public function editAction()
+    {
+        throw new Omeka_Controller_Exception_404;
     }
 }

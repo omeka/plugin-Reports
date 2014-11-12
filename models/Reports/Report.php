@@ -70,4 +70,20 @@ class Reports_Report extends Omeka_Record_AbstractRecord
         $user = $this->getTable('User')->find($this->creator);
         return $user->name;
     }
+
+    /**
+     * Get the routing parameters or the URL string to this record.
+     * 
+     * @param string $action
+     * @return string|array A URL string or a routing array.
+     */
+    public function getRecordUrl($action = 'show')
+    {
+        return array(
+            'module' => 'reports',
+            'controller' => 'index',
+            'action' => $action,
+            'id' => $this->id
+        );
+    }
 }
