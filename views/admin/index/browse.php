@@ -24,7 +24,7 @@ echo flash();
                     __('Date Modified') => 'modified',
                     __('Items') => null,
                     __('Filter') => null,
-                    __('Generate') => null,
+                    __('Generate a New File') => null,
                 );
                 ?>
                 <?php echo browse_sort_links($sortLinks, array('link_tag' => 'th scope="col"', 'list_tag' => '')); ?>
@@ -50,7 +50,7 @@ echo flash();
                     <td><a href="<?php echo url("items/browse")."?$query"; ?>"><?php echo $reportItemCounts[(string)$report->id]; ?></a></td>
                     <td><a href="<?php echo record_url($report, 'query'); ?>"><?php echo __('Edit Filter'); ?></a></td>
                     <td><form action="<?php echo record_url($report, 'generate'); ?>">
-                    <?php echo $this->formSelect('format', null, null, $this->formats); ?>
+                    <?php echo $this->formSelect('format', null, array('aria-label' => __('Format')), $this->formats); ?>
                     <?php echo $this->formSubmit('submit-generate', 'Generate'); ?>
                     </form>
                     </td>

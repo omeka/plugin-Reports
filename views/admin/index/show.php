@@ -16,13 +16,6 @@ echo head($head);
 echo flash();
 ?>
 
-<div id="generate-report" class="add-button">
-<form action="<?php echo record_url($report, 'generate'); ?>" class="add">
-<?php echo $this->formSelect('format', null, null, $this->formats); ?>
-<?php echo $this->formSubmit('submit-generate', __('Generate a New File'), array('class' => 'add', 'style' => 'float:none; display:inline;')); ?>
-</form>
-</div>
-
 <h2><?php echo __('Report Details'); ?></h2>
 <table>
 <tr>
@@ -42,6 +35,15 @@ echo flash();
 </table>
 
 <h2><?php echo __('Generated Files'); ?></h2>
+
+<div id="generate-report" class="add-button">
+<form action="<?php echo record_url($report, 'generate'); ?>" class="add">
+<?php echo $this->formSelect('format', null, array('aria-label' => __('Format')), $this->formats); ?>
+
+<?php echo $this->formSubmit('submit-generate', __('Generate'), array('class' => 'add', 'style' => 'float:none; display:inline;')); ?>
+</form>
+</div>
+
 <?php if (count($reportFiles) == 0) : ?>
 <p><?php echo __('You have not yet generated any files.'); ?></p>
 <?php else: ?>
@@ -51,8 +53,7 @@ echo flash();
     <th><?php echo __('Date'); ?></th>
     <th><?php echo __('Type'); ?></th>
     <th><?php echo __('Status'); ?></th>
-    <th></th>
-    <th></th>
+    <th><?php echo __('Actions'); ?></th>
 </thead>
 <?php foreach($reportFiles as $file) : ?>
 <tr>
@@ -61,17 +62,18 @@ echo flash();
     <td><?php echo html_escape($file->getGenerator()->getReadableName()); ?></td>
     <td><?php echo ucwords($status = $file->status); ?></td>
     <?php if ($status == Reports_File::STATUS_COMPLETED) : ?>
-    <td><a href="<?php echo html_escape($file->getUrl()); ?>"><?php echo __('Download File'); ?></a></td>
-    <td><a href="<?php 
+    <td>
+        <a href="<?php echo html_escape($file->getUrl()); ?>"><?php echo __('Download'); ?></a>
+        &middot;
+        <a href="<?php 
 echo url(
     array(
         'controller' => 'files',
         'action' => 'delete-confirm',
         'id' => $file->id,
     )
-); ?>" class="delete-confirm"><?php echo __('Delete File'); ?></a></td>
+); ?>" class="delete-confirm"><?php echo __('Delete'); ?></a></td>
     <?php else: ?>
-    <td></td>
     <td></td>
     <?php endif; ?>
 </tr>
