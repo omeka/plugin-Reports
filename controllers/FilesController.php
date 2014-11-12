@@ -24,15 +24,10 @@ class Reports_FilesController extends Omeka_Controller_AbstractActionController
     {
         throw new Omeka_Controller_Exception_404;
     }
-    
-    /**
-     * Deletes a Reports_File instance and deletes the underlying file.
-     */
-    public function deleteAction()
+
+    protected function _redirectAfterDelete($record)
     {
-        $reportFile = $this->_helper->db->findById();
-        $report = $reportFile->getReport();
-        $reportFile->delete();
+        $report = $record->getReport();
         $this->_helper->redirector->gotoRoute(
             array(
                 'module' => 'reports',

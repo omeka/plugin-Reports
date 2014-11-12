@@ -76,10 +76,10 @@ echo url(
 echo url(
     array(
         'controller' => 'files',
-        'action' => 'delete',
+        'action' => 'delete-confirm',
         'id' => $file->id,
     )
-); ?>" class="delete"><?php echo __('Delete File'); ?></a></td>
+); ?>" class="delete-confirm"><?php echo __('Delete File'); ?></a></td>
     <?php else: ?>
     <td></td>
     <td></td>
