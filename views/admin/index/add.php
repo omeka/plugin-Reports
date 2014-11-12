@@ -11,11 +11,10 @@
  */
  
 echo head(array('title' => __('Add a Report'), 'bodyclass'=>'reports'));
-echo common('reports-nav');
 echo flash();
 ?>
 
-<form method="post" enctype="multipart/form-data" id="report-form" action="">
+<form method="post" id="report-form" action="">
     
     <section class="seven columns alpha" id="edit-form">
         <div>

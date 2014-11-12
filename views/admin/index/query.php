@@ -13,12 +13,8 @@
 $head = array('body_class' => 'reports content',
               'title'      => __("Edit Filter for '%s' | Reports", $reportsreport->name));
 echo head($head);
+echo flash();
 ?>
-<?php echo common('reports-nav'); ?>
-
-<?php echo flash(); ?>
-
-<h2><?php echo html_escape(__("Report Filter for '%s'", $reportsreport->name)); ?></h2>
 
 <?php echo items_search_form(array(), current_url()); ?>
 

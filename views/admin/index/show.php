@@ -13,10 +13,8 @@
 $head = array('body_class' => 'reports content',
               'title'      => __('Report #%s | Reports', $report->id));
 echo head($head);
+echo flash();
 ?>
-<?php echo common('reports-nav'); ?>
-
-<?php echo flash(); ?>
 
 <div id="generate-report" class="add-button">
 <form action="<?php echo record_url($report, 'generate'); ?>" class="add">
