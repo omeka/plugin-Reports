@@ -73,8 +73,20 @@ class Reports_File extends Omeka_Record_AbstractRecord
      * @param array &$errors The array of errors for why a file cannot store
      * @return bool whether the report can be stored in the associated Omeka_Storage object  
      */
-    function canStore(&$errors)
+    public function canStore(&$errors)
     {
         return $this->getGenerator()->canStore($errors);
+    }
+
+    /**
+     * Get the URL to the saved report file.
+     */
+    public function getUrl()
+    {
+        $g = $this->getGenerator();
+        $storage = $g->getStorage();
+        $storagePrefixDir = $g->getStoragePrefixDir();
+        $destPath = $storagePrefixDir . '/' . $this->filename;
+        return $storage->getUri($destPath);
     }
 }

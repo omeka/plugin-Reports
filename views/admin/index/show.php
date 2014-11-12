@@ -71,13 +71,7 @@ echo url(
     <td><?php echo $file->getGenerator()->getReadableName(); ?></td>
     <td><?php echo ucwords($status = $file->status); ?></td>
     <?php if ($status == Reports_File::STATUS_COMPLETED) : ?>
-    <td><a href="<?php 
-echo url(
-    array(
-        'controller' => 'files',
-        'id' => $file->id,
-    )    
-); ?>"><?php echo __('Download File'); ?></a></td>
+    <td><a href="<?php echo html_escape($file->getUrl()); ?>"><?php echo __('Download File'); ?></a></td>
     <td><a href="<?php 
 echo url(
     array(

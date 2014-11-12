@@ -22,14 +22,7 @@ class Reports_FilesController extends Omeka_Controller_AbstractActionController
 
     public function showAction()
     {
-        $reportsFile = $this->_helper->db->findById();
-        $g = $reportsFile->getGenerator();        
-        $storage = $g->getStorage();        
-        $storagePrefixDir = $g->getStoragePrefixDir();
-        $destPath = $storagePrefixDir . '/' . $reportsFile->filename;
-        $uri = $storage->getUri($destPath);
-                
-        return $this->_helper->redirector->gotoUrl($uri);
+        throw new Omeka_Controller_Exception_404;
     }
     
     /**
