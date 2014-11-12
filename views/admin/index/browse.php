@@ -48,7 +48,7 @@ $report = (isset($report))? $report: array();
                         <?php echo $report->name; ?></a>
                     </td>
                     <td><?php echo $reportUserNames[(string)$report->id]; ?></td>
-                    <td><?php echo $report->modified; ?></td>
+                    <td><?php echo format_date($report->modified); ?></td>
                     <td><a href="<?php echo url("items/browse")."?$query"; ?>"><?php echo $reportItemCounts[(string)$report->id]; ?></a></td>
                     <td><a href="<?php 
                     echo url(

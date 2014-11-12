@@ -47,7 +47,7 @@ echo url(
 <td><?php echo html_escape($report->getCreatorName()); ?></td>
 </tr>
 <th><?php echo __('Date Added'); ?></th>
-<td><?php echo $report->modified; ?></td>
+<td><?php echo format_date($report->modified); ?></td>
 </tr>
 </table>
 
@@ -67,7 +67,7 @@ echo url(
 <?php foreach($reportFiles as $file) : ?>
 <tr>
     <td><?php echo $file->id ?></td>
-    <td><?php echo $file->created ?></td>
+    <td><?php echo format_date($file->created, Zend_Date::DATETIME_MEDIUM); ?></td>
     <td><?php echo $file->getGenerator()->getReadableName(); ?></td>
     <td><?php echo ucwords($status = $file->status); ?></td>
     <?php if ($status == Reports_File::STATUS_COMPLETED) : ?>
