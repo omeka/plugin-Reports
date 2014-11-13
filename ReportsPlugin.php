@@ -125,7 +125,7 @@ class ReportsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $db = get_db();
 
-        $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_reports`;";
+        $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports`;";
         $db->query($sql);
         $sql = "DROP TABLE IF EXISTS `{$db->prefix}reports_items`;";
         $db->query($sql);
