@@ -2,7 +2,6 @@
 $pageTitle = __('Browse Reports') . ' ' .  __('(%s total)', $total_results);
 echo head(array('title'=>$pageTitle, 'bodyclass'=>'reports'));
 echo flash();
-$report = (isset($report))? $report: array();
 ?>
 <?php if ($total_results > 0): ?>
     <div class="table-actions">
@@ -74,6 +73,6 @@ $report = (isset($report))? $report: array();
     <?php endif; ?>
 <?php endif; ?>
 
-<?php fire_plugin_hook('admin_reports_browse', array('reports' => $report, 'view' => $this)); ?>
+<?php fire_plugin_hook('admin_reports_browse', array('reports' => $reports_reports, 'view' => $this)); ?>
 
 <?php echo foot(); ?>
