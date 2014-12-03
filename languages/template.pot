@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ReportsPlugin.php:143
+#: ReportsPlugin.php:145
 msgid "Reports"
 msgstr ""
 
-#: ReportsPlugin.php:176
+#: ReportsPlugin.php:178
 msgid "Report"
 msgstr ""
 
-#: controllers/IndexController.php:136
+#: controllers/IndexController.php:134
 msgid "The report cannot be saved.  Please check your report storage settings."
 msgstr ""
 
@@ -34,12 +34,14 @@ msgstr ""
 msgid "Make sure that %s is exists and is writeable."
 msgstr ""
 
-#: views/admin/index/add.php:13 views/admin/index/browse.php:11
-#: views/admin/index/browse.php:76 views/admin/index/browse.php:85
+#. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
+#.
+#: views/admin/index/add.php:13 views/admin/index/browse.php:10
+#: views/admin/index/browse.php:63 views/admin/index/browse.php:72
 msgid "Add a Report"
 msgstr ""
 
-#: views/admin/index/add.php:35
+#: views/admin/index/add.php:34
 msgid "Add Report"
 msgstr ""
 
@@ -47,35 +49,35 @@ msgstr ""
 msgid "Browse Reports"
 msgstr ""
 
-#: views/admin/index/browse.php:22 views/admin/index/show.php:60
+#: views/admin/index/browse.php:21 views/admin/index/show.php:52
 msgid "ID"
 msgstr ""
 
-#: views/admin/index/browse.php:27
+#: views/admin/index/browse.php:26
 msgid "Filter"
 msgstr ""
 
-#: views/admin/index/browse.php:28
-msgid "Generate"
+#: views/admin/index/browse.php:27
+msgid "Generate a New File"
 msgstr ""
 
-#: views/admin/index/browse.php:58
+#: views/admin/index/browse.php:51
 msgid "Edit Filter"
 msgstr ""
 
-#: views/admin/index/browse.php:79
+#: views/admin/index/browse.php:66
 msgid "There are no reports on this page."
 msgstr ""
 
-#: views/admin/index/browse.php:79
+#: views/admin/index/browse.php:66
 msgid "View All Reports"
 msgstr ""
 
-#: views/admin/index/browse.php:82
+#: views/admin/index/browse.php:69
 msgid "You have no reports."
 msgstr ""
 
-#: views/admin/index/browse.php:84
+#: views/admin/index/browse.php:71
 msgid "Get started by adding your first report."
 msgstr ""
 
@@ -84,40 +86,35 @@ msgstr ""
 msgid "Edit Filter for '%s' | Reports"
 msgstr ""
 
-#: views/admin/index/query.php:25
-#, php-format
-msgid "Report Filter for '%s'"
-msgstr ""
-
 #: views/admin/index/show.php:14
 #, php-format
 msgid "Report #%s | Reports"
 msgstr ""
 
-#: views/admin/index/show.php:32
-msgid "Generate a New File"
-msgstr ""
-
-#: views/admin/index/show.php:36
+#: views/admin/index/show.php:19
 msgid "Report Details"
 msgstr ""
 
-#: views/admin/index/show.php:54
+#: views/admin/index/show.php:37
 msgid "Generated Files"
 msgstr ""
 
-#: views/admin/index/show.php:56
+#: views/admin/index/show.php:43
+msgid "Generate"
+msgstr ""
+
+#: views/admin/index/show.php:48
 msgid "You have not yet generated any files."
 msgstr ""
 
-#: views/admin/index/show.php:63
+#: views/admin/index/show.php:55
 msgid "Status"
 msgstr ""
 
-#: views/admin/index/show.php:80
-msgid "Download File"
+#: views/admin/index/show.php:56
+msgid "Actions"
 msgstr ""
 
-#: views/admin/index/show.php:88
-msgid "Delete File"
+#: views/admin/index/show.php:66
+msgid "Download"
 msgstr ""
