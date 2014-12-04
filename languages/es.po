@@ -1,0 +1,122 @@
+# Translation for the Reports plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# 
+# Translators:
+# dario hereñu <magallania@gmail.com>, 2014
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2014-12-03 22:23+0000\n"
+"Last-Translator: dario hereñu <magallania@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/omeka/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ReportsPlugin.php:145
+msgid "Reports"
+msgstr "Informes"
+
+#: ReportsPlugin.php:178
+msgid "Report"
+msgstr "Informe"
+
+#: controllers/IndexController.php:134
+msgid ""
+"The report cannot be saved.  Please check your report storage settings."
+msgstr "El informe no se puede guardar. Revisa los parámetros de almacenaje para los informes."
+
+#: models/Reports/Generator.php:205
+#, php-format
+msgid "Make sure that %s is exists and is writeable."
+msgstr "Asegúrate de que %s existe y se puede escribir."
+
+#. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
+#: views/admin/index/add.php:13 views/admin/index/browse.php:10
+#: views/admin/index/browse.php:63 views/admin/index/browse.php:72
+msgid "Add a Report"
+msgstr "Añadir un informe"
+
+#: views/admin/index/add.php:34
+msgid "Add Report"
+msgstr "Añadir informe"
+
+#: views/admin/index/browse.php:2
+msgid "Browse Reports"
+msgstr "Busca informes"
+
+#: views/admin/index/browse.php:21 views/admin/index/show.php:52
+msgid "ID"
+msgstr "ID"
+
+#: views/admin/index/browse.php:26
+msgid "Filter"
+msgstr "Filtro"
+
+#: views/admin/index/browse.php:27
+msgid "Generate a New File"
+msgstr "Generar un nuevo fichero"
+
+#: views/admin/index/browse.php:51
+msgid "Edit Filter"
+msgstr "Editar filtro"
+
+#: views/admin/index/browse.php:66
+msgid "There are no reports on this page."
+msgstr "No hay informes en esta página"
+
+#: views/admin/index/browse.php:66
+msgid "View All Reports"
+msgstr "Ver todos los informes"
+
+#: views/admin/index/browse.php:69
+msgid "You have no reports."
+msgstr "No tienes informes."
+
+#: views/admin/index/browse.php:71
+msgid "Get started by adding your first report."
+msgstr "Comienza añadiendo tu primer informe."
+
+#: views/admin/index/query.php:14
+#, php-format
+msgid "Edit Filter for '%s' | Reports"
+msgstr "Editar el filtro para '%s' | Informes"
+
+#: views/admin/index/show.php:14
+#, php-format
+msgid "Report #%s | Reports"
+msgstr "Informe #%s | Informes"
+
+#: views/admin/index/show.php:19
+msgid "Report Details"
+msgstr "Detalles del informe"
+
+#: views/admin/index/show.php:37
+msgid "Generated Files"
+msgstr "Ficheros generados"
+
+#: views/admin/index/show.php:43
+msgid "Generate"
+msgstr "Generar"
+
+#: views/admin/index/show.php:48
+msgid "You have not yet generated any files."
+msgstr "Aún no ha generado ningún archivo."
+
+#: views/admin/index/show.php:55
+msgid "Status"
+msgstr "Estado"
+
+#: views/admin/index/show.php:56
+msgid "Actions"
+msgstr "Acciones"
+
+#: views/admin/index/show.php:66
+msgid "Download"
+msgstr "Descarga"

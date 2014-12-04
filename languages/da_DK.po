@@ -1,0 +1,121 @@
+# Translation for the Reports plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# 
+# Translators:
+# Per-Olof Olofsson <poo@bornholmsmuseum.dk>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2014-12-03 21:36+0000\n"
+"Last-Translator: John Flatness <john@zerocrates.org>\n"
+"Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/omeka/language/da_DK/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: da_DK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ReportsPlugin.php:145
+msgid "Reports"
+msgstr "Rapporter"
+
+#: ReportsPlugin.php:178
+msgid "Report"
+msgstr "Rapport"
+
+#: controllers/IndexController.php:134
+msgid ""
+"The report cannot be saved.  Please check your report storage settings."
+msgstr "Rapporten kan ikke gemmes. Kontroller venligst dine indstillinger vedrørende opbevaring."
+
+#: models/Reports/Generator.php:205
+#, php-format
+msgid "Make sure that %s is exists and is writeable."
+msgstr "Sørg for, at %s eksisterer og er skrivbar."
+
+#. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
+#: views/admin/index/add.php:13 views/admin/index/browse.php:10
+#: views/admin/index/browse.php:63 views/admin/index/browse.php:72
+msgid "Add a Report"
+msgstr "Tilføj en Rapport"
+
+#: views/admin/index/add.php:34
+msgid "Add Report"
+msgstr "Tilføj Rapport"
+
+#: views/admin/index/browse.php:2
+msgid "Browse Reports"
+msgstr "Gennemse Rapporter"
+
+#: views/admin/index/browse.php:21 views/admin/index/show.php:52
+msgid "ID"
+msgstr "ID"
+
+#: views/admin/index/browse.php:26
+msgid "Filter"
+msgstr "Filter"
+
+#: views/admin/index/browse.php:27
+msgid "Generate a New File"
+msgstr "Generere en Ny Fil."
+
+#: views/admin/index/browse.php:51
+msgid "Edit Filter"
+msgstr "Redigere Filter"
+
+#: views/admin/index/browse.php:66
+msgid "There are no reports on this page."
+msgstr "Der er ikke nogle rapporter på denne side."
+
+#: views/admin/index/browse.php:66
+msgid "View All Reports"
+msgstr "Se Alle Rapporter"
+
+#: views/admin/index/browse.php:69
+msgid "You have no reports."
+msgstr "Du har ikke nogle rapporter."
+
+#: views/admin/index/browse.php:71
+msgid "Get started by adding your first report."
+msgstr "Kom i gang ved at tilføje dit første rapport."
+
+#: views/admin/index/query.php:14
+#, php-format
+msgid "Edit Filter for '%s' | Reports"
+msgstr "Redigere Filter før '%s' | Rapporter"
+
+#: views/admin/index/show.php:14
+#, php-format
+msgid "Report #%s | Reports"
+msgstr "Rapportere #%s | Rapporter"
+
+#: views/admin/index/show.php:19
+msgid "Report Details"
+msgstr "Rapport Detaljer"
+
+#: views/admin/index/show.php:37
+msgid "Generated Files"
+msgstr "Genererede Filer"
+
+#: views/admin/index/show.php:43
+msgid "Generate"
+msgstr "Generer"
+
+#: views/admin/index/show.php:48
+msgid "You have not yet generated any files."
+msgstr "Du har endnu ikke genereret nogle filer."
+
+#: views/admin/index/show.php:55
+msgid "Status"
+msgstr "Status"
+
+#: views/admin/index/show.php:56
+msgid "Actions"
+msgstr ""
+
+#: views/admin/index/show.php:66
+msgid "Download"
+msgstr ""
