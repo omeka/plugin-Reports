@@ -34,6 +34,7 @@ class Reports_Generator_Html
         $this->outputHTML();
         ob_end_flush();
         fclose($this->_file);
+        chmod($filePath, 0644);//assure the file is readable to be able to open it
         return $filePath;
     }
     
