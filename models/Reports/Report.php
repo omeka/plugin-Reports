@@ -30,7 +30,7 @@ class Reports_Report extends Omeka_Record_AbstractRecord
         $this->_mixins[] = new Mixin_Timestamp($this, 'modified', null);
     }
 
-    protected function beforeSave()
+    protected function beforeSave($args)
     {
         $this->creator = current_user()->id;
         
