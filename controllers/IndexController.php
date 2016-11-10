@@ -44,8 +44,7 @@ class Reports_IndexController extends Omeka_Controller_AbstractActionController
         foreach($this->view->reports_reports as $report) {            
             $user = $db->getTable('User')->find($report->creator);
             $query = unserialize($report->query);
-            $params = reports_convert_search_filters($query);
-            $itemCount = $db->getTable('Item')->count($params);
+            $itemCount = $db->getTable('Item')->count($query);
             $reportItemCounts[(string)$report->id] = $itemCount;
         }
  

@@ -147,7 +147,7 @@ abstract class Reports_Generator
             $this->_reportFile->save();
     
             $this->_report = $this->_reportFile->getReport();
-            $this->_params = reports_convert_search_filters(unserialize($this->_report->query));
+            $this->_params = unserialize($this->_report->query);
             
             // Creates a random filename based on the type of report.
             $filter = new Omeka_Filter_Filename();
