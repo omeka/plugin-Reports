@@ -3,53 +3,54 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Alfio Squatrito <info@lswebagency.it>, 2014
-# Guybrush88 <erpizzo@alice.it>, 2015
+# baatarsuren <mgllibrary@gmail.com>, 2016
+# Khaidav T. <khaidaw@yahoo.com>, 2016
+# Tuvshintogtoh <tuvshintogtoh.v@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-03-17 18:16+0000\n"
-"Last-Translator: Guybrush88 <erpizzo@alice.it>\n"
-"Language-Team: Italian (http://www.transifex.com/omeka/omeka/language/it/)\n"
+"PO-Revision-Date: 2016-06-14 02:13+0000\n"
+"Last-Translator: Khaidav T. <khaidaw@yahoo.com>\n"
+"Language-Team: Mongolian (http://www.transifex.com/omeka/omeka/language/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
+"Language: mn\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ReportsPlugin.php:145
 msgid "Reports"
-msgstr "Reports"
+msgstr "Тайлангууд"
 
 #: ReportsPlugin.php:178
 msgid "Report"
-msgstr "Report"
+msgstr "Тайлан"
 
 #: controllers/IndexController.php:134
 msgid ""
 "The report cannot be saved.  Please check your report storage settings."
-msgstr "Il report non puo' essere salvato. Controlla le impostazioni di salvataggio."
+msgstr "Тайлан хадгалагдсангүй. Тайлангийн багтаамжийн тохиргоог шалгана уу."
 
 #: models/Reports/Generator.php:205
 #, php-format
 msgid "Make sure that %s is exists and is writeable."
-msgstr "Assicurati che %s esiste e sia modificabile."
+msgstr " %s -ий засварлах боломжтой эсэхийг шалгаарай."
 
 #. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
 #: views/admin/index/add.php:13 views/admin/index/browse.php:10
 #: views/admin/index/browse.php:63 views/admin/index/browse.php:72
 msgid "Add a Report"
-msgstr "Aggiungi un Report"
+msgstr "Тайлан нэмэх"
 
 #: views/admin/index/add.php:34
 msgid "Add Report"
-msgstr ""
+msgstr "Тайлан нэмэх"
 
 #: views/admin/index/browse.php:2
 msgid "Browse Reports"
-msgstr "Elenca report"
+msgstr "Тайлангууд харах"
 
 #: views/admin/index/browse.php:21 views/admin/index/show.php:52
 msgid "ID"
@@ -57,66 +58,66 @@ msgstr "ID"
 
 #: views/admin/index/browse.php:26
 msgid "Filter"
-msgstr "Filtra"
+msgstr "Шүүлтүүр"
 
 #: views/admin/index/browse.php:27
 msgid "Generate a New File"
-msgstr "Crea un nuovo file"
+msgstr "Шинэ баримт үүсгэх"
 
 #: views/admin/index/browse.php:51
 msgid "Edit Filter"
-msgstr "Modifica Filtro"
+msgstr "Шүүлтүүрийг засах"
 
 #: views/admin/index/browse.php:66
 msgid "There are no reports on this page."
-msgstr "Non ci sono report in questa pagina."
+msgstr "Энэ хуудсанд ямар нэг тайлан алга."
 
 #: views/admin/index/browse.php:66
 msgid "View All Reports"
-msgstr "Visualizza tutti i report."
+msgstr "Бүх тайланг харах"
 
 #: views/admin/index/browse.php:69
 msgid "You have no reports."
-msgstr "Non hai reports."
+msgstr "Танд ямар нэг тайлан алга."
 
 #: views/admin/index/browse.php:71
 msgid "Get started by adding your first report."
-msgstr "Inizia aggiungendo il tuo primo report."
+msgstr "Анхны тайланг нэмж байна."
 
 #: views/admin/index/query.php:14
 #, php-format
 msgid "Edit Filter for '%s' | Reports"
-msgstr "Modifica Filtro per '%s' | Reports"
+msgstr "Шүүлт хийгээд засах '%s' | Тайлангууд"
 
 #: views/admin/index/show.php:14
 #, php-format
 msgid "Report #%s | Reports"
-msgstr "Report n %s  | Reports"
+msgstr "Тайлан #%s | Тайлангууд"
 
 #: views/admin/index/show.php:19
 msgid "Report Details"
-msgstr "Dettagli Report"
+msgstr "Тайлангийн хэсгүүд"
 
 #: views/admin/index/show.php:37
 msgid "Generated Files"
-msgstr "Genera Files"
+msgstr "Үүсгэсэн баримтууд"
 
 #: views/admin/index/show.php:43
 msgid "Generate"
-msgstr "Crea"
+msgstr "Үүсгэх"
 
 #: views/admin/index/show.php:48
 msgid "You have not yet generated any files."
-msgstr "Non hai generato alcun file."
+msgstr "Та ямар нэг файл үүсгээгүй байна."
 
 #: views/admin/index/show.php:55
 msgid "Status"
-msgstr "Stato"
+msgstr "Статус"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Үйл ажиллагаа"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr "Scarica"
+msgstr "Татах"

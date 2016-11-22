@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
+# Predrag Djukic <djukic.predrag@gmail.com>, 2015
 # Predrag Djukic <djukic.predrag@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-12-03 21:36+0000\n"
-"Last-Translator: John Flatness <john@zerocrates.org>\n"
-"Language-Team: Serbian (Serbia) (http://www.transifex.com/projects/p/omeka/language/sr_RS/)\n"
+"PO-Revision-Date: 2015-04-27 11:48+0000\n"
+"Last-Translator: Predrag Djukic <djukic.predrag@gmail.com>\n"
+"Language-Team: Serbian (Serbia) (http://www.transifex.com/omeka/omeka/language/sr_RS/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -114,8 +115,8 @@ msgstr "Статус"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Активности"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr ""
+msgstr "Преузимање"

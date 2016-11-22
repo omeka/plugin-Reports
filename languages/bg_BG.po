@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Gabriel Radev <gabosss@gmail.com>, 2014
+# Gabriel Radev <gabosss@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-12-03 21:36+0000\n"
-"Last-Translator: John Flatness <john@zerocrates.org>\n"
-"Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/omeka/language/bg_BG/)\n"
+"PO-Revision-Date: 2015-03-12 22:37+0000\n"
+"Last-Translator: Gabriel Radev <gabosss@gmail.com>\n"
+"Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/omeka/omeka/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -114,8 +114,8 @@ msgstr "Статус"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr ""
+msgstr "Сваляне"

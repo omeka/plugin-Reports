@@ -3,53 +3,52 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Alfio Squatrito <info@lswebagency.it>, 2014
-# Guybrush88 <erpizzo@alice.it>, 2015
+# Peter Krantz <peter.krantz@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-03-17 18:16+0000\n"
-"Last-Translator: Guybrush88 <erpizzo@alice.it>\n"
-"Language-Team: Italian (http://www.transifex.com/omeka/omeka/language/it/)\n"
+"PO-Revision-Date: 2015-03-01 16:07+0000\n"
+"Last-Translator: Peter Krantz <peter.krantz@gmail.com>\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/omeka/omeka/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
+"Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ReportsPlugin.php:145
 msgid "Reports"
-msgstr "Reports"
+msgstr "Rapporter"
 
 #: ReportsPlugin.php:178
 msgid "Report"
-msgstr "Report"
+msgstr "Rapportera"
 
 #: controllers/IndexController.php:134
 msgid ""
 "The report cannot be saved.  Please check your report storage settings."
-msgstr "Il report non puo' essere salvato. Controlla le impostazioni di salvataggio."
+msgstr "Rapporten kunde inte sparas. Kontrollera inställningarna för rapportlagringen."
 
 #: models/Reports/Generator.php:205
 #, php-format
 msgid "Make sure that %s is exists and is writeable."
-msgstr "Assicurati che %s esiste e sia modificabile."
+msgstr "Kontrollera att %s finns och är skrivbar."
 
 #. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
 #: views/admin/index/add.php:13 views/admin/index/browse.php:10
 #: views/admin/index/browse.php:63 views/admin/index/browse.php:72
 msgid "Add a Report"
-msgstr "Aggiungi un Report"
+msgstr ""
 
 #: views/admin/index/add.php:34
 msgid "Add Report"
-msgstr ""
+msgstr "Lägg till rapport"
 
 #: views/admin/index/browse.php:2
 msgid "Browse Reports"
-msgstr "Elenca report"
+msgstr ""
 
 #: views/admin/index/browse.php:21 views/admin/index/show.php:52
 msgid "ID"
@@ -57,61 +56,61 @@ msgstr "ID"
 
 #: views/admin/index/browse.php:26
 msgid "Filter"
-msgstr "Filtra"
+msgstr ""
 
 #: views/admin/index/browse.php:27
 msgid "Generate a New File"
-msgstr "Crea un nuovo file"
+msgstr ""
 
 #: views/admin/index/browse.php:51
 msgid "Edit Filter"
-msgstr "Modifica Filtro"
+msgstr ""
 
 #: views/admin/index/browse.php:66
 msgid "There are no reports on this page."
-msgstr "Non ci sono report in questa pagina."
+msgstr ""
 
 #: views/admin/index/browse.php:66
 msgid "View All Reports"
-msgstr "Visualizza tutti i report."
+msgstr ""
 
 #: views/admin/index/browse.php:69
 msgid "You have no reports."
-msgstr "Non hai reports."
+msgstr ""
 
 #: views/admin/index/browse.php:71
 msgid "Get started by adding your first report."
-msgstr "Inizia aggiungendo il tuo primo report."
+msgstr ""
 
 #: views/admin/index/query.php:14
 #, php-format
 msgid "Edit Filter for '%s' | Reports"
-msgstr "Modifica Filtro per '%s' | Reports"
+msgstr ""
 
 #: views/admin/index/show.php:14
 #, php-format
 msgid "Report #%s | Reports"
-msgstr "Report n %s  | Reports"
+msgstr ""
 
 #: views/admin/index/show.php:19
 msgid "Report Details"
-msgstr "Dettagli Report"
+msgstr ""
 
 #: views/admin/index/show.php:37
 msgid "Generated Files"
-msgstr "Genera Files"
+msgstr ""
 
 #: views/admin/index/show.php:43
 msgid "Generate"
-msgstr "Crea"
+msgstr ""
 
 #: views/admin/index/show.php:48
 msgid "You have not yet generated any files."
-msgstr "Non hai generato alcun file."
+msgstr ""
 
 #: views/admin/index/show.php:55
 msgid "Status"
-msgstr "Stato"
+msgstr ""
 
 #: views/admin/index/show.php:56
 msgid "Actions"
@@ -119,4 +118,4 @@ msgstr ""
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr "Scarica"
+msgstr ""

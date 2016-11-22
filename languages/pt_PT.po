@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Daniel Alves <daniel_r_alves@hotmail.com>, 2013
+# Daniel Alves <daniel_r_alves@hotmail.com>, 2013,2015
 # Filipe <llopes@museus.ul.pt>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-12-03 21:36+0000\n"
-"Last-Translator: John Flatness <john@zerocrates.org>\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/omeka/language/pt_PT/)\n"
+"PO-Revision-Date: 2015-03-03 16:26+0000\n"
+"Last-Translator: Daniel Alves <daniel_r_alves@hotmail.com>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/omeka/omeka/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -115,8 +115,8 @@ msgstr "Estatuto"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Acções"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr ""
+msgstr "Descarregar"

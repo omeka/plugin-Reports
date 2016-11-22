@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2013-2014
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2013-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-12-03 21:36+0000\n"
-"Last-Translator: John Flatness <john@zerocrates.org>\n"
-"Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/omeka/language/ca_ES/)\n"
+"PO-Revision-Date: 2015-02-25 20:56+0000\n"
+"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>\n"
+"Language-Team: Catalan (Spain) (http://www.transifex.com/omeka/omeka/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -114,8 +114,8 @@ msgstr "Estat"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr ""
+msgstr "Descarrega"

@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
+# E, 2014
 # Roland Keck <roland.keck@web.de>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-12-03 21:36+0000\n"
-"Last-Translator: John Flatness <john@zerocrates.org>\n"
-"Language-Team: German (Germany) (http://www.transifex.com/projects/p/omeka/language/de_DE/)\n"
+"PO-Revision-Date: 2014-12-18 22:01+0000\n"
+"Last-Translator: E\n"
+"Language-Team: German (Germany) (http://www.transifex.com/omeka/omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,16 +21,16 @@ msgstr ""
 
 #: ReportsPlugin.php:145
 msgid "Reports"
-msgstr "Reports"
+msgstr "Berichte"
 
 #: ReportsPlugin.php:178
 msgid "Report"
-msgstr "Report"
+msgstr "Bericht"
 
 #: controllers/IndexController.php:134
 msgid ""
 "The report cannot be saved.  Please check your report storage settings."
-msgstr "Der Report kann nicht abgespeichert werden. Bitte prüfen Sie die Einstellungen zum Speichern der Reports."
+msgstr "Der Bericht kann nicht abgespeichert werden. Bitte prüfen Sie die Einstellungen zum Speichern der Berichte."
 
 #: models/Reports/Generator.php:205
 #, php-format
@@ -40,15 +41,15 @@ msgstr "Stellen Sie sicher, dass %s existiert und Sie Schreibrechte besitzen."
 #: views/admin/index/add.php:13 views/admin/index/browse.php:10
 #: views/admin/index/browse.php:63 views/admin/index/browse.php:72
 msgid "Add a Report"
-msgstr "Einen neuen Report erstellen"
+msgstr "Einen neuen Bericht erstellen"
 
 #: views/admin/index/add.php:34
 msgid "Add Report"
-msgstr "Report hinzufügen"
+msgstr "Bericht hinzufügen"
 
 #: views/admin/index/browse.php:2
 msgid "Browse Reports"
-msgstr "Reports durchstöbern"
+msgstr "Berichte durchstöbern"
 
 #: views/admin/index/browse.php:21 views/admin/index/show.php:52
 msgid "ID"
@@ -68,33 +69,33 @@ msgstr "Filter bearbeiten"
 
 #: views/admin/index/browse.php:66
 msgid "There are no reports on this page."
-msgstr "Keine Reports auf dieser Seite vorhanden."
+msgstr "Keine Berichte auf dieser Seite vorhanden."
 
 #: views/admin/index/browse.php:66
 msgid "View All Reports"
-msgstr "Alle Reports ansehen"
+msgstr "Alle Berichte ansehen"
 
 #: views/admin/index/browse.php:69
 msgid "You have no reports."
-msgstr "Sie haben keine Reports."
+msgstr "Sie haben keine Berichte."
 
 #: views/admin/index/browse.php:71
 msgid "Get started by adding your first report."
-msgstr "Erstellen sie Ihren ersten Report."
+msgstr "Erstellen sie Ihren ersten Bericht."
 
 #: views/admin/index/query.php:14
 #, php-format
 msgid "Edit Filter for '%s' | Reports"
-msgstr "Bearbeiten Filter für '%s' | Reports"
+msgstr "Bearbeiten Filter für '%s' | Berichte"
 
 #: views/admin/index/show.php:14
 #, php-format
 msgid "Report #%s | Reports"
-msgstr "Report #%s | Reports"
+msgstr "Bericht #%s | Berichten"
 
 #: views/admin/index/show.php:19
 msgid "Report Details"
-msgstr "Report Details"
+msgstr "Berichts-Details"
 
 #: views/admin/index/show.php:37
 msgid "Generated Files"
@@ -114,8 +115,8 @@ msgstr "Status"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr ""
+msgstr "Herunterladen"
