@@ -17,6 +17,7 @@ echo flash();
 ?>
 
 <h2><?php echo __('Report Details'); ?></h2>
+<div class="table-responsive">
 <table>
 <tr>
 <th><?php echo __('Name'); ?></th>
@@ -33,6 +34,7 @@ echo flash();
 <td><?php echo format_date($report->modified); ?></td>
 </tr>
 </table>
+</div>
 
 <h2><?php echo __('Generated Files'); ?></h2>
 
@@ -47,6 +49,7 @@ echo flash();
 <?php if (count($reportFiles) == 0) : ?>
 <p><?php echo __('You have not yet generated any files.'); ?></p>
 <?php else: ?>
+<div class="table-responsive">
 <table>
 <thead>
     <th><?php echo __('ID'); ?></th>
@@ -79,6 +82,7 @@ echo url(
 </tr>
 <?php endforeach; ?>
 </table>
+</div>
 <?php endif; ?>
 
 <?php echo foot(); ?>

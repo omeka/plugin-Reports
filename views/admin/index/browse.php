@@ -4,15 +4,14 @@ echo head(array('title'=>$pageTitle, 'bodyclass'=>'reports'));
 echo flash();
 ?>
 <?php if ($total_results > 0): ?>
-    <div class="table-actions">
     <?php if (is_allowed('Reports_Index', 'add')): ?>
         <a href="<?php echo html_escape(url('reports/add')); ?>" class="small green button">
             <?php echo __('Add a Report'); ?>
         </a>
     <?php endif; ?>
-    </div>
     <div class="pagination"><?php echo pagination_links(); ?></div>
     <?php if (has_loop_records('reports_reports')): ?>
+        <div class="table-responsive">
         <table id="reports" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
@@ -58,6 +57,7 @@ echo flash();
             <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
 
         <?php if (is_allowed('Reports_Index', 'add')): ?>
             <a href="<?php echo html_escape(url('reports/add')); ?>" class="small green button"><?php echo __('Add a Report'); ?></a>
