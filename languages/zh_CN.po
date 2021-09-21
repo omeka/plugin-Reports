@@ -3,53 +3,52 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# E, 2014
-# Roland Keck <roland.keck@web.de>, 2014
+# Hong Zhang <zhangh@unlv.nevada.edu>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-19 17:46+0000\n"
-"Last-Translator: E\n"
-"Language-Team: German (Germany) (http://www.transifex.com/omeka/omeka/language/de_DE/)\n"
+"PO-Revision-Date: 2018-03-01 08:19+0000\n"
+"Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/omeka/omeka/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ReportsPlugin.php:145
 msgid "Reports"
-msgstr "Berichte"
+msgstr "报告"
 
 #: ReportsPlugin.php:178
 msgid "Report"
-msgstr "Bericht"
+msgstr "报告"
 
 #: controllers/IndexController.php:134
 msgid ""
 "The report cannot be saved.  Please check your report storage settings."
-msgstr "Der Bericht kann nicht abgespeichert werden. Bitte prüfen Sie die Einstellungen zum Speichern der Berichte."
+msgstr "无法保存报告。请检查您的报告存储设置。"
 
 #: models/Reports/Generator.php:205
 #, php-format
 msgid "Make sure that %s is exists and is writeable."
-msgstr "Stellen Sie sicher, dass %s existiert und Sie Schreibrechte besitzen."
+msgstr "确保%s存在，并且可写。"
 
 #. //www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
 #: views/admin/index/add.php:13 views/admin/index/browse.php:10
 #: views/admin/index/browse.php:63 views/admin/index/browse.php:72
 msgid "Add a Report"
-msgstr "Einen neuen Bericht erstellen"
+msgstr "添加报告"
 
 #: views/admin/index/add.php:34
 msgid "Add Report"
-msgstr "Bericht hinzufügen"
+msgstr "添加报告"
 
 #: views/admin/index/browse.php:2
 msgid "Browse Reports"
-msgstr "Berichte durchstöbern"
+msgstr "浏览报告"
 
 #: views/admin/index/browse.php:21 views/admin/index/show.php:52
 msgid "ID"
@@ -57,66 +56,66 @@ msgstr "ID"
 
 #: views/admin/index/browse.php:26
 msgid "Filter"
-msgstr "Filter"
+msgstr "过滤器"
 
 #: views/admin/index/browse.php:27
 msgid "Generate a New File"
-msgstr "Neue Datei erzeugen"
+msgstr "生成新文件"
 
 #: views/admin/index/browse.php:51
 msgid "Edit Filter"
-msgstr "Filter bearbeiten"
+msgstr "编辑过滤器"
 
 #: views/admin/index/browse.php:66
 msgid "There are no reports on this page."
-msgstr "Keine Berichte auf dieser Seite vorhanden."
+msgstr "本页没有报告。"
 
 #: views/admin/index/browse.php:66
 msgid "View All Reports"
-msgstr "Alle Berichte ansehen"
+msgstr "查看所有报告"
 
 #: views/admin/index/browse.php:69
 msgid "You have no reports."
-msgstr "Sie haben keine Berichte."
+msgstr "您没有报告。"
 
 #: views/admin/index/browse.php:71
 msgid "Get started by adding your first report."
-msgstr "Erstellen sie Ihren ersten Bericht."
+msgstr "添加您的第一个报告开始。"
 
 #: views/admin/index/query.php:14
 #, php-format
 msgid "Edit Filter for '%s' | Reports"
-msgstr "Bearbeiten Filter für '%s' | Berichte"
+msgstr "为’%s‘编辑过滤器 | 报告"
 
 #: views/admin/index/show.php:14
 #, php-format
 msgid "Report #%s | Reports"
-msgstr "Bericht #%s | Berichten"
+msgstr "报告 #%s | 报告"
 
 #: views/admin/index/show.php:19
 msgid "Report Details"
-msgstr "Berichts-Details"
+msgstr "报告细节"
 
 #: views/admin/index/show.php:37
 msgid "Generated Files"
-msgstr "Erzeugte Dateien"
+msgstr "生成的文件"
 
 #: views/admin/index/show.php:43
 msgid "Generate"
-msgstr "Erzeugen"
+msgstr "生成"
 
 #: views/admin/index/show.php:48
 msgid "You have not yet generated any files."
-msgstr "Sie haben noch keine Dateien erzeugt."
+msgstr "您还未生成任何文件。"
 
 #: views/admin/index/show.php:55
 msgid "Status"
-msgstr "Status"
+msgstr "状况"
 
 #: views/admin/index/show.php:56
 msgid "Actions"
-msgstr "Aktionen"
+msgstr "操作"
 
 #: views/admin/index/show.php:66
 msgid "Download"
-msgstr "Herunterladen"
+msgstr "下载"

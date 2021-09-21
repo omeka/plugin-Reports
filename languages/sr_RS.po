@@ -7,10 +7,10 @@
 # Predrag Djukic <djukic.predrag@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Omeka\n"
+"Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Reports/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-04-27 11:48+0000\n"
+"PO-Revision-Date: 2017-09-19 17:46+0000\n"
 "Last-Translator: Predrag Djukic <djukic.predrag@gmail.com>\n"
 "Language-Team: Serbian (Serbia) (http://www.transifex.com/omeka/omeka/language/sr_RS/)\n"
 "MIME-Version: 1.0\n"
