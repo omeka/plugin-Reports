@@ -374,10 +374,7 @@ class Reports_Generator_PdfQrCode
     private function _getQrCode($uri)
     {
         if (!$this->_qrGenerator) {
-            $this->_qrGenerator = new Reports_Generator_PdfQrCode_GoogleCharts(
-                self::QR_WIDTH,
-                self::QR_HEIGHT
-            );
+            $this->_qrGenerator = new Reports_Generator_PdfQrCode_Bacon(self::QR_WIDTH);
         }
         return $this->_qrGenerator->generate($uri);
     }
