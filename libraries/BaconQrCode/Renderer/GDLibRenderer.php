@@ -23,16 +23,28 @@ final class GDLibRenderer implements RendererInterface
      */
     private array $colors;
 
+    private $size;
+    private $margin;
+    private $imageFormat;
+    private $compressionQuality;
+    private $fill;
+
     public function __construct(
-        private int $size,
-        private int $margin = 4,
-        private string $imageFormat = 'png',
-        private int $compressionQuality = 9,
-        private ?Fill $fill = null
+        int $size,
+        int $margin = 4,
+        string $imageFormat = 'png',
+        int $compressionQuality = 9,
+        ?Fill $fill = null
     ) {
         if (! extension_loaded('gd') || ! function_exists('gd_info')) {
             throw new RuntimeException('You need to install the GD extension to use this back end');
         }
+
+        $this->size = $size;
+        $this->margin = $margin;
+        $this->imageFormat = $imageFormat;
+        $this->compressionQuality = $compressionQuality;
+        $this->fill = $fill;
 
         if ($this->fill === null) {
             $this->fill = Fill::default();
@@ -103,7 +115,13 @@ final class GDLibRenderer implements RendererInterface
                     ($this->margin + $x + 1) * $pointInPx, ($this->margin + $y + 1) * $pointInPx,
                     ($this->margin + $x) * $pointInPx, ($this->margin + $y + 1) * $pointInPx,
                 ]);
-                imagefilledpolygon($this->image, $points, $color);
+
+
+                if (PHP_VERSION_ID < 80100) {
+                    imagefilledpolygon($this->image, $points, 4, $color);
+                } else {
+                    imagefilledpolygon($this->image, $points, $color);
+                }
             }
         }
     }
@@ -132,9 +150,17 @@ final class GDLibRenderer implements RendererInterface
                 ]);
 
                 if ($y > 1 && $y < 5 && $x > 1 && $x < 5) {
-                    imagefilledpolygon($this->image, $points, $internalColor);
+                    if (PHP_VERSION_ID < 80100) {
+                        imagefilledpolygon($this->image, $points, 4, $internalColor);
+                    } else {
+                        imagefilledpolygon($this->image, $points, $internalColor);
+                    }
                 } else {
-                    imagefilledpolygon($this->image, $points, $externalColor);
+                    if (PHP_VERSION_ID < 80100) {
+                        imagefilledpolygon($this->image, $points, 4, $externalColor);
+                    } else {
+                        imagefilledpolygon($this->image, $points, $externalColor);
+                    }
                 }
             }
         }
