@@ -88,7 +88,7 @@ class Reports_Generator_Html
                 <h3>Tags</h3>
                 <table class="element-texts" cellpadding="0" cellspacing="0">
                     <tr class="element">
-                        <td class="element-value"><?php echo implode($tags, ', '); ?></td>
+                        <td class="element-value"><?php echo implode(', ', $tags); ?></td>
                     </tr>
                 </table>
 <?php       endif; ?>
